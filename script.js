@@ -139,8 +139,33 @@ window.toggleTerms = function() {
     }
 };
 
-// Image Error Handling
-function handleImageError(img, type) {
+// Tier Details Toggle Function
+window.toggleTierDetails = function(tierId) {
+    const details = document.getElementById(tierId);
+    const btn = document.querySelector(`button[onclick="toggleTierDetails('${tierId}')"]`);
+    
+    if (details.classList.contains('expanded')) {
+        details.classList.remove('expanded');
+        btn.classList.remove('expanded');
+        btn.querySelector('span').textContent = 'See tier details & differences';
+    } else {
+        // Close other open tiers first (optional - for accordion behavior)
+        document.querySelectorAll('.tier-details.expanded').forEach(el => {
+            el.classList.remove('expanded');
+        });
+        document.querySelectorAll('.see-more-btn.expanded').forEach(el => {
+            el.classList.remove('expanded');
+            el.querySelector('span').textContent = 'See tier details & differences';
+        });
+        
+        details.classList.add('expanded');
+        btn.classList.add('expanded');
+        btn.querySelector('span').textContent = 'Show less';
+    }
+};
+
+// Image Error Handling - Global function
+window.handleImageError = function(img, type) {
     console.log(`Image failed to load: ${img.src}, type: ${type}`);
     img.classList.add('error');
     img.style.display = 'none';
@@ -148,12 +173,14 @@ function handleImageError(img, type) {
     const container = img.parentElement;
     
     if (type === 'founder') {
-        container.innerHTML = `
-            <div class="w-full h-full bg-slate-800 flex flex-col items-center justify-center text-slate-600">
-                <span class="text-6xl mb-4">👤</span>
-                <span class="font-mono text-sm">Sulaiman Sheriff-Akorede</span>
-            </div>
+        // Create fallback for founder image
+        const fallback = document.createElement('div');
+        fallback.className = 'w-full h-full bg-slate-800 flex flex-col items-center justify-center text-slate-600';
+        fallback.innerHTML = `
+            <span class="text-6xl mb-4">👤</span>
+            <span class="font-mono text-sm">Sulaiman Sheriff-Akorede</span>
         `;
+        container.appendChild(fallback);
     } else if (type === 'showcase') {
         const fallback = container.querySelector('.showcase-fallback');
         if (fallback) {
@@ -161,13 +188,12 @@ function handleImageError(img, type) {
             fallback.classList.add('flex');
         }
     } else if (type === 'logo') {
-        const logoContainer = img.closest('.logo-container');
-        if (logoContainer) {
-            logoContainer.innerHTML = 'J';
-            logoContainer.classList.add('bg-gradient-to-br', 'from-indigo-500', 'to-cyan-400');
+        const fallback = container.querySelector('.logo-fallback');
+        if (fallback) {
+            fallback.style.display = 'flex';
         }
     }
-}
+};
 
 // Setup image error handlers
 document.addEventListener('DOMContentLoaded', function() {
