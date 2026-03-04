@@ -1,18 +1,8 @@
-// Configuration - Using Pure Local Paths to prevent blocking
+// Configuration - Local Paths
 const CONFIG = {
     whatsapp: {
         ceo: '2348081515375',
         agent: '2348101365054'
-    },
-    youtube: {
-        heroVideoId: 'vGJOWqcgbmI',
-        projectVideos: [
-            'YHCvequl3X8',
-            'AdWD68lYpCo',
-            'XplrR8k17LA',
-            'XXRJqpJtTs8',
-            '1LMeYm5yTUw'
-        ]
     },
     images: {
         logo: 'logo.png',
@@ -26,52 +16,6 @@ const CONFIG = {
         ]
     }
 };
-
-// YouTube Player API
-let heroPlayer;
-
-function loadYouTubeAPI() {
-    const tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    const firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-}
-
-function onYouTubeIframeAPIReady() {
-    heroPlayer = new YT.Player('hero-youtube-player', {
-        videoId: CONFIG.youtube.heroVideoId,
-        playerVars: {
-            autoplay: 1,
-            controls: 0,
-            disablekb: 1,
-            fs: 0,
-            iv_load_policy: 3,
-            loop: 1,
-            modestbranding: 1,
-            mute: 1,
-            playsinline: 1,
-            rel: 0,
-            showinfo: 0,
-            start: 0,
-            playlist: CONFIG.youtube.heroVideoId
-        },
-        events: {
-            onReady: onHeroPlayerReady,
-            onStateChange: onHeroPlayerStateChange
-        }
-    });
-}
-
-function onHeroPlayerReady(event) {
-    event.target.playVideo();
-    event.target.mute();
-}
-
-function onHeroPlayerStateChange(event) {
-    if (event.data === YT.PlayerState.ENDED) {
-        heroPlayer.playVideo();
-    }
-}
 
 // Initialize GSAP
 if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
@@ -187,6 +131,37 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+// Showcase Image Click Handler
+document.querySelectorAll('.showcase-image').forEach((img, index) => {
+    img.addEventListener('click', function() {
+        const showcaseId = this.dataset.showcase;
+        const titles = [
+            'AI Marketing Infrastructure',
+            'Fashion AI Synthetic Modeling',
+            'Auto-Compliance Systems',
+            'Data Isolation Protocols',
+            'Tax Routing Matrix'
+        ];
+        
+        const notification = document.createElement('div');
+        notification.className = 'fixed bottom-8 right-8 glass-panel px-6 py-4 rounded-xl border-indigo-500/30 z-50 animate-up max-w-sm';
+        notification.innerHTML = `
+            <div class="flex items-start gap-3">
+                <div class="w-8 h-8 rounded-full bg-indigo-500/20 flex items-center justify-center flex-shrink-0 mt-1">
+                    <span class="text-indigo-400 text-xs font-mono">0${showcaseId}</span>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white text-sm mb-1">${titles[index]}</h4>
+                    <p class="text-xs text-slate-400">SaaSul Project Showcase</p>
+                    <a href="https://wa.me/2348081515375?text=Inquiry%20about%20SaaSul%20Project%200${showcaseId}:%20${titles[index]}" target="_blank" class="inline-block mt-3 text-xs text-indigo-400 hover:text-indigo-300 font-semibold">Inquire via WhatsApp →</a>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(notification);
+        setTimeout(() => notification.remove(), 5000);
+    });
+});
+
 // Smooth Scroll
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
@@ -207,7 +182,19 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-loadYouTubeAPI();
+// Terms & Conditions Toggle
+window.toggleTerms = function() {
+    const content = document.getElementById('terms-content');
+    const chevron = document.getElementById('terms-chevron');
+    
+    if (content.classList.contains('hidden')) {
+        content.classList.remove('hidden');
+        chevron.classList.add('rotated');
+    } else {
+        content.classList.add('hidden');
+        chevron.classList.remove('rotated');
+    }
+};
 
 console.log('%cJUNESTUDIOS', 'color: #6366f1; font-size: 24px; font-weight: bold;');
 console.log('%cThe Emerging Market OS | Founded by Sulaiman Sheriff-Akorede', 'color: #22d3ee; font-size: 12px;');
@@ -236,4 +223,3 @@ function preloadImages() {
         img.src = src;
     });
 }
-
