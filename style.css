@@ -1,6 +1,4 @@
-# Updated style.css with fixes for image loading and new dropdown styles
-
-style_css = '''@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=Space+Grotesk:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=Space+Grotesk:wght@400;500;700&display=swap');
 
 :root {
     --bg-dark: #020617;
@@ -35,20 +33,10 @@ h1, h2, h3, .font-mono {
     font-family: 'Space Grotesk', sans-serif;
 }
 
-/* Ensure white text on dark backgrounds */
 .text-white {
     color: #ffffff !important;
 }
 
-/* Gradient text fade effect */
-.text-gradient-fade {
-    background: linear-gradient(to right, #ffffff 0%, #ffffff 70%, rgba(255,255,255,0) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-/* Advanced Glassmorphism */
 .glass-panel {
     background: var(--glass-bg);
     backdrop-filter: blur(20px);
@@ -60,7 +48,6 @@ h1, h2, h3, .font-mono {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Navigation */
 #navbar {
     transition: all 0.3s ease;
 }
@@ -71,7 +58,6 @@ h1, h2, h3, .font-mono {
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
 }
 
-/* Gradient Animation */
 @keyframes gradient {
     0%, 100% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
@@ -82,7 +68,6 @@ h1, h2, h3, .font-mono {
     animation: gradient 8s ease infinite;
 }
 
-/* Custom Scrollbar */
 ::-webkit-scrollbar {
     width: 10px;
 }
@@ -101,7 +86,6 @@ h1, h2, h3, .font-mono {
     background: var(--accent);
 }
 
-/* Hero YouTube Player Styling */
 #hero-youtube-player {
     position: absolute;
     top: 50%;
@@ -118,7 +102,6 @@ h1, h2, h3, .font-mono {
     object-fit: cover;
 }
 
-/* Video Embed Styling */
 .video-embed {
     position: relative;
     overflow: hidden;
@@ -133,12 +116,10 @@ h1, h2, h3, .font-mono {
     border: none;
 }
 
-/* Founder Image Styling */
 #founder-image {
     object-position: center top;
 }
 
-/* Showcase Image Hover Effects */
 .showcase-image {
     position: relative;
     overflow: hidden;
@@ -159,23 +140,19 @@ h1, h2, h3, .font-mono {
     opacity: 1;
 }
 
-/* Image Loading States - FIXED */
 img {
     opacity: 1;
     transition: opacity 0.3s ease, transform 0.7s ease;
 }
 
-/* Remove shimmer effect that was causing issues */
 img.loaded {
     opacity: 1;
 }
 
-/* Better image error handling */
 img.error {
     opacity: 0;
 }
 
-/* Mobile Menu */
 #mobile-menu {
     max-height: 0;
     overflow: hidden;
@@ -186,19 +163,16 @@ img.error {
     max-height: 400px;
 }
 
-/* Selection */
 ::selection {
     background: var(--accent);
     color: white;
 }
 
-/* Focus Styles */
 a:focus-visible, button:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
 }
 
-/* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
     * {
         animation-duration: 0.01ms !important;
@@ -207,14 +181,12 @@ a:focus-visible, button:focus-visible {
     }
 }
 
-/* Responsive Typography */
 @media (max-width: 640px) {
     .hero-content h1 {
         font-size: 2.5rem;
         line-height: 1.1;
     }
     
-    /* Founder section mobile adjustments */
     #founder .relative {
         max-width: 100%;
     }
@@ -230,7 +202,6 @@ a:focus-visible, button:focus-visible {
     }
 }
 
-/* Ensure text contrast */
 h1, h2, h3, h4, h5, h6 {
     color: #ffffff;
 }
@@ -255,27 +226,20 @@ p {
     color: #475569;
 }
 
-/* Logo container fallback */
 .logo-container {
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
 }
 
-/* Pulse animation for status indicators */
 .animate-pulse {
     animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 @keyframes pulse {
-    0%, 100% {
-        opacity: 1;
-    }
-    50% {
-        opacity: .5;
-    }
+    0%, 100% { opacity: 1; }
+    50% { opacity: .5; }
 }
 
-/* Bounce animation for scroll indicator */
 .animate-bounce {
     animation: bounce 1s infinite;
 }
@@ -291,12 +255,10 @@ p {
     }
 }
 
-/* Hover scale transform */
-.hover\\:scale-105:hover {
+.hover\:scale-105:hover {
     transform: scale(1.05);
 }
 
-/* Transition utilities */
 .transition-all {
     transition-property: all;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -327,7 +289,6 @@ p {
     transition-duration: 700ms;
 }
 
-/* Aspect ratio utilities */
 .aspect-video {
     aspect-ratio: 16 / 9;
 }
@@ -336,12 +297,6 @@ p {
     aspect-ratio: 1 / 1;
 }
 
-/* Grid auto rows */
-.auto-rows-\\[200px\\] {
-    grid-auto-rows: 200px;
-}
-
-/* Z-index utilities */
 .z-0 {
     z-index: 0;
 }
@@ -354,15 +309,6 @@ p {
     z-index: 50;
 }
 
-.z-\\[90\\] {
-    z-index: 90;
-}
-
-.z-\\[100\\] {
-    z-index: 100;
-}
-
-/* Backdrop blur utilities */
 .backdrop-blur-sm {
     --tw-backdrop-blur: blur(4px);
     -webkit-backdrop-filter: var(--tw-backdrop-blur);
@@ -375,22 +321,18 @@ p {
     backdrop-filter: var(--tw-backdrop-blur);
 }
 
-/* YouTube iframe specific fixes */
 iframe {
     max-width: 100%;
 }
 
-/* Prevent horizontal scroll */
 .overflow-x-hidden {
     overflow-x: hidden;
 }
 
-/* Fixed positioning for nav */
 .fixed {
     position: fixed;
 }
 
-/* Absolute positioning utilities */
 .absolute {
     position: absolute;
 }
@@ -406,7 +348,6 @@ iframe {
     left: 0;
 }
 
-/* Gradient backgrounds */
 .bg-gradient-to-b {
     background-image: linear-gradient(to bottom, var(--tw-gradient-stops));
 }
@@ -427,20 +368,16 @@ iframe {
     background-image: linear-gradient(to left, var(--tw-gradient-stops));
 }
 
-/* Shadow utilities */
-.shadow-\\[0_0_30px_rgba\\(99\\,102\\,241\\,0\\.15\\)\\] {
+.shadow-\[0_0_30px_rgba\(99\,102\,241\,0\.15\)\] {
     --tw-shadow: 0 0 30px rgba(99, 102, 241, 0.15);
-    --tw-shadow-colored: 0 0 30px var(--tw-shadow-color);
-    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+    box-shadow: var(--tw-shadow);
 }
 
-.shadow-\\[0_0_30px_rgba\\(99\\,102\\,241\\,0\\.5\\)\\] {
+.shadow-\[0_0_30px_rgba\(99\,102\,241\,0\.5\)\] {
     --tw-shadow: 0 0 30px rgba(99, 102, 241, 0.5);
-    --tw-shadow-colored: 0 0 30px var(--tw-shadow-color);
-    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+    box-shadow: var(--tw-shadow);
 }
 
-/* Blur utilities */
 .blur-2xl {
     --tw-blur: blur(40px);
     filter: var(--tw-blur);
@@ -451,17 +388,14 @@ iframe {
     filter: var(--tw-blur);
 }
 
-/* Pointer events */
 .pointer-events-none {
     pointer-events: none;
 }
 
-/* Loading state for images - FIXED */
 img:not([src]) {
     visibility: hidden;
 }
 
-/* Fallback for missing images - show emoji fallback immediately */
 .showcase-fallback {
     display: none;
 }
@@ -471,7 +405,6 @@ img[style*="display: none"] ~ .showcase-fallback {
     display: flex !important;
 }
 
-/* Notification popup styling */
 .notification-popup {
     animation: slideIn 0.3s ease-out;
 }
@@ -487,14 +420,12 @@ img[style*="display: none"] ~ .showcase-fallback {
     }
 }
 
-/* Responsive video embeds */
 @media (max-width: 768px) {
     .video-embed {
         min-height: 200px;
     }
 }
 
-/* Ensure proper stacking context */
 #hero-video-container {
     z-index: 0;
 }
@@ -504,7 +435,6 @@ img[style*="display: none"] ~ .showcase-fallback {
     z-index: 10;
 }
 
-/* Terms & Conditions Dropdown Styles */
 #terms-content {
     max-height: 0;
     opacity: 0;
@@ -524,7 +454,6 @@ img[style*="display: none"] ~ .showcase-fallback {
     transform: rotate(180deg);
 }
 
-/* Print styles */
 @media print {
     .glass-panel {
         background: white !important;
@@ -536,7 +465,6 @@ img[style*="display: none"] ~ .showcase-fallback {
     }
 }
 
-/* Symmetrical Grid Fixes */
 .showcase-image {
     min-height: 200px;
 }
@@ -551,13 +479,8 @@ img[style*="display: none"] ~ .showcase-fallback {
     }
 }
 
-/* Ensure images fill containers properly */
 .showcase-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
-'''
-
-print("style.css created successfully!")
-print(f"Length: {len(style_css)} characters")
