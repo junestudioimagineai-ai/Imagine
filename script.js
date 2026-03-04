@@ -1,4 +1,4 @@
-// Configuration
+// Configuration - Using Pure Local Paths to prevent blocking
 const CONFIG = {
     whatsapp: {
         ceo: '2348081515375',
@@ -15,14 +15,14 @@ const CONFIG = {
         ]
     },
     images: {
-        logo: 'https://raw.githubusercontent.com/junestudioimagineai-ai/Imagine/main/logo.png',
-        founder: 'https://raw.githubusercontent.com/junestudioimagineai-ai/Imagine/main/founder-sulaiman.jpg',
+        logo: 'logo.png',
+        founder: 'founder-sulaiman.jpg',
         showcases: [
-            'https://raw.githubusercontent.com/junestudioimagineai-ai/Imagine/main/saasul-showcase-1.jpg',
-            'https://raw.githubusercontent.com/junestudioimagineai-ai/Imagine/main/saasul-showcase-2.jpg',
-            'https://raw.githubusercontent.com/junestudioimagineai-ai/Imagine/main/saasul-showcase-3.jpg',
-            'https://raw.githubusercontent.com/junestudioimagineai-ai/Imagine/main/saasul-showcase-4.jpg',
-            'https://raw.githubusercontent.com/junestudioimagineai-ai/Imagine/main/saasul-showcase-5.jpg'
+            'saasul-showcase-1.jpg',
+            'saasul-showcase-2.jpg',
+            'saasul-showcase-3.jpg',
+            'saasul-showcase-4.jpg',
+            'saasul-showcase-5.jpg'
         ]
     }
 };
@@ -125,46 +125,7 @@ if (mobileMenuBtn && mobileMenu) {
     });
 }
 
-// Terms & Conditions Toggle
-window.toggleTerms = function() {
-    const content = document.getElementById('terms-content');
-    const chevron = document.getElementById('terms-chevron');
-    
-    if (content.classList.contains('hidden')) {
-        content.classList.remove('hidden');
-        chevron.classList.add('rotated');
-    } else {
-        content.classList.add('hidden');
-        chevron.classList.remove('rotated');
-    }
-};
-
-// Tier Details Toggle Function
-window.toggleTierDetails = function(tierId) {
-    const details = document.getElementById(tierId);
-    const btn = document.querySelector(`button[onclick="toggleTierDetails('${tierId}')"]`);
-    
-    if (details.classList.contains('expanded')) {
-        details.classList.remove('expanded');
-        btn.classList.remove('expanded');
-        btn.querySelector('span').textContent = 'See tier details & differences';
-    } else {
-        // Close other open tiers first (optional - for accordion behavior)
-        document.querySelectorAll('.tier-details.expanded').forEach(el => {
-            el.classList.remove('expanded');
-        });
-        document.querySelectorAll('.see-more-btn.expanded').forEach(el => {
-            el.classList.remove('expanded');
-            el.querySelector('span').textContent = 'See tier details & differences';
-        });
-        
-        details.classList.add('expanded');
-        btn.classList.add('expanded');
-        btn.querySelector('span').textContent = 'Show less';
-    }
-};
-
-// Image Error Handling - Global function
+// Image Error Handling
 window.handleImageError = function(img, type) {
     console.log(`Image failed to load: ${img.src}, type: ${type}`);
     img.classList.add('error');
@@ -173,116 +134,56 @@ window.handleImageError = function(img, type) {
     const container = img.parentElement;
     
     if (type === 'founder') {
-        // Create fallback for founder image
         const fallback = document.createElement('div');
         fallback.className = 'w-full h-full bg-slate-800 flex flex-col items-center justify-center text-slate-600';
         fallback.innerHTML = `
             <span class="text-6xl mb-4">👤</span>
             <span class="font-mono text-sm">Sulaiman Sheriff-Akorede</span>
         `;
-        // Remove any existing fallback first
         const existingFallback = container.querySelector('.bg-slate-800');
         if (!existingFallback) {
             container.appendChild(fallback);
         }
-    } else if (type === 'showcase') {
-        const fallback = container.querySelector('.showcase-fallback');
-        if (fallback) {
-            fallback.classList.remove('hidden');
-            fallback.classList.add('flex');
-        }
     } else if (type === 'logo') {
-        const fallback = container.querySelector('.logo-fallback');
-        if (fallback) {
-            fallback.style.display = 'flex';
+        const logoContainer = img.closest('.logo-container');
+        if (logoContainer) {
+            logoContainer.innerHTML = 'J';
+            logoContainer.classList.add('bg-gradient-to-br', 'from-indigo-500', 'to-cyan-400');
         }
     }
 };
 
 // Setup image error handlers
 document.addEventListener('DOMContentLoaded', function() {
-    // Preload images to check if they exist
     preloadImages();
     
     const logoImg = document.querySelector('.logo-container img');
     if (logoImg) {
-        // Check if already loaded or errored
-        if (logoImg.complete) {
-            if (logoImg.naturalHeight === 0) {
-                handleImageError(logoImg, 'logo');
-            }
+        if (logoImg.complete && logoImg.naturalHeight === 0) {
+            handleImageError(logoImg, 'logo');
         } else {
-            logoImg.addEventListener('error', function() {
-                handleImageError(this, 'logo');
-            });
-            logoImg.addEventListener('load', function() {
-                this.classList.add('loaded');
-            });
+            logoImg.addEventListener('error', function() { handleImageError(this, 'logo'); });
+            logoImg.addEventListener('load', function() { this.classList.add('loaded'); });
         }
     }
     
     const founderImg = document.getElementById('founder-image');
     if (founderImg) {
-        if (founderImg.complete) {
-            if (founderImg.naturalHeight === 0) {
-                handleImageError(founderImg, 'founder');
-            }
+        if (founderImg.complete && founderImg.naturalHeight === 0) {
+            handleImageError(founderImg, 'founder');
         } else {
-            founderImg.addEventListener('error', function() {
-                handleImageError(this, 'founder');
-            });
-            founderImg.addEventListener('load', function() {
-                this.classList.add('loaded');
-            });
+            founderImg.addEventListener('error', function() { handleImageError(this, 'founder'); });
+            founderImg.addEventListener('load', function() { this.classList.add('loaded'); });
         }
     }
     
     document.querySelectorAll('.showcase-image img').forEach((img) => {
-        if (img.complete) {
-            if (img.naturalHeight === 0) {
-                handleImageError(img, 'showcase');
-            } else {
-                img.classList.add('loaded');
-            }
+        if (img.complete && img.naturalHeight === 0) {
+            handleImageError(img, 'showcase');
         } else {
-            img.addEventListener('error', function() {
-                handleImageError(this, 'showcase');
-            });
-            img.addEventListener('load', function() {
-                this.classList.add('loaded');
-            });
+            img.addEventListener('error', function() { handleImageError(this, 'showcase'); });
+            img.addEventListener('load', function() { this.classList.add('loaded'); });
         }
-    });
-});
-
-// Showcase Image Click Handler
-document.querySelectorAll('.showcase-image').forEach((img, index) => {
-    img.addEventListener('click', function() {
-        const showcaseId = this.dataset.showcase;
-        const titles = [
-            'AI Marketing Infrastructure',
-            'Fashion AI Synthetic Modeling',
-            'Auto-Compliance Systems',
-            'Data Isolation Protocols',
-            'Tax Routing Matrix'
-        ];
-        
-        const notification = document.createElement('div');
-        notification.className = 'fixed bottom-8 right-8 glass-panel px-6 py-4 rounded-xl border-indigo-500/30 z-50 animate-up max-w-sm';
-        notification.innerHTML = `
-            <div class="flex items-start gap-3">
-                <div class="w-8 h-8 rounded-full bg-indigo-500/20 flex items-center justify-center flex-shrink-0 mt-1">
-                    <span class="text-indigo-400 text-xs font-mono">0${showcaseId}</span>
-                </div>
-                <div>
-                    <h4 class="font-bold text-white text-sm mb-1">${titles[index]}</h4>
-                    <p class="text-xs text-slate-400">SaaSul Project Showcase</p>
-                    <a href="https://wa.me/2348081515375?text=Inquiry%20about%20SaaSul%20Project%200${showcaseId}:%20${titles[index]}" target="_blank" class="inline-block mt-3 text-xs text-indigo-400 hover:text-indigo-300 font-semibold">Inquire via WhatsApp →</a>
-                </div>
-            </div>
-        `;
-        document.body.appendChild(notification);
-        setTimeout(() => notification.remove(), 5000);
     });
 });
 
@@ -306,14 +207,11 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Load YouTube API
 loadYouTubeAPI();
 
-// Console branding
 console.log('%cJUNESTUDIOS', 'color: #6366f1; font-size: 24px; font-weight: bold;');
 console.log('%cThe Emerging Market OS | Founded by Sulaiman Sheriff-Akorede', 'color: #22d3ee; font-size: 12px;');
 
-// Preload images and check if they exist
 function preloadImages() {
     const imagesToPreload = [
         { src: CONFIG.images.logo, type: 'logo', selector: '.logo-container img' },
@@ -328,21 +226,14 @@ function preloadImages() {
     imagesToPreload.forEach(({ src, type, selector }) => {
         const img = new Image();
         img.onload = function() {
-            console.log(`✓ Loaded: ${type}`);
             const domImg = document.querySelector(selector);
-            if (domImg) {
-                domImg.classList.add('loaded');
-            }
+            if (domImg) domImg.classList.add('loaded');
         };
         img.onerror = function() {
-            console.log(`✗ Failed: ${type} - ${src}`);
             const domImg = document.querySelector(selector);
-            if (domImg) {
-                handleImageError(domImg, type);
-            }
+            if (domImg) handleImageError(domImg, type);
         };
         img.src = src;
     });
 }
 
-window.addEventListener('load', preloadImages);
