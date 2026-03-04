@@ -1,6 +1,4 @@
-# Updated index.html with all fixes
-
-index_html = '''<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -63,7 +61,6 @@ index_html = '''<!DOCTYPE html>
 
     <!-- Hero Section with YouTube Short Background -->
     <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-        <!-- YouTube Short Background (Soundless, Seamless, Looping) -->
         <div class="absolute inset-0 z-0 bg-black" id="hero-video-container">
             <div id="hero-youtube-player" class="absolute inset-0 w-full h-full"></div>
             <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#020617]/80 to-[#020617]"></div>
@@ -104,7 +101,7 @@ index_html = '''<!DOCTYPE html>
         </div>
     </section>
 
-    <!-- Founder Section (Sulaiman Sheriff-Akorede) -->
+    <!-- Founder Section -->
     <section id="founder" class="py-24 relative z-10 bg-[#050b14] border-y border-slate-800">
         <div class="max-w-7xl mx-auto px-6">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -278,7 +275,7 @@ index_html = '''<!DOCTYPE html>
         </div>
     </section>
 
-    <!-- SaaSul Project Showcase (5 Images + 5 Videos) - SYMMETRICAL GRID -->
+    <!-- SaaSul Project Showcase - SYMMETRICAL GRID -->
     <section id="showcase" class="py-24 relative z-10 bg-gradient-to-b from-[#020617] to-[#050b14]">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-12 animate-up">
@@ -291,7 +288,7 @@ index_html = '''<!DOCTYPE html>
 
             <!-- SYMMETRICAL 5-Image Grid Layout -->
             <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-12">
-                <!-- Large featured image (spans 2 cols on mobile, 2 cols on desktop) -->
+                <!-- Large featured image (spans 2 cols, 2 rows) -->
                 <div class="col-span-2 row-span-2 glass-panel rounded-2xl overflow-hidden relative group cursor-pointer animate-up showcase-image h-[400px] md:h-[500px]" data-showcase="1">
                     <img src="https://raw.githubusercontent.com/junestudioimagineai-ai/Imagine/main/saasul-showcase-1.jpg" alt="SaaSul Project 1 - AI Marketing Infrastructure" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-6">
@@ -359,65 +356,21 @@ index_html = '''<!DOCTYPE html>
             <!-- 5 Embedded SaaSul Project Videos - SYMMETRICAL 3+2 GRID -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                 <div class="video-embed glass-panel rounded-2xl overflow-hidden aspect-video relative animate-up">
-                    <iframe 
-                        class="w-full h-full absolute inset-0"
-                        src="https://www.youtube.com/embed/YHCvequl3X8?rel=0&modestbranding=1&controls=1" 
-                        title="SaaSul Video 1"
-                        frameborder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                        allowfullscreen
-                        loading="lazy">
-                    </iframe>
+                    <iframe class="w-full h-full absolute inset-0" src="https://www.youtube.com/embed/YHCvequl3X8?rel=0&modestbranding=1&controls=1" title="SaaSul Video 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
                 </div>
-
                 <div class="video-embed glass-panel rounded-2xl overflow-hidden aspect-video relative animate-up">
-                    <iframe 
-                        class="w-full h-full absolute inset-0"
-                        src="https://www.youtube.com/embed/AdWD68lYpCo?rel=0&modestbranding=1&controls=1" 
-                        title="SaaSul Video 2"
-                        frameborder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                        allowfullscreen
-                        loading="lazy">
-                    </iframe>
+                    <iframe class="w-full h-full absolute inset-0" src="https://www.youtube.com/embed/AdWD68lYpCo?rel=0&modestbranding=1&controls=1" title="SaaSul Video 2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
                 </div>
-
                 <div class="video-embed glass-panel rounded-2xl overflow-hidden aspect-video relative animate-up">
-                    <iframe 
-                        class="w-full h-full absolute inset-0"
-                        src="https://www.youtube.com/embed/XplrR8k17LA?rel=0&modestbranding=1&controls=1" 
-                        title="SaaSul Video 3"
-                        frameborder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                        allowfullscreen
-                        loading="lazy">
-                    </iframe>
+                    <iframe class="w-full h-full absolute inset-0" src="https://www.youtube.com/embed/XplrR8k17LA?rel=0&modestbranding=1&controls=1" title="SaaSul Video 3" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
                 </div>
             </div>
-
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
                 <div class="video-embed glass-panel rounded-2xl overflow-hidden aspect-video relative animate-up">
-                    <iframe 
-                        class="w-full h-full absolute inset-0"
-                        src="https://www.youtube.com/embed/XXRJqpJtTs8?rel=0&modestbranding=1&controls=1" 
-                        title="SaaSul Video 4"
-                        frameborder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                        allowfullscreen
-                        loading="lazy">
-                    </iframe>
+                    <iframe class="w-full h-full absolute inset-0" src="https://www.youtube.com/embed/XXRJqpJtTs8?rel=0&modestbranding=1&controls=1" title="SaaSul Video 4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
                 </div>
-
                 <div class="video-embed glass-panel rounded-2xl overflow-hidden aspect-video relative animate-up">
-                    <iframe 
-                        class="w-full h-full absolute inset-0"
-                        src="https://raw.githubusercontent.com/junestudioimagineai-ai/Imagine/main/1LMeYm5yTUw?rel=0&modestbranding=1&controls=1" 
-                        title="SaaSul Video 5"
-                        frameborder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                        allowfullscreen
-                        loading="lazy">
-                    </iframe>
+                    <iframe class="w-full h-full absolute inset-0" src="https://www.youtube.com/embed/1LMeYm5yTUw?rel=0&modestbranding=1&controls=1" title="SaaSul Video 5" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
                 </div>
             </div>
         </div>
@@ -449,7 +402,7 @@ index_html = '''<!DOCTYPE html>
     <footer class="relative z-10 bg-[#020617] border-t border-slate-800 pt-16 pb-8">
         <div class="max-w-7xl mx-auto px-6">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-                <div class="col-span-1 md:col-span-1">
+                <div>
                     <div class="flex items-center gap-3 mb-4">
                         <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-cyan-400 rounded-lg flex items-center justify-center font-bold text-white">J</div>
                         <span class="font-bold text-lg text-white">JUNESTUDIOS</span>
@@ -464,7 +417,6 @@ index_html = '''<!DOCTYPE html>
                         </a>
                     </div>
                 </div>
-
                 <div>
                     <h4 class="font-bold text-white mb-4 text-sm uppercase tracking-wider">Legal Framework</h4>
                     <ul class="space-y-3 text-sm text-slate-400">
@@ -475,29 +427,15 @@ index_html = '''<!DOCTYPE html>
                         <li><a href="#sla" class="hover:text-indigo-400 transition-colors">Service Level Agreement</a></li>
                     </ul>
                 </div>
-
                 <div>
                     <h4 class="font-bold text-white mb-4 text-sm uppercase tracking-wider">Regulatory Status</h4>
                     <ul class="space-y-3 text-sm text-slate-400">
-                        <li class="flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
-                            CAC Registered
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
-                            NDPC Member
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
-                            FIRS Registered
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
-                            SCUML Certified
-                        </li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>CAC Registered</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>NDPC Member</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>FIRS Registered</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>SCUML Certified</li>
                     </ul>
                 </div>
-
                 <div>
                     <h4 class="font-bold text-white mb-4 text-sm uppercase tracking-wider">Direct Lines</h4>
                     <div class="space-y-4">
@@ -508,7 +446,6 @@ index_html = '''<!DOCTYPE html>
                             </div>
                             <span class="text-white font-mono text-sm">+234 808 151 5375</span>
                         </a>
-                        
                         <a href="https://wa.me/2348101365054?text=Agent%20inquiry:%20Legal%20tech%20deeds" target="_blank" class="block glass-panel p-4 rounded-xl hover:border-indigo-500/50 transition-all group">
                             <div class="flex items-center justify-between mb-1">
                                 <span class="text-xs text-cyan-400 font-mono">LEGAL AGENT</span>
@@ -516,7 +453,6 @@ index_html = '''<!DOCTYPE html>
                             </div>
                             <span class="text-white font-mono text-sm">+234 810 136 5054</span>
                         </a>
-
                         <div class="text-xs text-slate-500 mt-4">
                             <p>dpo@junestudios.co</p>
                             <p class="text-white">Lagos, Nigeria</p>
@@ -527,7 +463,6 @@ index_html = '''<!DOCTYPE html>
 
             <!-- COLLAPSIBLE Terms & Conditions Section -->
             <div class="border-t border-slate-800 pt-8">
-                <!-- Toggle Button -->
                 <button id="terms-toggle" class="w-full flex items-center justify-between py-4 text-left group" onclick="toggleTerms()">
                     <div class="flex items-center gap-3">
                         <span class="text-slate-400 font-bold text-sm uppercase tracking-wider">Legal Documentation</span>
@@ -537,8 +472,6 @@ index_html = '''<!DOCTYPE html>
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                     </svg>
                 </button>
-                
-                <!-- Collapsible Content -->
                 <div id="terms-content" class="hidden space-y-6 text-xs text-slate-600 leading-relaxed overflow-hidden transition-all duration-300">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pb-8">
                         <div class="glass-panel p-6 rounded-xl">
@@ -557,7 +490,6 @@ index_html = '''<!DOCTYPE html>
                         </div>
                     </div>
                 </div>
-                
                 <div class="flex flex-col md:flex-row justify-between items-center gap-4 pt-4 border-t border-slate-800">
                     <p class="text-slate-500">&copy; 2024 Junestudios Technologies Ltd. All rights reserved.</p>
                     <div class="flex gap-6">
@@ -572,7 +504,5 @@ index_html = '''<!DOCTYPE html>
 
     <script src="script.js"></script>
 </body>
-</html>'''
+</html>
 
-print("index.html created successfully!")
-print(f"Length: {len(index_html)} characters")
