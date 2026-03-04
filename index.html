@@ -60,8 +60,14 @@
     </nav>
 
     <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-        <div class="absolute inset-0 z-0 bg-black" id="hero-video-container">
-            <div id="hero-youtube-player" class="absolute inset-0 w-full h-full"></div>
+        <div class="absolute inset-0 z-0 bg-black overflow-hidden pointer-events-none" id="hero-video-container">
+            <iframe 
+                class="absolute top-1/2 left-1/2 w-[300vw] h-[300vh] md:w-[150vw] md:h-[150vh] -translate-x-1/2 -translate-y-1/2 opacity-50"
+                src="https://www.youtube.com/embed/vGJOWqcgbmI?autoplay=1&mute=1&controls=0&loop=1&playlist=vGJOWqcgbmI&playsinline=1&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+            </iframe>
             <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#020617]/80 to-[#020617]"></div>
             <div class="absolute inset-0 bg-gradient-to-r from-[#020617]/50 via-transparent to-[#020617]/50"></div>
         </div>
@@ -213,6 +219,7 @@
 
                 <div class="glass-panel p-8 rounded-2xl animate-up border-indigo-500/30 shadow-[0_0_30px_rgba(99,102,241,0.15)] relative overflow-hidden flex flex-col transform hover:scale-[1.02] transition-all duration-300">
                     <div class="absolute top-0 right-0 bg-gradient-to-l from-indigo-500 to-cyan-500 text-xs font-bold px-4 py-2 rounded-bl-xl text-white z-20">RECOMMENDED</div>
+                    <div class="absolute -top-20 -right-20 w-40 h-40 bg-indigo-500/20 rounded-full blur-3xl"></div>
                     
                     <div class="flex items-center justify-between mb-6 relative z-10">
                         <span class="text-indigo-400 font-mono text-sm">PILLAR 02</span>
@@ -317,35 +324,35 @@
 
             <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-12">
                 <div class="col-span-2 row-span-2 glass-panel rounded-2xl overflow-hidden relative group cursor-pointer animate-up showcase-image h-[400px] md:h-[500px]" data-showcase="1">
-                    <img src="saasul-showcase-1.jpg" alt="AI Marketing Infrastructure" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
+                    <img src="saasul-showcase-1.jpg" alt="AI Marketing Infrastructure" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" onerror="handleImageError(this, 'showcase')">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-6">
                         <span class="text-indigo-400 font-mono text-xs mb-2">001 / AI MARKETING</span>
                     </div>
                 </div>
 
                 <div class="glass-panel rounded-2xl overflow-hidden relative group cursor-pointer animate-up showcase-image h-[192px] md:h-[242px]" data-showcase="2">
-                    <img src="saasul-showcase-2.jpg" alt="Fashion AI" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
+                    <img src="saasul-showcase-2.jpg" alt="Fashion AI" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" onerror="handleImageError(this, 'showcase')">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
                         <span class="text-cyan-400 font-mono text-[10px] mb-1">002 / FASHION AI</span>
                     </div>
                 </div>
 
                 <div class="glass-panel rounded-2xl overflow-hidden relative group cursor-pointer animate-up showcase-image h-[192px] md:h-[242px]" data-showcase="3">
-                    <img src="saasul-showcase-3.jpg" alt="Auto Compliance" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
+                    <img src="saasul-showcase-3.jpg" alt="Auto Compliance" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" onerror="handleImageError(this, 'showcase')">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
                         <span class="text-emerald-400 font-mono text-[10px] mb-1">003 / COMPLIANCE</span>
                     </div>
                 </div>
 
                 <div class="glass-panel rounded-2xl overflow-hidden relative group cursor-pointer animate-up showcase-image h-[200px] md:h-[250px]" data-showcase="4">
-                    <img src="saasul-showcase-4.jpg" alt="Data Shield" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
+                    <img src="saasul-showcase-4.jpg" alt="Data Shield" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" onerror="handleImageError(this, 'showcase')">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
                         <span class="text-purple-400 font-mono text-[10px] mb-1">004 / SECURITY</span>
                     </div>
                 </div>
 
                 <div class="glass-panel rounded-2xl overflow-hidden relative group cursor-pointer animate-up showcase-image h-[200px] md:h-[250px]" data-showcase="5">
-                    <img src="saasul-showcase-5.jpg" alt="Tax Routing" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
+                    <img src="saasul-showcase-5.jpg" alt="Tax Routing" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" onerror="handleImageError(this, 'showcase')">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
                         <span class="text-amber-400 font-mono text-[10px] mb-1">005 / FINANCE</span>
                     </div>
@@ -374,27 +381,6 @@
         </div>
     </section>
 
-    <section class="py-12 bg-indigo-950/30 border-y border-indigo-500/20 relative z-10">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
-                <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-full bg-indigo-500/20 flex items-center justify-center">
-                        <svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-lg text-white">Certified Data Protection Infrastructure</h4>
-                        <p class="text-sm text-slate-400">Registered with Nigeria Data Protection Commission</p>
-                    </div>
-                </div>
-                <div class="flex gap-4 text-sm">
-                    <a href="#privacy" class="text-indigo-400 hover:text-indigo-300 underline decoration-indigo-500/30 underline-offset-4">Privacy Policy</a>
-                    <a href="#terms" class="text-indigo-400 hover:text-indigo-300 underline decoration-indigo-500/30 underline-offset-4">Terms of Service</a>
-                    <a href="#cookies" class="text-indigo-400 hover:text-indigo-300 underline decoration-indigo-500/30 underline-offset-4">Cookie Policy</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <footer class="relative z-10 bg-[#020617] border-t border-slate-800 pt-16 pb-8">
         <div class="max-w-7xl mx-auto px-6">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
@@ -415,17 +401,6 @@
                 </div>
                 
                 <div>
-                    <h4 class="font-bold text-white mb-4 text-sm uppercase tracking-wider">Legal Framework</h4>
-                    <ul class="space-y-3 text-sm text-slate-400">
-                        <li><a href="#terms" class="hover:text-indigo-400 transition-colors">Terms of Service</a></li>
-                        <li><a href="#privacy" class="hover:text-indigo-400 transition-colors">Privacy Policy</a></li>
-                        <li><a href="#cookies" class="hover:text-indigo-400 transition-colors">Cookie Policy</a></li>
-                        <li><a href="#dpa" class="hover:text-indigo-400 transition-colors">Data Processing Agreement</a></li>
-                        <li><a href="#sla" class="hover:text-indigo-400 transition-colors">Service Level Agreement</a></li>
-                    </ul>
-                </div>
-                
-                <div>
                     <h4 class="font-bold text-white mb-4 text-sm uppercase tracking-wider">Regulatory Status</h4>
                     <ul class="space-y-3 text-sm text-slate-400">
                         <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>CAC Registered</li>
@@ -435,22 +410,14 @@
                     </ul>
                 </div>
 
-                <div>
+                <div class="col-span-1 md:col-span-2">
                     <h4 class="font-bold text-white mb-4 text-sm uppercase tracking-wider">Direct Lines</h4>
                     <div class="space-y-4">
-                        <a href="https://wa.me/2348081515375?text=CEO%20Direct:%20Infrastructure%20inquiry" target="_blank" class="block glass-panel p-4 rounded-xl hover:border-indigo-500/50 transition-all group">
+                        <a href="https://wa.me/2348081515375?text=CEO%20Direct:%20Infrastructure%20inquiry" target="_blank" class="block glass-panel p-4 rounded-xl hover:border-indigo-500/50 transition-all group max-w-sm">
                             <div class="flex items-center justify-between mb-1">
                                 <span class="text-xs text-indigo-400 font-mono">CEO DIRECT</span>
-                                <svg class="w-4 h-4 text-slate-500 group-hover:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                             </div>
                             <span class="text-white font-mono text-sm">+234 808 151 5375</span>
-                        </a>
-                        <a href="https://wa.me/2348101365054?text=Agent%20inquiry:%20Legal%20tech%20deeds" target="_blank" class="block glass-panel p-4 rounded-xl hover:border-indigo-500/50 transition-all group">
-                            <div class="flex items-center justify-between mb-1">
-                                <span class="text-xs text-cyan-400 font-mono">LEGAL AGENT</span>
-                                <svg class="w-4 h-4 text-slate-500 group-hover:text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                            </div>
-                            <span class="text-white font-mono text-sm">+234 810 136 5054</span>
                         </a>
                         <div class="text-xs text-slate-500 mt-4 space-y-1">
                             <p><a href="mailto:support@junestudios.space" class="hover:text-indigo-400 transition-colors">support@junestudios.space</a></p>
@@ -463,33 +430,81 @@
             <div class="border-t border-slate-800 pt-8">
                 <button id="terms-toggle" class="w-full flex items-center justify-between py-4 text-left group" onclick="toggleTerms()">
                     <div class="flex items-center gap-3">
-                        <span class="text-slate-400 font-bold text-sm uppercase tracking-wider">Legal Documentation</span>
-                        <span class="text-xs text-slate-600">(Click to expand)</span>
+                        <span class="text-slate-400 font-bold text-sm uppercase tracking-wider">Legal Documentation Matrix</span>
+                        <span class="text-xs text-indigo-400 bg-indigo-500/10 px-2 py-1 rounded-md border border-indigo-500/20">V.2026 (NDPA Compliant)</span>
                     </div>
                     <svg id="terms-chevron" class="w-5 h-5 text-slate-500 transform transition-transform duration-300 group-hover:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                     </svg>
                 </button>
-                <div id="terms-content" class="hidden space-y-6 text-xs text-slate-600 leading-relaxed overflow-hidden transition-all duration-300">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pb-8">
-                        <div class="glass-panel p-6 rounded-xl">
-                            <h5 class="text-slate-400 font-bold mb-3 flex items-center gap-2">
-                                <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                                Terms of Service Summary
-                            </h5>
-                            <p class="text-slate-400">Junestudios provides infrastructure-as-a-service solutions subject to Nigerian law. By engaging our services, you agree to our Data Processing Agreement compliant with NDPA 2023. All tax routing and compliance automation is provided for lawful business purposes only. Clients bear responsibility for accurate data submission. Breach notification protocols adhere to 72-hour requirements. <a href="#terms" class="text-indigo-400 hover:underline">View Full Terms</a></p>
+                
+                <div id="terms-content" class="hidden space-y-4 text-xs text-slate-400 leading-relaxed overflow-hidden transition-all duration-300 pb-8">
+                    
+                    <details class="glass-panel p-4 rounded-xl group/doc border border-slate-800 hover:border-indigo-500/30">
+                        <summary class="font-bold text-white mb-0 flex items-center justify-between cursor-pointer outline-none">
+                            <span class="flex items-center gap-2"><svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg> Terms of Service (ToS)</span>
+                            <span class="text-indigo-400 transform group-open/doc:rotate-180 transition-transform">▼</span>
+                        </summary>
+                        <div class="mt-4 pt-4 border-t border-slate-800 space-y-2 text-slate-400">
+                            <p><strong>1. Introduction & Scope:</strong> Junestudios Technologies Ltd. ("Junestudios") provides compliance infrastructure, tax-routing pipelines, and secure data isolation systems. By utilizing our Modular Architecture, the Client agrees to be bound by these Terms.</p>
+                            <p><strong>2. Governing Law:</strong> These terms are governed by the laws of the Federal Republic of Nigeria, specifically integrating the Nigeria Data Protection Act (NDPA) 2023, and where applicable, international frameworks including the GDPR.</p>
+                            <p><strong>3. Liability Exclusions:</strong> Junestudios operates a "Glass Box" model. We architect the algorithms; however, the Client retains absolute liability for the accuracy of financial data submitted into the tax-routing engine. Junestudios is not liable for corporate veil piercing resulting from the Client's manual override of our secure E-contract or intake protocols.</p>
+                            <p><strong>4. Regulatory Registration:</strong> Junestudios asserts compliance with the Corporate Affairs Commission (CAC) and FIRS. Use of our financial routing tools requires the Client to maintain independent SCUML certification where legally mandated.</p>
                         </div>
-                        <div class="glass-panel p-6 rounded-xl">
-                            <h5 class="text-slate-400 font-bold mb-3 flex items-center gap-2">
-                                <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-                                Data Protection & Privacy
-                            </h5>
-                            <p class="text-slate-400">We process personal data as a Data Controller and Processor under NDPA 2023. Lawful basis: Contractual necessity and legitimate interest. Cross-border transfers comply with Section 41 NDPA and GAID 2025 adequacy decisions. Data subjects may exercise rights (access, rectification, erasure, portability) via dpo@junestudios.co. Annual compliance audits conducted by licensed DPCO. <a href="#privacy" class="text-indigo-400 hover:underline">View Full Policy</a></p>
+                    </details>
+
+                    <details class="glass-panel p-4 rounded-xl group/doc border border-slate-800 hover:border-cyan-500/30">
+                        <summary class="font-bold text-white mb-0 flex items-center justify-between cursor-pointer outline-none">
+                            <span class="flex items-center gap-2"><svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg> Data Processing Agreement (DPA)</span>
+                            <span class="text-cyan-400 transform group-open/doc:rotate-180 transition-transform">▼</span>
+                        </summary>
+                        <div class="mt-4 pt-4 border-t border-slate-800 space-y-2 text-slate-400">
+                            <p><strong>1. Roles:</strong> For the provision of the Infrastructure, the Client acts as the Data Controller, and Junestudios acts as the Data Processor under Section 65 of the NDPA 2023.</p>
+                            <p><strong>2. Sub-Processors:</strong> Junestudios utilizes secure, audited sub-processors for server hosting. A complete list is available upon request. Junestudios assumes full liability for the acts of its sub-processors.</p>
+                            <p><strong>3. Breach Notification Protocol:</strong> In the event of a security breach affecting Client data, Junestudios will notify the Client without undue delay and strictly within 72 hours of becoming aware, complying with NDPC incident reporting directives.</p>
+                            <p><strong>4. Cross-Border Transfers:</strong> All cross-border data routing strictly adheres to Section 41 of the NDPA and the General Application and Implementation Directive (GAID) 2025 adequacy requirements.</p>
                         </div>
+                    </details>
+
+                    <details class="glass-panel p-4 rounded-xl group/doc border border-slate-800 hover:border-emerald-500/30">
+                        <summary class="font-bold text-white mb-0 flex items-center justify-between cursor-pointer outline-none">
+                            <span class="flex items-center gap-2"><svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg> Privacy Policy</span>
+                            <span class="text-emerald-400 transform group-open/doc:rotate-180 transition-transform">▼</span>
+                        </summary>
+                        <div class="mt-4 pt-4 border-t border-slate-800 space-y-2 text-slate-400">
+                            <p><strong>1. Data Collection:</strong> We collect infrastructural diagnostic data, telemetry, and contact details strictly for the provision of OS deployment and system maintenance.</p>
+                            <p><strong>2. Lawful Basis:</strong> Processing is conducted on the basis of Contractual Necessity (Article 1.1) and Legitimate Interest in securing enterprise networks.</p>
+                            <p><strong>3. Data Subject Rights:</strong> Under the NDPA 2023, you retain the right to Access, Rectification, Erasure ("Right to be Forgotten"), and Data Portability. Requests must be directed to our appointed DPO at <strong>support@junestudios.space</strong>.</p>
+                        </div>
+                    </details>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <details class="glass-panel p-4 rounded-xl group/doc border border-slate-800 hover:border-amber-500/30">
+                            <summary class="font-bold text-white mb-0 flex items-center justify-between cursor-pointer outline-none">
+                                <span>Service Level Agreement (SLA)</span>
+                                <span class="text-amber-400 transform group-open/doc:rotate-180 transition-transform">▼</span>
+                            </summary>
+                            <div class="mt-4 pt-4 border-t border-slate-800 space-y-2 text-slate-400">
+                                <p><strong>Uptime:</strong> We guarantee a 99.9% uptime for core backend routing logic.</p>
+                                <p><strong>Support:</strong> "Full Stack" Tier clients receive priority 4-hour response windows for critical infrastructure failures.</p>
+                                <p><strong>Audits:</strong> Junestudios conducts bi-annual internal penetration testing and DPCO-led compliance audits.</p>
+                            </div>
+                        </details>
+
+                        <details class="glass-panel p-4 rounded-xl group/doc border border-slate-800 hover:border-purple-500/30">
+                            <summary class="font-bold text-white mb-0 flex items-center justify-between cursor-pointer outline-none">
+                                <span>Cookie & Tracking Policy</span>
+                                <span class="text-purple-400 transform group-open/doc:rotate-180 transition-transform">▼</span>
+                            </summary>
+                            <div class="mt-4 pt-4 border-t border-slate-800 space-y-2 text-slate-400">
+                                <p>We deploy strict, zero-knowledge session management cookies required for structural UI integrity. We do not use third-party advertising trackers on our core infrastructure matrix.</p>
+                            </div>
+                        </details>
                     </div>
                 </div>
+
                 <div class="flex flex-col md:flex-row justify-between items-center gap-4 pt-4 border-t border-slate-800">
-                    <p class="text-slate-500">&copy; 2024 Junestudios Technologies Ltd. All rights reserved.</p>
+                    <p class="text-slate-500">&copy; 2026 Junestudios Technologies Ltd. All rights reserved.</p>
                     <div class="flex gap-6">
                         <a href="#" class="hover:text-slate-400 transition-colors">Sitemap</a>
                         <a href="#" class="hover:text-slate-400 transition-colors">Security</a>
@@ -503,4 +518,3 @@
     <script defer src="script.js"></script>
 </body>
 </html>
-
