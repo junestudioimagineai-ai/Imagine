@@ -1,6 +1,4 @@
-// script.js
-
-// Configuration - All YouTube IDs locked in
+script_js = '''// Configuration - All YouTube IDs locked in
 const CONFIG = {
     whatsapp: {
         ceo: '2348081515375',
@@ -19,14 +17,14 @@ const CONFIG = {
         ]
     },
     images: {
-        logo: 'https://raw.githubusercontent.com/junestudios/assets/main/logo.png',
-        founder: 'https://raw.githubusercontent.com/junestudios/assets/main/founder-sulaiman.jpg',
+        logo: 'https://raw.githubusercontent.com/junestudioimagineai-ai/Imagine/main/logo.png',
+        founder: 'https://raw.githubusercontent.com/junestudioimagineai-ai/Imagine/main/founder-sulaiman.jpg',
         showcases: [
-            'https://raw.githubusercontent.com/junestudios/assets/main/saasul-showcase-1.jpg',
-            'https://raw.githubusercontent.com/junestudios/assets/main/saasul-showcase-2.jpg',
-            'https://raw.githubusercontent.com/junestudios/assets/main/saasul-showcase-3.jpg',
-            'https://raw.githubusercontent.com/junestudios/assets/main/saasul-showcase-4.jpg',
-            'https://raw.githubusercontent.com/junestudios/assets/main/saasul-showcase-5.jpg'
+            'https://raw.githubusercontent.com/junestudioimagineai-ai/Imagine/main/saasul-showcase-1.jpg',
+            'https://raw.githubusercontent.com/junestudioimagineai-ai/Imagine/main/saasul-showcase-2.jpg',
+            'https://raw.githubusercontent.com/junestudioimagineai-ai/Imagine/main/saasul-showcase-3.jpg',
+            'https://raw.githubusercontent.com/junestudioimagineai-ai/Imagine/main/saasul-showcase-4.jpg',
+            'https://raw.githubusercontent.com/junestudioimagineai-ai/Imagine/main/saasul-showcase-5.jpg'
         ]
     }
 };
@@ -129,41 +127,26 @@ if (mobileMenuBtn && mobileMenu) {
     });
 }
 
-// Legal Modal Functions
-window.openLegalModal = function() {
-    const modal = document.createElement('div');
-    modal.id = 'legal-modal';
-    modal.className = 'fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm flex items-center justify-center p-4';
-    modal.innerHTML = `
-        <div class="glass-panel max-w-2xl w-full max-h-[90vh] overflow-y-auto rounded-2xl p-8 relative">
-            <button onclick="closeLegalModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-            </button>
-            <h3 class="text-2xl font-bold mb-4 text-indigo-400">Legal Tech Deed Notice</h3>
-            <div class="prose prose-invert text-sm text-slate-300 space-y-4">
-                <p><strong>Data Protection Compliance:</strong> Junestudios operates under the Nigeria Data Protection Act (NDPA) 2023 and General Application and Implementation Directive (GAID) 2025. All client data is processed lawfully, fairly, and transparently.</p>
-                <p><strong>Your Rights:</strong> You have the right to access, rectify, erase, and port your data. Contact our Data Protection Officer at dpo@junestudios.co.</p>
-                <p><strong>Cross-Border Transfers:</strong> Data transfers outside Nigeria comply with NDPA Section 41 and GAID 2025 adequacy requirements.</p>
-                <p><strong>Service Nature:</strong> Our infrastructure solutions involve automated data processing for tax routing and compliance. By engaging our services, you consent to necessary data processing as outlined in our Privacy Policy.</p>
-            </div>
-            <button onclick="closeLegalModal()" class="mt-6 w-full bg-indigo-500 text-white py-3 rounded-lg font-semibold hover:bg-indigo-600 transition-all">I Understand & Accept</button>
-        </div>
-    `;
-    document.body.appendChild(modal);
-    document.body.style.overflow = 'hidden';
-};
-
-window.closeLegalModal = function() {
-    const modal = document.getElementById('legal-modal');
-    if (modal) {
-        modal.remove();
-        document.body.style.overflow = '';
+// Terms & Conditions Toggle Function
+window.toggleTerms = function() {
+    const content = document.getElementById('terms-content');
+    const chevron = document.getElementById('terms-chevron');
+    
+    if (content.classList.contains('hidden')) {
+        content.classList.remove('hidden');
+        chevron.classList.add('rotated');
+    } else {
+        content.classList.add('hidden');
+        chevron.classList.remove('rotated');
     }
 };
 
 // Image Error Handling with Fallbacks
 function handleImageError(img, type) {
+    console.log(`Image failed to load: ${img.src}, type: ${type}`);
+    img.classList.add('error');
     img.style.display = 'none';
+    
     const container = img.parentElement;
     
     if (type === 'founder') {
@@ -188,20 +171,33 @@ function handleImageError(img, type) {
     }
 }
 
-// Setup image error handlers
-document.querySelectorAll('img').forEach(img => {
-    img.addEventListener('error', function() {
-        const isLogo = this.alt === 'Junestudios';
-        const isFounder = this.id === 'founder-image';
-        const isShowcase = this.closest('.showcase-image');
-        
-        if (isLogo) handleImageError(this, 'logo');
-        else if (isFounder) handleImageError(this, 'founder');
-        else if (isShowcase) handleImageError(this, 'showcase');
-    });
+// Setup image error handlers when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+    // Logo image
+    const logoImg = document.querySelector('.logo-container img');
+    if (logoImg) {
+        logoImg.addEventListener('error', function() {
+            handleImageError(this, 'logo');
+        });
+    }
     
-    img.addEventListener('load', function() {
-        this.classList.add('loaded');
+    // Founder image
+    const founderImg = document.getElementById('founder-image');
+    if (founderImg) {
+        founderImg.addEventListener('error', function() {
+            handleImageError(this, 'founder');
+        });
+    }
+    
+    // Showcase images
+    document.querySelectorAll('.showcase-image img').forEach((img, index) => {
+        img.addEventListener('error', function() {
+            handleImageError(this, 'showcase');
+        });
+        
+        img.addEventListener('load', function() {
+            this.classList.add('loaded');
+        });
     });
 });
 
@@ -248,8 +244,10 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 top: targetPosition,
                 behavior: 'smooth'
             });
-            mobileMenu?.classList.add('hidden');
-            mobileMenu?.classList.remove('active');
+            if (mobileMenu) {
+                mobileMenu.classList.add('hidden');
+                mobileMenu.classList.remove('active');
+            }
         }
     });
 });
@@ -261,3 +259,23 @@ loadYouTubeAPI();
 console.log('%cJUNESTUDIOS', 'color: #6366f1; font-size: 24px; font-weight: bold;');
 console.log('%cThe Emerging Market OS | Founded by Sulaiman Sheriff-Akorede', 'color: #22d3ee; font-size: 12px;');
 
+// Preload critical images
+function preloadImages() {
+    const imagesToPreload = [
+        CONFIG.images.logo,
+        CONFIG.images.founder,
+        ...CONFIG.images.showcases
+    ];
+    
+    imagesToPreload.forEach(src => {
+        const img = new Image();
+        img.src = src;
+    });
+}
+
+// Preload after page load
+window.addEventListener('load', preloadImages);
+'''
+
+print("script.js created successfully!")
+print(f"Length: {len(script_js)} characters")
