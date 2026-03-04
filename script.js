@@ -1,3 +1,6 @@
+
+# Updated script.js with fixes for image loading and dropdown functionality
+
 script_js = '''// Configuration - All YouTube IDs locked in
 const CONFIG = {
     whatsapp: {
