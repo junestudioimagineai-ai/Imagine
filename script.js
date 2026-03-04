@@ -15,14 +15,14 @@ const CONFIG = {
         ]
     },
     images: {
-        logo: 'https://raw.githubusercontent.com/junestudioimagineai-ai/Imagine/main/logo.png',
-        founder: 'https://raw.githubusercontent.com/junestudioimagineai-ai/Imagine/main/founder-sulaiman.jpg',
+        logo: 'logo.png',
+        founder: 'founder-sulaiman.jpg',
         showcases: [
-            'https://raw.githubusercontent.com/junestudioimagineai-ai/Imagine/main/saasul-showcase-1.jpg',
-            'https://raw.githubusercontent.com/junestudioimagineai-ai/Imagine/main/saasul-showcase-2.jpg',
-            'https://raw.githubusercontent.com/junestudioimagineai-ai/Imagine/main/saasul-showcase-3.jpg',
-            'https://raw.githubusercontent.com/junestudioimagineai-ai/Imagine/main/saasul-showcase-4.jpg',
-            'https://raw.githubusercontent.com/junestudioimagineai-ai/Imagine/main/saasul-showcase-5.jpg'
+            'saasul-showcase-1.jpg',
+            'saasul-showcase-2.jpg',
+            'saasul-showcase-3.jpg',
+            'saasul-showcase-4.jpg',
+            'saasul-showcase-5.jpg'
         ]
     }
 };
