@@ -15,14 +15,14 @@ const CONFIG = {
         ]
     },
     images: {
-        logo: 'logo.png',
-        founder: 'founder-sulaiman.jpg',
+        logo: 'https://raw.githubusercontent.com/junestudioimagineai-ai/Imagine/main/logo.png',
+        founder: 'https://raw.githubusercontent.com/junestudioimagineai-ai/Imagine/main/founder-sulaiman.jpg',
         showcases: [
-            'saasul-showcase-1.jpg',
-            'saasul-showcase-2.jpg',
-            'saasul-showcase-3.jpg',
-            'saasul-showcase-4.jpg',
-            'saasul-showcase-5.jpg'
+            'https://raw.githubusercontent.com/junestudioimagineai-ai/Imagine/main/saasul-showcase-1.jpg',
+            'https://raw.githubusercontent.com/junestudioimagineai-ai/Imagine/main/saasul-showcase-2.jpg',
+            'https://raw.githubusercontent.com/junestudioimagineai-ai/Imagine/main/saasul-showcase-3.jpg',
+            'https://raw.githubusercontent.com/junestudioimagineai-ai/Imagine/main/saasul-showcase-4.jpg',
+            'https://raw.githubusercontent.com/junestudioimagineai-ai/Imagine/main/saasul-showcase-5.jpg'
         ]
     }
 };
@@ -180,7 +180,11 @@ window.handleImageError = function(img, type) {
             <span class="text-6xl mb-4">👤</span>
             <span class="font-mono text-sm">Sulaiman Sheriff-Akorede</span>
         `;
-        container.appendChild(fallback);
+        // Remove any existing fallback first
+        const existingFallback = container.querySelector('.bg-slate-800');
+        if (!existingFallback) {
+            container.appendChild(fallback);
+        }
     } else if (type === 'showcase') {
         const fallback = container.querySelector('.showcase-fallback');
         if (fallback) {
@@ -197,28 +201,57 @@ window.handleImageError = function(img, type) {
 
 // Setup image error handlers
 document.addEventListener('DOMContentLoaded', function() {
+    // Preload images to check if they exist
+    preloadImages();
+    
     const logoImg = document.querySelector('.logo-container img');
     if (logoImg) {
-        logoImg.addEventListener('error', function() {
-            handleImageError(this, 'logo');
-        });
+        // Check if already loaded or errored
+        if (logoImg.complete) {
+            if (logoImg.naturalHeight === 0) {
+                handleImageError(logoImg, 'logo');
+            }
+        } else {
+            logoImg.addEventListener('error', function() {
+                handleImageError(this, 'logo');
+            });
+            logoImg.addEventListener('load', function() {
+                this.classList.add('loaded');
+            });
+        }
     }
     
     const founderImg = document.getElementById('founder-image');
     if (founderImg) {
-        founderImg.addEventListener('error', function() {
-            handleImageError(this, 'founder');
-        });
+        if (founderImg.complete) {
+            if (founderImg.naturalHeight === 0) {
+                handleImageError(founderImg, 'founder');
+            }
+        } else {
+            founderImg.addEventListener('error', function() {
+                handleImageError(this, 'founder');
+            });
+            founderImg.addEventListener('load', function() {
+                this.classList.add('loaded');
+            });
+        }
     }
     
     document.querySelectorAll('.showcase-image img').forEach((img) => {
-        img.addEventListener('error', function() {
-            handleImageError(this, 'showcase');
-        });
-        
-        img.addEventListener('load', function() {
-            this.classList.add('loaded');
-        });
+        if (img.complete) {
+            if (img.naturalHeight === 0) {
+                handleImageError(img, 'showcase');
+            } else {
+                img.classList.add('loaded');
+            }
+        } else {
+            img.addEventListener('error', function() {
+                handleImageError(this, 'showcase');
+            });
+            img.addEventListener('load', function() {
+                this.classList.add('loaded');
+            });
+        }
     });
 });
 
@@ -280,16 +313,34 @@ loadYouTubeAPI();
 console.log('%cJUNESTUDIOS', 'color: #6366f1; font-size: 24px; font-weight: bold;');
 console.log('%cThe Emerging Market OS | Founded by Sulaiman Sheriff-Akorede', 'color: #22d3ee; font-size: 12px;');
 
-// Preload images
+// Preload images and check if they exist
 function preloadImages() {
     const imagesToPreload = [
-        CONFIG.images.logo,
-        CONFIG.images.founder,
-        ...CONFIG.images.showcases
+        { src: CONFIG.images.logo, type: 'logo', selector: '.logo-container img' },
+        { src: CONFIG.images.founder, type: 'founder', selector: '#founder-image' },
+        ...CONFIG.images.showcases.map((src, i) => ({ 
+            src: src, 
+            type: 'showcase', 
+            selector: `.showcase-image[data-showcase="${i+1}"] img` 
+        }))
     ];
     
-    imagesToPreload.forEach(src => {
+    imagesToPreload.forEach(({ src, type, selector }) => {
         const img = new Image();
+        img.onload = function() {
+            console.log(`✓ Loaded: ${type}`);
+            const domImg = document.querySelector(selector);
+            if (domImg) {
+                domImg.classList.add('loaded');
+            }
+        };
+        img.onerror = function() {
+            console.log(`✗ Failed: ${type} - ${src}`);
+            const domImg = document.querySelector(selector);
+            if (domImg) {
+                handleImageError(domImg, type);
+            }
+        };
         img.src = src;
     });
 }
