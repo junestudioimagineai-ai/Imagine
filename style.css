@@ -1,5 +1,4 @@
-/* style.css */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=Space+Grotesk:wght@400;500;700&display=swap');
+style_css = '''@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=Space+Grotesk:wght@400;500;700&display=swap');
 
 :root {
     --bg-dark: #020617;
@@ -158,25 +157,20 @@ h1, h2, h3, .font-mono {
     opacity: 1;
 }
 
-/* Image Loading States */
+/* Image Loading States - FIXED */
 img {
-    background: linear-gradient(110deg, #1e293b 8%, #334155 18%, #1e293b 33%);
-    background-size: 200% 100%;
-    animation: shimmer 1.5s linear infinite;
+    opacity: 1;
+    transition: opacity 0.3s ease, transform 0.7s ease;
 }
 
-img[src]:not([src=""]) {
-    animation: none;
-    background: transparent;
-}
-
+/* Remove shimmer effect that was causing issues */
 img.loaded {
-    animation: none;
-    background: transparent;
+    opacity: 1;
 }
 
-@keyframes shimmer {
-    to { background-position-x: -200%; }
+/* Better image error handling */
+img.error {
+    opacity: 0;
 }
 
 /* Mobile Menu */
@@ -296,7 +290,7 @@ p {
 }
 
 /* Hover scale transform */
-.hover\:scale-105:hover {
+.hover\\:scale-105:hover {
     transform: scale(1.05);
 }
 
@@ -341,7 +335,7 @@ p {
 }
 
 /* Grid auto rows */
-.auto-rows-\[200px\] {
+.auto-rows-\\[200px\\] {
     grid-auto-rows: 200px;
 }
 
@@ -358,11 +352,11 @@ p {
     z-index: 50;
 }
 
-.z-\[90\] {
+.z-\\[90\\] {
     z-index: 90;
 }
 
-.z-\[100\] {
+.z-\\[100\\] {
     z-index: 100;
 }
 
@@ -432,13 +426,13 @@ iframe {
 }
 
 /* Shadow utilities */
-.shadow-\[0_0_30px_rgba\(99\,102\,241\,0\.15\)\] {
+.shadow-\\[0_0_30px_rgba\\(99\\,102\\,241\\,0\\.15\\)\\] {
     --tw-shadow: 0 0 30px rgba(99, 102, 241, 0.15);
     --tw-shadow-colored: 0 0 30px var(--tw-shadow-color);
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
-.shadow-\[0_0_30px_rgba\(99\,102\,241\,0\.5\)\] {
+.shadow-\\[0_0_30px_rgba\\(99\\,102\\,241\\,0\\.5\\)\\] {
     --tw-shadow: 0 0 30px rgba(99, 102, 241, 0.5);
     --tw-shadow-colored: 0 0 30px var(--tw-shadow-color);
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
@@ -460,30 +454,19 @@ iframe {
     pointer-events: none;
 }
 
-/* Loading state for images */
+/* Loading state for images - FIXED */
 img:not([src]) {
     visibility: hidden;
 }
 
-/* Smooth image loading */
-img {
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-img.loaded {
-    opacity: 1;
-}
-
-/* Fallback for missing images */
-.image-fallback {
+/* Fallback for missing images - show emoji fallback immediately */
+.showcase-fallback {
     display: none;
 }
 
-/* Show fallback when image fails */
-img[style*="display: none"] ~ .image-fallback,
-img.error ~ .image-fallback {
-    display: flex;
+img.error + .showcase-fallback,
+img[style*="display: none"] ~ .showcase-fallback {
+    display: flex !important;
 }
 
 /* Notification popup styling */
@@ -519,6 +502,26 @@ img.error ~ .image-fallback {
     z-index: 10;
 }
 
+/* Terms & Conditions Dropdown Styles */
+#terms-content {
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.4s ease, opacity 0.3s ease;
+}
+
+#terms-content:not(.hidden) {
+    max-height: 1000px;
+    opacity: 1;
+}
+
+#terms-chevron {
+    transition: transform 0.3s ease;
+}
+
+#terms-chevron.rotated {
+    transform: rotate(180deg);
+}
+
 /* Print styles */
 @media print {
     .glass-panel {
@@ -531,3 +534,28 @@ img.error ~ .image-fallback {
     }
 }
 
+/* Symmetrical Grid Fixes */
+.showcase-image {
+    min-height: 200px;
+}
+
+@media (min-width: 768px) {
+    .showcase-image {
+        min-height: 242px;
+    }
+    
+    .showcase-image.col-span-2 {
+        min-height: 500px;
+    }
+}
+
+/* Ensure images fill containers properly */
+.showcase-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+'''
+
+print("style.css created successfully!")
+print(f"Length: {len(style_css)} characters")
