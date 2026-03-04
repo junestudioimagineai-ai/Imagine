@@ -1,16 +1,11 @@
-
-# Updated script.js with fixes for image loading and dropdown functionality
-
-script_js = '''// Configuration - All YouTube IDs locked in
+// Configuration
 const CONFIG = {
     whatsapp: {
         ceo: '2348081515375',
         agent: '2348101365054'
     },
     youtube: {
-        // Hero Background Short (Soundless, Looping)
         heroVideoId: 'vGJOWqcgbmI',
-        // 5 SaaSul Project Videos (Embedded)
         projectVideos: [
             'YHCvequl3X8',
             'AdWD68lYpCo',
@@ -32,7 +27,7 @@ const CONFIG = {
     }
 };
 
-// YouTube Player API for Hero Background
+// YouTube Player API
 let heroPlayer;
 
 function loadYouTubeAPI() {
@@ -58,7 +53,7 @@ function onYouTubeIframeAPIReady() {
             rel: 0,
             showinfo: 0,
             start: 0,
-            playlist: CONFIG.youtube.heroVideoId // Required for looping
+            playlist: CONFIG.youtube.heroVideoId
         },
         events: {
             onReady: onHeroPlayerReady,
@@ -130,7 +125,7 @@ if (mobileMenuBtn && mobileMenu) {
     });
 }
 
-// Terms & Conditions Toggle Function
+// Terms & Conditions Toggle
 window.toggleTerms = function() {
     const content = document.getElementById('terms-content');
     const chevron = document.getElementById('terms-chevron');
@@ -144,7 +139,7 @@ window.toggleTerms = function() {
     }
 };
 
-// Image Error Handling with Fallbacks
+// Image Error Handling
 function handleImageError(img, type) {
     console.log(`Image failed to load: ${img.src}, type: ${type}`);
     img.classList.add('error');
@@ -174,9 +169,8 @@ function handleImageError(img, type) {
     }
 }
 
-// Setup image error handlers when DOM is ready
+// Setup image error handlers
 document.addEventListener('DOMContentLoaded', function() {
-    // Logo image
     const logoImg = document.querySelector('.logo-container img');
     if (logoImg) {
         logoImg.addEventListener('error', function() {
@@ -184,7 +178,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Founder image
     const founderImg = document.getElementById('founder-image');
     if (founderImg) {
         founderImg.addEventListener('error', function() {
@@ -192,8 +185,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Showcase images
-    document.querySelectorAll('.showcase-image img').forEach((img, index) => {
+    document.querySelectorAll('.showcase-image img').forEach((img) => {
         img.addEventListener('error', function() {
             handleImageError(this, 'showcase');
         });
@@ -235,7 +227,7 @@ document.querySelectorAll('.showcase-image').forEach((img, index) => {
     });
 });
 
-// Smooth Scroll with Offset
+// Smooth Scroll
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
         e.preventDefault();
@@ -262,7 +254,7 @@ loadYouTubeAPI();
 console.log('%cJUNESTUDIOS', 'color: #6366f1; font-size: 24px; font-weight: bold;');
 console.log('%cThe Emerging Market OS | Founded by Sulaiman Sheriff-Akorede', 'color: #22d3ee; font-size: 12px;');
 
-// Preload critical images
+// Preload images
 function preloadImages() {
     const imagesToPreload = [
         CONFIG.images.logo,
@@ -276,9 +268,4 @@ function preloadImages() {
     });
 }
 
-// Preload after page load
 window.addEventListener('load', preloadImages);
-'''
-
-print("script.js created successfully!")
-print(f"Length: {len(script_js)} characters")
