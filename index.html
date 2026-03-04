@@ -1,5 +1,4 @@
-<!-- index.html -->
-<!DOCTYPE html>
+index_html = '''<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -23,8 +22,8 @@
     <nav class="fixed w-full z-50 glass-panel border-b-0 transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <a href="#" class="flex items-center gap-3 group">
-                <div class="logo-container w-10 h-10 rounded-xl flex items-center justify-center font-bold text-white text-xl group-hover:scale-110 transition-transform overflow-hidden">
-                    <img src="https://raw.githubusercontent.com/junestudios/assets/main/logo.png" alt="Junestudios" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.innerHTML='J'; this.parentElement.classList.add('bg-gradient-to-br', 'from-indigo-500', 'to-cyan-400');">
+                <div class="logo-container w-10 h-10 rounded-xl flex items-center justify-center font-bold text-white text-xl group-hover:scale-110 transition-transform overflow-hidden bg-gradient-to-br from-indigo-500 to-cyan-400">
+                    <img src="https://raw.githubusercontent.com/junestudioimagineai-ai/Imagine/main/logo.png" alt="Junestudios" class="w-full h-full object-cover" onerror="this.style.display='none'">
                 </div>
                 <div>
                     <span class="font-bold text-xl tracking-tight block leading-none text-white">JUNESTUDIOS</span>
@@ -150,7 +149,7 @@
                     <div class="relative max-w-md mx-auto lg:max-w-none">
                         <div class="absolute -inset-4 bg-gradient-to-r from-indigo-500 to-cyan-500 rounded-2xl opacity-20 blur-2xl"></div>
                         <div class="relative glass-panel rounded-2xl overflow-hidden aspect-[4/5] md:aspect-square lg:aspect-[4/5]">
-                            <img id="founder-image" src="https://raw.githubusercontent.com/junestudios/assets/main/founder-sulaiman.jpg" alt="Sulaiman Sheriff-Akorede - Founder of Junestudios" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700" loading="eager">
+                            <img id="founder-image" src="https://raw.githubusercontent.com/junestudioimagineai-ai/Imagine/main/founder-sulaiman.jpg" alt="Sulaiman Sheriff-Akorede - Founder of Junestudios" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700" loading="eager">
                             <div class="absolute inset-0 bg-gradient-to-t from-[#020617] via-transparent to-transparent opacity-60"></div>
                             <div class="absolute bottom-0 left-0 right-0 p-6">
                                 <div class="flex items-center gap-3">
@@ -277,27 +276,22 @@
         </div>
     </section>
 
-    <!-- SaaSul Project Showcase (5 Images + 5 Videos) -->
+    <!-- SaaSul Project Showcase (5 Images + 5 Videos) - SYMMETRICAL GRID -->
     <section id="showcase" class="py-24 relative z-10 bg-gradient-to-b from-[#020617] to-[#050b14]">
         <div class="max-w-7xl mx-auto px-6">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6">
-                <div class="max-w-2xl animate-up">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 mb-4">
-                        <span class="text-cyan-400 font-mono text-xs tracking-wider uppercase">Project SaaSul</span>
-                    </div>
-                    <h2 class="text-3xl md:text-5xl font-bold mb-4 text-white">Intelligence Showcase</h2>
-                    <p class="text-slate-400 text-lg">Visual documentation of deployed infrastructure systems and synthetic capabilities.</p>
+            <div class="text-center mb-12 animate-up">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 mb-4">
+                    <span class="text-cyan-400 font-mono text-xs tracking-wider uppercase">Project SaaSul</span>
                 </div>
-                <button onclick="openLegalModal()" class="text-amber-400 hover:text-amber-300 font-mono text-sm flex items-center gap-2 animate-up cursor-pointer bg-amber-400/10 px-4 py-2 rounded-full border border-amber-400/30">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                    <span>Legal Tech Deed Notice</span>
-                </button>
+                <h2 class="text-3xl md:text-5xl font-bold mb-4 text-white">Intelligence Showcase</h2>
+                <p class="text-slate-400 text-lg max-w-2xl mx-auto">Visual documentation of deployed infrastructure systems and synthetic capabilities.</p>
             </div>
 
-            <!-- 5 SaaSul Project Showcase Images -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[200px] mb-12">
-                <div id="showcase-1" class="col-span-2 row-span-2 glass-panel rounded-2xl overflow-hidden relative group cursor-pointer animate-up showcase-image" data-showcase="1">
-                    <img src="https://raw.githubusercontent.com/junestudios/assets/main/saasul-showcase-1.jpg" alt="SaaSul Project 1 - AI Marketing Infrastructure" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
+            <!-- SYMMETRICAL 5-Image Grid Layout -->
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-12">
+                <!-- Large featured image (spans 2 cols on mobile, 2 cols on desktop) -->
+                <div class="col-span-2 row-span-2 glass-panel rounded-2xl overflow-hidden relative group cursor-pointer animate-up showcase-image h-[400px] md:h-[500px]" data-showcase="1">
+                    <img src="https://raw.githubusercontent.com/junestudioimagineai-ai/Imagine/main/saasul-showcase-1.jpg" alt="SaaSul Project 1 - AI Marketing Infrastructure" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-6">
                         <span class="text-indigo-400 font-mono text-xs mb-2">001 / AI MARKETING</span>
                         <h4 class="font-bold text-xl text-white">Automated Customer Acquisition</h4>
@@ -309,8 +303,9 @@
                     </div>
                 </div>
 
-                <div id="showcase-2" class="glass-panel rounded-2xl overflow-hidden relative group cursor-pointer animate-up showcase-image" data-showcase="2">
-                    <img src="https://raw.githubusercontent.com/junestudios/assets/main/saasul-showcase-2.jpg" alt="SaaSul Project 2 - Fashion AI" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
+                <!-- Right column - 2 stacked images -->
+                <div class="glass-panel rounded-2xl overflow-hidden relative group cursor-pointer animate-up showcase-image h-[192px] md:h-[242px]" data-showcase="2">
+                    <img src="https://raw.githubusercontent.com/junestudioimagineai-ai/Imagine/main/saasul-showcase-2.jpg" alt="SaaSul Project 2 - Fashion AI" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
                         <span class="text-cyan-400 font-mono text-[10px] mb-1">002 / FASHION AI</span>
                         <h4 class="font-bold text-sm text-white">Synthetic Modeling</h4>
@@ -321,8 +316,8 @@
                     </div>
                 </div>
 
-                <div id="showcase-3" class="glass-panel rounded-2xl overflow-hidden relative group cursor-pointer animate-up showcase-image" data-showcase="3">
-                    <img src="https://raw.githubusercontent.com/junestudios/assets/main/saasul-showcase-3.jpg" alt="SaaSul Project 3 - Auto Compliance" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
+                <div class="glass-panel rounded-2xl overflow-hidden relative group cursor-pointer animate-up showcase-image h-[192px] md:h-[242px]" data-showcase="3">
+                    <img src="https://raw.githubusercontent.com/junestudioimagineai-ai/Imagine/main/saasul-showcase-3.jpg" alt="SaaSul Project 3 - Auto Compliance" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
                         <span class="text-emerald-400 font-mono text-[10px] mb-1">003 / COMPLIANCE</span>
                         <h4 class="font-bold text-sm text-white">Auto-Audit Systems</h4>
@@ -333,8 +328,9 @@
                     </div>
                 </div>
 
-                <div id="showcase-4" class="col-span-2 glass-panel rounded-2xl overflow-hidden relative group cursor-pointer animate-up showcase-image" data-showcase="4">
-                    <img src="https://raw.githubusercontent.com/junestudios/assets/main/saasul-showcase-4.jpg" alt="SaaSul Project 4 - Data Shield" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
+                <!-- Bottom row - 2 equal images -->
+                <div class="glass-panel rounded-2xl overflow-hidden relative group cursor-pointer animate-up showcase-image h-[200px] md:h-[250px]" data-showcase="4">
+                    <img src="https://raw.githubusercontent.com/junestudioimagineai-ai/Imagine/main/saasul-showcase-4.jpg" alt="SaaSul Project 4 - Data Shield" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
                         <span class="text-purple-400 font-mono text-[10px] mb-1">004 / SECURITY</span>
                         <h4 class="font-bold text-sm text-white">Data Isolation Protocols</h4>
@@ -345,8 +341,8 @@
                     </div>
                 </div>
 
-                <div id="showcase-5" class="glass-panel rounded-2xl overflow-hidden relative group cursor-pointer animate-up showcase-image" data-showcase="5">
-                    <img src="https://raw.githubusercontent.com/junestudios/assets/main/saasul-showcase-5.jpg" alt="SaaSul Project 5 - Tax Routing" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
+                <div class="glass-panel rounded-2xl overflow-hidden relative group cursor-pointer animate-up showcase-image h-[200px] md:h-[250px]" data-showcase="5">
+                    <img src="https://raw.githubusercontent.com/junestudioimagineai-ai/Imagine/main/saasul-showcase-5.jpg" alt="SaaSul Project 5 - Tax Routing" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
                         <span class="text-amber-400 font-mono text-[10px] mb-1">005 / FINANCE</span>
                         <h4 class="font-bold text-sm text-white">Tax Routing Matrix</h4>
@@ -358,7 +354,7 @@
                 </div>
             </div>
 
-            <!-- 5 Embedded SaaSul Project Videos -->
+            <!-- 5 Embedded SaaSul Project Videos - SYMMETRICAL 3+2 GRID -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                 <div class="video-embed glass-panel rounded-2xl overflow-hidden aspect-video relative animate-up">
                     <iframe 
@@ -397,7 +393,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
                 <div class="video-embed glass-panel rounded-2xl overflow-hidden aspect-video relative animate-up">
                     <iframe 
                         class="w-full h-full absolute inset-0"
@@ -413,7 +409,7 @@
                 <div class="video-embed glass-panel rounded-2xl overflow-hidden aspect-video relative animate-up">
                     <iframe 
                         class="w-full h-full absolute inset-0"
-                        src="https://www.youtube.com/embed/1LMeYm5yTUw?rel=0&modestbranding=1&controls=1" 
+                        src="https://raw.githubusercontent.com/junestudioimagineai-ai/Imagine/main/1LMeYm5yTUw?rel=0&modestbranding=1&controls=1" 
                         title="SaaSul Video 5"
                         frameborder="0" 
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
@@ -447,7 +443,7 @@
         </div>
     </section>
 
-    <!-- Footer -->
+    <!-- Footer with COLLAPSIBLE Terms & Conditions -->
     <footer class="relative z-10 bg-[#020617] border-t border-slate-800 pt-16 pb-8">
         <div class="max-w-7xl mx-auto px-6">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
@@ -527,20 +523,41 @@
                 </div>
             </div>
 
-            <div class="border-t border-slate-800 pt-8 space-y-6 text-xs text-slate-600 leading-relaxed">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div>
-                        <h5 class="text-slate-400 font-bold mb-2">Terms of Service Summary</h5>
-                        <p>Junestudios provides infrastructure-as-a-service solutions subject to Nigerian law. By engaging our services, you agree to our Data Processing Agreement compliant with NDPA 2023. All tax routing and compliance automation is provided for lawful business purposes only. Clients bear responsibility for accurate data submission. Breach notification protocols adhere to 72-hour requirements. <a href="#terms" class="text-indigo-400 hover:underline">View Full Terms</a></p>
+            <!-- COLLAPSIBLE Terms & Conditions Section -->
+            <div class="border-t border-slate-800 pt-8">
+                <!-- Toggle Button -->
+                <button id="terms-toggle" class="w-full flex items-center justify-between py-4 text-left group" onclick="toggleTerms()">
+                    <div class="flex items-center gap-3">
+                        <span class="text-slate-400 font-bold text-sm uppercase tracking-wider">Legal Documentation</span>
+                        <span class="text-xs text-slate-600">(Click to expand)</span>
                     </div>
-                    <div>
-                        <h5 class="text-slate-400 font-bold mb-2">Data Protection & Privacy</h5>
-                        <p>We process personal data as a Data Controller and Processor under NDPA 2023. Lawful basis: Contractual necessity and legitimate interest. Cross-border transfers comply with Section 41 NDPA and GAID 2025 adequacy decisions. Data subjects may exercise rights (access, rectification, erasure, portability) via dpo@junestudios.co. Annual compliance audits conducted by licensed DPCO. <a href="#privacy" class="text-indigo-400 hover:underline">View Full Policy</a></p>
+                    <svg id="terms-chevron" class="w-5 h-5 text-slate-500 transform transition-transform duration-300 group-hover:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                </button>
+                
+                <!-- Collapsible Content -->
+                <div id="terms-content" class="hidden space-y-6 text-xs text-slate-600 leading-relaxed overflow-hidden transition-all duration-300">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pb-8">
+                        <div class="glass-panel p-6 rounded-xl">
+                            <h5 class="text-slate-400 font-bold mb-3 flex items-center gap-2">
+                                <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                Terms of Service Summary
+                            </h5>
+                            <p class="text-slate-400">Junestudios provides infrastructure-as-a-service solutions subject to Nigerian law. By engaging our services, you agree to our Data Processing Agreement compliant with NDPA 2023. All tax routing and compliance automation is provided for lawful business purposes only. Clients bear responsibility for accurate data submission. Breach notification protocols adhere to 72-hour requirements. <a href="#terms" class="text-indigo-400 hover:underline">View Full Terms</a></p>
+                        </div>
+                        <div class="glass-panel p-6 rounded-xl">
+                            <h5 class="text-slate-400 font-bold mb-3 flex items-center gap-2">
+                                <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                                Data Protection & Privacy
+                            </h5>
+                            <p class="text-slate-400">We process personal data as a Data Controller and Processor under NDPA 2023. Lawful basis: Contractual necessity and legitimate interest. Cross-border transfers comply with Section 41 NDPA and GAID 2025 adequacy decisions. Data subjects may exercise rights (access, rectification, erasure, portability) via dpo@junestudios.co. Annual compliance audits conducted by licensed DPCO. <a href="#privacy" class="text-indigo-400 hover:underline">View Full Policy</a></p>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="flex flex-col md:flex-row justify-between items-center gap-4 pt-4">
-                    <p class="text-slate-500">&copy; 2026 Junestudios Technologies Ltd. All rights reserved.</p>
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4 pt-4 border-t border-slate-800">
+                    <p class="text-slate-500">&copy; 2024 Junestudios Technologies Ltd. All rights reserved.</p>
                     <div class="flex gap-6">
                         <a href="#" class="hover:text-slate-400 transition-colors">Sitemap</a>
                         <a href="#" class="hover:text-slate-400 transition-colors">Security</a>
@@ -553,5 +570,7 @@
 
     <script src="script.js"></script>
 </body>
-</html>
+</html>'''
 
+print("index.html created successfully!")
+print(f"Length: {len(index_html)} characters")
