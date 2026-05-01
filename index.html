@@ -78,7 +78,499 @@
 
     <!-- Main Content Area -->
     <main id="main-content">
-        <!-- Pages will be dynamically rendered here -->
+        <!-- Home Page -->
+        <section id="home" class="page-section active">
+            <!-- Hero Section -->
+            <div class="hero-section">
+                <div class="hero-bg-effects">
+                    <div class="gradient-orb gradient-orb-1"></div>
+                    <div class="gradient-orb gradient-orb-2"></div>
+                    <div class="gradient-orb gradient-orb-3"></div>
+                </div>
+                <div class="container">
+                    <div class="hero-grid">
+                        <div class="hero-content">
+                            <div class="hero-badge">
+                                <span class="badge-dot"></span>
+                                Trusted by 5,000+ Agencies & Resellers
+                            </div>
+                            <h1 class="hero-title">
+                                Premium SMM Services for
+                                <span class="gradient-text">Growing Brands</span>
+                            </h1>
+                            <p class="hero-subtitle">
+                                Enterprise-grade social media marketing platform with real-time delivery, 
+                                competitive pricing, and dedicated support. Power your growth with JuneStudio.
+                            </p>
+                            <div class="hero-cta">
+                                <button class="btn btn-primary btn-large" onclick="app.openAuth('signup')">
+                                    Start Growing Now
+                                    <svg class="icon icon-right" viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+                                </button>
+                                <button class="btn btn-ghost btn-large" onclick="app.navigate('services')">
+                                    View Services
+                                </button>
+                            </div>
+                            <div class="hero-stats">
+                                <div class="stat-item">
+                                    <div class="stat-number" data-target="5247">0</div>
+                                    <div class="stat-label">Active Users</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number" data-target="1847">0</div>
+                                    <div class="stat-label">Orders Today</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number" data-target="99">0%</div>
+                                    <div class="stat-label">Uptime</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hero-visual">
+                            <div class="dashboard-preview">
+                                <div class="preview-header">
+                                    <div class="preview-dot"></div>
+                                    <div class="preview-dot"></div>
+                                    <div class="preview-dot"></div>
+                                </div>
+                                <div class="preview-content">
+                                    <div class="preview-metric">
+                                        <div class="metric-label">Total Orders</div>
+                                        <div class="metric-value">24,589</div>
+                                        <div class="metric-change positive">+12.5%</div>
+                                    </div>
+                                    <div class="preview-metric">
+                                        <div class="metric-label">Revenue</div>
+                                        <div class="metric-value">₦1.2M</div>
+                                        <div class="metric-change positive">+8.3%</div>
+                                    </div>
+                                    <div class="preview-chart"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Telemetry Bar -->
+            <div class="telemetry-bar">
+                <div class="container">
+                    <div class="telemetry-grid">
+                        <div class="telemetry-item">
+                            <span class="telemetry-status status-online"></span>
+                            <span class="telemetry-label">System Status</span>
+                        </div>
+                        <div class="telemetry-item">
+                            <span class="telemetry-value" id="live-orders">0</span>
+                            <span class="telemetry-label">Active Orders</span>
+                        </div>
+                        <div class="telemetry-item">
+                            <span class="telemetry-value">0.07s</span>
+                            <span class="telemetry-label">Avg Delivery</span>
+                        </div>
+                        <div class="telemetry-item">
+                            <span class="telemetry-value">99.94%</span>
+                            <span class="telemetry-label">Success Rate</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Services Preview -->
+            <div class="section">
+                <div class="container">
+                    <div class="section-header">
+                        <h2 class="section-title">Popular Services</h2>
+                        <p class="section-subtitle">Choose from our most requested packages</p>
+                    </div>
+                    <div class="services-grid" id="home-services-grid">
+                        <!-- Dynamically loaded -->
+                    </div>
+                    <div class="section-cta">
+                        <button class="btn btn-primary" onclick="app.navigate('services')">View All Services</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Why Choose Us -->
+            <div class="section section-alt">
+                <div class="container">
+                    <div class="section-header">
+                        <h2 class="section-title">Why JuneStudio?</h2>
+                        <p class="section-subtitle">Built for agencies, resellers, and growing brands</p>
+                    </div>
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">⚡</div>
+                            <h3>Instant Delivery</h3>
+                            <p>Most orders start within seconds with our automated system</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🛡️</div>
+                            <h3>Secure Payments</h3>
+                            <p>Bank-level security with WhatsApp confirmation</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">📊</div>
+                            <h3>Real-Time Analytics</h3>
+                            <p>Track every order with live status updates</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">💬</div>
+                            <h3>24/7 Support</h3>
+                            <p>Dedicated support team ready to assist</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cost Transparency -->
+            <div class="section">
+                <div class="container">
+                    <div class="section-header">
+                        <h2 class="section-title">Transparent Pricing</h2>
+                        <p class="section-subtitle">Understand what affects service costs</p>
+                    </div>
+                    <div class="accordion" id="pricing-accordion">
+                        <div class="accordion-item">
+                            <button class="accordion-header" onclick="app.toggleAccordion(this)">
+                                <span>Delivery Speed Tiers</span>
+                                <svg class="icon icon-rotate" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+                            </button>
+                            <div class="accordion-content">
+                                <p>Standard delivery (24-72hrs) offers the best value. Priority (1-12hrs) and Instant (minutes) options available at premium rates.</p>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <button class="accordion-header" onclick="app.toggleAccordion(this)">
+                                <span>Retention Levels</span>
+                                <svg class="icon icon-rotate" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+                            </button>
+                            <div class="accordion-content">
+                                <p>High-retention services use premium accounts with better engagement patterns, ensuring longer-lasting results.</p>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <button class="accordion-header" onclick="app.toggleAccordion(this)">
+                                <span>Bulk Discounts</span>
+                                <svg class="icon icon-rotate" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+                            </button>
+                            <div class="accordion-content">
+                                <p>Order larger quantities to unlock significant savings. Bundles of 3+ services get 20-50% off automatically.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Page -->
+        <section id="services" class="page-section">
+            <div class="section">
+                <div class="container">
+                    <div class="section-header">
+                        <h2 class="section-title">All Services</h2>
+                        <p class="section-subtitle">Browse our complete catalog</p>
+                    </div>
+                    <div class="services-filter">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="instagram">Instagram</button>
+                        <button class="filter-btn" data-filter="tiktok">TikTok</button>
+                        <button class="filter-btn" data-filter="facebook">Facebook</button>
+                        <button class="filter-btn" data-filter="twitter">Twitter</button>
+                        <button class="filter-btn" data-filter="youtube">YouTube</button>
+                        <button class="filter-btn" data-filter="telegram">Telegram</button>
+                        <button class="filter-btn" data-filter="whatsapp">WhatsApp</button>
+                    </div>
+                    <div class="tier-toggle">
+                        <button class="tier-btn active" data-tier="basic">JuneStudio Basic</button>
+                        <button class="tier-btn" data-tier="max">JuneStudio Max</button>
+                    </div>
+                    <div class="services-grid" id="services-grid">
+                        <!-- Dynamically loaded -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Calculator Page -->
+        <section id="pricing" class="page-section">
+            <div class="section">
+                <div class="container">
+                    <div class="section-header">
+                        <h2 class="section-title">Price Calculator</h2>
+                        <p class="section-subtitle">Calculate your exact cost instantly</p>
+                    </div>
+                    <div class="calculator-wrapper">
+                        <div class="calculator-platforms">
+                            <button class="platform-btn active" data-platform="instagram">Instagram</button>
+                            <button class="platform-btn" data-platform="tiktok">TikTok</button>
+                            <button class="platform-btn" data-platform="facebook">Facebook</button>
+                            <button class="platform-btn" data-platform="twitter">Twitter</button>
+                            <button class="platform-btn" data-platform="youtube">YouTube</button>
+                        </div>
+                        <div class="calculator-content">
+                            <div class="calculator-input-group">
+                                <label>Service Type</label>
+                                <select id="calc-service" onchange="app.updateCalculator()">
+                                    <option value="followers">Followers</option>
+                                    <option value="likes">Likes</option>
+                                    <option value="views">Views</option>
+                                    <option value="comments">Comments</option>
+                                </select>
+                            </div>
+                            <div class="calculator-input-group">
+                                <label>Quantity: <span id="quantity-display">1000</span></label>
+                                <input type="range" id="calc-quantity" min="100" max="100000" step="100" value="1000" oninput="app.updateCalculator()">
+                            </div>
+                            <div class="calculator-results">
+                                <div class="result-item">
+                                    <span class="result-label">Base Price</span>
+                                    <span class="result-value" id="base-price">₦0</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">Cost per 1000</span>
+                                    <span class="result-value" id="unit-price">₦0</span>
+                                </div>
+                                <div class="result-item discount" id="discount-row" style="display:none;">
+                                    <span class="result-label">Bulk Discount</span>
+                                    <span class="result-value" id="discount-amount">-₦0</span>
+                                </div>
+                                <div class="result-item total">
+                                    <span class="result-label">Total</span>
+                                    <span class="result-value" id="total-price">₦0</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary btn-full" onclick="app.openAuth('signup')">Order Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bundles Page -->
+        <section id="bundles" class="page-section">
+            <div class="section">
+                <div class="container">
+                    <div class="section-header">
+                        <h2 class="section-title">Bundle Packages</h2>
+                        <p class="section-subtitle">Save up to 50% with curated bundles</p>
+                    </div>
+                    <div class="bundles-grid">
+                        <div class="bundle-card">
+                            <div class="bundle-badge">Popular</div>
+                            <h3>Starter Bundle</h3>
+                            <div class="bundle-price">₦15,000</div>
+                            <ul class="bundle-features">
+                                <li>1000 Instagram Followers</li>
+                                <li>500 TikTok Views</li>
+                                <li>200 Twitter Followers</li>
+                            </ul>
+                            <div class="bundle-savings">Save 20%</div>
+                            <button class="btn btn-primary btn-full" onclick="app.openAuth('signup')">Get Started</button>
+                        </div>
+                        <div class="bundle-card featured">
+                            <div class="bundle-badge">Best Value</div>
+                            <h3>Growth Bundle</h3>
+                            <div class="bundle-price">₦45,000</div>
+                            <ul class="bundle-features">
+                                <li>5000 Instagram Followers</li>
+                                <li>2000 TikTok Views</li>
+                                <li>1000 Twitter Followers</li>
+                                <li>500 YouTube Views</li>
+                            </ul>
+                            <div class="bundle-savings">Save 35%</div>
+                            <button class="btn btn-primary btn-full" onclick="app.openAuth('signup')">Get Started</button>
+                        </div>
+                        <div class="bundle-card">
+                            <div class="bundle-badge">Enterprise</div>
+                            <h3>Enterprise Bundle</h3>
+                            <div class="bundle-price">₦120,000</div>
+                            <ul class="bundle-features">
+                                <li>20000 Instagram Followers</li>
+                                <li>10000 TikTok Views</li>
+                                <li>5000 Twitter Followers</li>
+                                <li>2000 YouTube Views</li>
+                                <li>1000 Telegram Members</li>
+                            </ul>
+                            <div class="bundle-savings">Save 50%</div>
+                            <button class="btn btn-primary btn-full" onclick="app.openAuth('signup')">Get Started</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Assistant Page -->
+        <section id="ai-assistant" class="page-section">
+            <div class="section">
+                <div class="container">
+                    <div class="section-header">
+                        <h2 class="section-title">AI Marketing Assistant</h2>
+                        <p class="section-subtitle">Expert guidance for your social media strategy</p>
+                    </div>
+                    <div class="ai-wrapper">
+                        <div class="ai-modes">
+                            <button class="mode-btn active" data-mode="social">Social Media Expert</button>
+                            <button class="mode-btn" data-mode="content">Content Design</button>
+                            <button class="mode-btn" data-mode="marketing">Marketing Strategy</button>
+                            <button class="mode-btn" data-mode="nigerian">Nigerian Market Expert</button>
+                        </div>
+                        <div class="chat-container" id="chat-container">
+                            <div class="chat-messages" id="chat-messages">
+                                <div class="message bot">
+                                    <div class="message-content">Hello! I'm your AI marketing assistant. How can I help you grow your brand today?</div>
+                                </div>
+                            </div>
+                            <div class="chat-input-area">
+                                <input type="text" id="chat-input" placeholder="Ask me anything..." onkeypress="if(event.key==='Enter')app.sendMessage()">
+                                <button class="btn btn-primary" onclick="app.sendMessage()">Send</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Page (Logged In Only) -->
+        <section id="dashboard" class="page-section">
+            <div class="section">
+                <div class="container">
+                    <div class="dashboard-header">
+                        <h2 class="section-title">Welcome back, <span id="user-name">User</span>!</h2>
+                        <button class="btn btn-primary" onclick="app.navigate('add-funds')">Add Funds</button>
+                    </div>
+                    <div class="dashboard-grid">
+                        <div class="dashboard-card">
+                            <div class="card-label">Current Balance</div>
+                            <div class="card-value" id="dash-balance">₦0.00</div>
+                        </div>
+                        <div class="dashboard-card">
+                            <div class="card-label">Total Orders</div>
+                            <div class="card-value" id="dash-orders">0</div>
+                        </div>
+                        <div class="dashboard-card">
+                            <div class="card-label">Pending</div>
+                            <div class="card-value" id="dash-pending">0</div>
+                        </div>
+                        <div class="dashboard-card">
+                            <div class="card-label">Completed</div>
+                            <div class="card-value" id="dash-completed">0</div>
+                        </div>
+                    </div>
+                    <div class="recent-orders">
+                        <h3>Recent Orders</h3>
+                        <div id="recent-orders-list">
+                            <!-- Dynamically loaded -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Add Funds Page -->
+        <section id="add-funds" class="page-section">
+            <div class="section">
+                <div class="container">
+                    <div class="section-header">
+                        <h2 class="section-title">Add Funds</h2>
+                        <p class="section-subtitle">Fund your wallet via bank transfer</p>
+                    </div>
+                    <div class="add-funds-wrapper">
+                        <div class="amount-input-group">
+                            <label>Amount to Add (₦)</label>
+                            <input type="number" id="fund-amount" min="1000" step="1000" placeholder="Enter amount (min ₦1,000)" value="5000">
+                        </div>
+                        <div class="payment-methods">
+                            <div class="payment-card">
+                                <h4>OPay / PalmPay</h4>
+                                <div class="account-details">
+                                    <div class="account-number">8081515375</div>
+                                    <div class="account-name">Sulaiman Sheriff-Akorede</div>
+                                </div>
+                            </div>
+                            <div class="payment-card">
+                                <h4>First Bank</h4>
+                                <div class="account-details">
+                                    <div class="account-number">3084635140</div>
+                                    <div class="account-name">Sulaiman Sheriff-Akorede</div>
+                                </div>
+                            </div>
+                            <div class="payment-card coming-soon">
+                                <h4>Bitcoin/Crypto</h4>
+                                <div class="coming-soon-badge">Coming Soon</div>
+                            </div>
+                        </div>
+                        <div class="instructions">
+                            <ol>
+                                <li>Enter the amount you want to add</li>
+                                <li>Make transfer to any account above</li>
+                                <li>Click "I've Sent Receipt" below</li>
+                                <li>Send receipt screenshot to WhatsApp for confirmation</li>
+                            </ol>
+                        </div>
+                        <button class="btn btn-primary btn-full btn-large" onclick="app.confirmPayment()">
+                            I've Sent Receipt
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Orders Page -->
+        <section id="orders" class="page-section">
+            <div class="section">
+                <div class="container">
+                    <div class="section-header">
+                        <h2 class="section-title">Order History</h2>
+                        <p class="section-subtitle">Track all your orders</p>
+                    </div>
+                    <div class="orders-filter">
+                        <button class="filter-btn active" data-status="all">All</button>
+                        <button class="filter-btn" data-status="pending">Pending</button>
+                        <button class="filter-btn" data-status="processing">Processing</button>
+                        <button class="filter-btn" data-status="completed">Completed</button>
+                        <button class="filter-btn" data-status="cancelled">Cancelled</button>
+                    </div>
+                    <div id="orders-list">
+                        <!-- Dynamically loaded -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Profile Page -->
+        <section id="profile" class="page-section">
+            <div class="section">
+                <div class="container">
+                    <div class="section-header">
+                        <h2 class="section-title">Account Settings</h2>
+                        <p class="section-subtitle">Manage your profile</p>
+                    </div>
+                    <div class="profile-wrapper">
+                        <div class="profile-info">
+                            <div class="info-group">
+                                <label>Name</label>
+                                <div id="profile-name">-</div>
+                            </div>
+                            <div class="info-group">
+                                <label>Email</label>
+                                <div id="profile-email">-</div>
+                            </div>
+                            <div class="info-group">
+                                <label>Balance</label>
+                                <div id="profile-balance" class="balance-highlight">₦0.00</div>
+                            </div>
+                            <div class="info-group">
+                                <label>Member Since</label>
+                                <div id="profile-joined">-</div>
+                            </div>
+                        </div>
+                        <button class="btn btn-secondary btn-full" onclick="app.logout()">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
     <!-- Bottom Mobile Navigation (Logged In Users Only) -->
