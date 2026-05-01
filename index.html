@@ -3,127 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Imagine | Premium SMM Marketplace</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="description" content="JuneStudio Imagine - Premium SMM Marketplace for Agencies & Resellers">
+    <meta name="theme-color" content="#0a0a0a">
+    <title>JuneStudio Imagine | Enterprise SMM Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loader-content">
+            <div class="brand-mark">
+                <div class="brand-square"></div>
+                <div class="brand-square"></div>
+                <div class="brand-square"></div>
+                <div class="brand-square"></div>
+            </div>
+            <h1 class="brand-name">JuneStudio</h1>
+            <p class="loading-text">Imagine</p>
+        </div>
+    </div>
+
     <!-- Navigation -->
-    <nav class="navbar">
+    <nav class="navbar" id="navbar">
         <div class="nav-container">
-            <div class="logo">
-                <img src="logo.png" alt="Imagine" onerror="this.style.display='none'">
-                <span class="logo-text">IMAGINE</span>
+            <div class="nav-brand">
+                <div class="brand-logo">
+                    <div class="logo-mark"></div>
+                </div>
+                <span class="logo-text">JuneStudio <em>Imagine</em></span>
             </div>
-            <div class="nav-links desktop-only">
-                <a href="#services">Services</a>
-                <a href="#bundles">Bundles</a>
-                <a href="#ai-assistant">AI Assistant</a>
-                <a href="#pricing">Pricing</a>
+            
+            <div class="nav-desktop">
+                <a href="#services" class="nav-link">Services</a>
+                <a href="#pricing" class="nav-link">Pricing</a>
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#api" class="nav-link">API</a>
+                <button class="btn btn-ghost" id="nav-login-btn">Sign In</button>
+                <button class="btn btn-primary" id="nav-signup-btn">Get Started</button>
             </div>
-            <div class="auth-buttons desktop-only">
-                <button id="loginBtn" class="btn-outline">Sign In</button>
-                <button id="signupBtn" class="btn-primary">Sign Up</button>
-            </div>
-            <button class="mobile-menu-btn" id="mobileMenuBtn">
-                <i class="fas fa-bars"></i>
+
+            <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
             </button>
+        </div>
+
+        <div class="nav-mobile" id="nav-mobile">
+            <a href="#services" class="mobile-nav-link">Services</a>
+            <a href="#pricing" class="mobile-nav-link">Pricing</a>
+            <a href="#features" class="mobile-nav-link">Features</a>
+            <a href="#api" class="mobile-nav-link">API</a>
+            <div class="mobile-auth">
+                <button class="btn btn-ghost-full" id="mobile-login-btn">Sign In</button>
+                <button class="btn btn-primary-full" id="mobile-signup-btn">Get Started</button>
+            </div>
         </div>
     </nav>
 
-    <!-- Mobile Bottom Navigation -->
-    <div class="mobile-bottom-nav mobile-only">
-        <a href="#services" class="nav-item active">
-            <i class="fas fa-th-large"></i>
-            <span>Services</span>
-        </a>
-        <a href="#bundles" class="nav-item">
-            <i class="fas fa-box-open"></i>
-            <span>Bundles</span>
-        </a>
-        <a href="#ai-assistant" class="nav-item">
-            <i class="fas fa-robot"></i>
-            <span>AI</span>
-        </a>
-        <a href="#" class="nav-item" id="mobileAuthBtn">
-            <i class="fas fa-user"></i>
-            <span>Account</span>
-        </a>
-    </div>
-
     <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero" id="hero">
         <div class="hero-grid">
             <div class="hero-content">
-                <div class="trust-badges">
-                    <span class="badge"><i class="fas fa-star"></i> 4.9/5 Google Reviews</span>
-                    <span class="badge"><i class="fas fa-users"></i> +229k Active Users</span>
+                <div class="hero-badge">
+                    <span class="badge-dot"></span>
+                    Trusted by 229,000+ agencies worldwide
                 </div>
                 <h1 class="hero-title">
-                    Premium Social Media<br>
-                    <span class="gradient-text">Growth Platform</span>
+                    The Executive<br>
+                    <span class="gradient-text">SMM Platform</span><br>
+                    for Growth
                 </h1>
                 <p class="hero-subtitle">
-                    Enterprise-grade SMM services with real-time delivery. 
-                    Trusted by agencies, brands, and resellers worldwide.
+                    Enterprise-grade social media marketing infrastructure for agencies, 
+                    resellers, and brands. Automated delivery, real-time analytics, 
+                    and white-label solutions.
                 </p>
                 
-                <!-- Quick Auth Form -->
-                <div class="hero-auth">
-                    <div class="auth-tabs">
-                        <button class="tab-btn active" data-tab="signin">Sign In</button>
-                        <button class="tab-btn" data-tab="signup">Sign Up</button>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-value" data-target="18400000">0</div>
+                        <div class="stat-label">Orders Completed</div>
                     </div>
-                    
-                    <form id="heroAuthForm" class="auth-form">
-                        <div class="form-group">
-                            <input type="email" id="heroEmail" placeholder="Email address" required>
-                        </div>
-                        <div class="form-group" id="passwordGroup">
-                            <input type="password" id="heroPassword" placeholder="Password" required>
-                        </div>
-                        <button type="submit" class="btn-primary full-width">Continue</button>
-                    </form>
-                    
-                    <div class="oauth-section">
-                        <div class="divider"><span>or continue with</span></div>
-                        <button class="btn-oauth" id="googleOAuthBtn">
-                            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
-                            Google
-                        </button>
+                    <div class="stat-item">
+                        <div class="stat-value" data-target="99">0</div>
+                        <div class="stat-label">Uptime %</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" data-target="70">0</div>
+                        <div class="stat-label">ms Avg Delivery</div>
+                    </div>
+                </div>
+
+                <div class="hero-trust">
+                    <div class="trust-badge">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                        <span>Google Reviews: 4.9/5</span>
                     </div>
                 </div>
             </div>
-            
-            <div class="hero-visual">
-                <div class="architectural-frame">
-                    <div class="frame-content">
-                        <div class="live-metrics">
-                            <div class="metric-card">
-                                <div class="metric-value">18.4M</div>
-                                <div class="metric-label">Orders Completed</div>
-                            </div>
-                            <div class="metric-card">
-                                <div class="metric-value">0.07s</div>
-                                <div class="metric-label">Avg. Delivery</div>
-                            </div>
-                            <div class="metric-card">
-                                <div class="metric-value">99.9%</div>
-                                <div class="metric-label">Uptime</div>
-                            </div>
-                        </div>
-                        <div class="platform-showcase">
-                            <div class="platform-icon"><i class="fab fa-instagram"></i></div>
-                            <div class="platform-icon"><i class="fab fa-tiktok"></i></div>
-                            <div class="platform-icon"><i class="fab fa-facebook"></i></div>
-                            <div class="platform-icon"><i class="fab fa-youtube"></i></div>
-                            <div class="platform-icon"><i class="fab fa-twitter"></i></div>
-                        </div>
-                    </div>
+
+            <div class="hero-form-card">
+                <div class="form-header">
+                    <h3>Start in 30 seconds</h3>
+                    <p>No credit card required</p>
                 </div>
+                
+                <div class="auth-tabs">
+                    <button class="auth-tab active" data-tab="signup">Create Account</button>
+                    <button class="auth-tab" data-tab="login">Sign In</button>
+                </div>
+
+                <form id="signup-form" class="auth-form active">
+                    <div class="form-group">
+                        <label for="signup-email">Work Email</label>
+                        <input type="email" id="signup-email" placeholder="name@company.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-password">Password</label>
+                        <input type="password" id="signup-password" placeholder="••••••••" minlength="8" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary-full btn-lg">Create Free Account</button>
+                    
+                    <div class="divider">
+                        <span>or continue with</span>
+                    </div>
+                    
+                    <button type="button" class="btn btn-google-full" id="google-signup-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                        </svg>
+                        Google
+                    </button>
+                </form>
+
+                <form id="login-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" placeholder="name@company.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary-full btn-lg">Sign In</button>
+                    
+                    <div class="divider">
+                        <span>or continue with</span>
+                    </div>
+                    
+                    <button type="button" class="btn btn-google-full" id="google-login-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                        </svg>
+                        Google
+                    </button>
+                </form>
             </div>
+        </div>
+
+        <div class="hero-background">
+            <div class="grid-overlay"></div>
+            <div class="gradient-orb orb-1"></div>
+            <div class="gradient-orb orb-2"></div>
+            <div class="gradient-orb orb-3"></div>
         </div>
     </section>
 
@@ -131,101 +187,165 @@
     <div class="telemetry-bar">
         <div class="telemetry-container">
             <div class="telemetry-item">
-                <i class="fas fa-bolt"></i>
-                <span>System Status: <strong>Operational</strong></span>
+                <span class="telemetry-label">System Status</span>
+                <span class="telemetry-value status-online">
+                    <span class="status-dot"></span>
+                    Operational
+                </span>
             </div>
             <div class="telemetry-item">
-                <i class="fas fa-chart-line"></i>
-                <span>Active Orders: <strong id="activeOrders">1,247</strong></span>
+                <span class="telemetry-label">Active Orders</span>
+                <span class="telemetry-value" id="active-orders">1,247</span>
             </div>
             <div class="telemetry-item">
-                <i class="fas fa-clock"></i>
-                <span>Avg. Completion: <strong>2.3 min</strong></span>
+                <span class="telemetry-label">Avg. Delivery</span>
+                <span class="telemetry-value" id="avg-delivery">0.07s</span>
+            </div>
+            <div class="telemetry-item">
+                <span class="telemetry-label">Success Rate</span>
+                <span class="telemetry-value" id="success-rate">99.94%</span>
             </div>
         </div>
     </div>
 
     <!-- Dynamic Price Calculator -->
-    <section class="calculator-section" id="pricing">
+    <section class="calculator-section" id="calculator">
         <div class="section-container">
             <div class="section-header">
-                <h2>Transparent Pricing Calculator</h2>
-                <p>Real-time pricing with bulk discounts. No hidden fees.</p>
+                <h2 class="section-title">Transparent Pricing Calculator</h2>
+                <p class="section-subtitle">Real-time pricing with bulk discounts. No hidden fees.</p>
             </div>
-            
+
             <div class="calculator-grid">
                 <div class="calculator-controls">
                     <div class="platform-tabs">
                         <button class="platform-tab active" data-platform="instagram">
-                            <i class="fab fa-instagram"></i> Instagram
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                            </svg>
+                            Instagram
                         </button>
                         <button class="platform-tab" data-platform="tiktok">
-                            <i class="fab fa-tiktok"></i> TikTok
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+                            </svg>
+                            TikTok
                         </button>
                         <button class="platform-tab" data-platform="youtube">
-                            <i class="fab fa-youtube"></i> YouTube
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                            </svg>
+                            YouTube
                         </button>
                         <button class="platform-tab" data-platform="facebook">
-                            <i class="fab fa-facebook"></i> Facebook
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                            </svg>
+                            Facebook
+                        </button>
+                        <button class="platform-tab" data-platform="twitter">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                            </svg>
+                            Twitter
                         </button>
                     </div>
-                    
+
                     <div class="service-type-selector">
                         <label>Service Type</label>
-                        <select id="serviceType">
+                        <select id="service-type" class="form-select">
                             <option value="followers">Followers</option>
                             <option value="likes">Likes</option>
                             <option value="views">Views</option>
                             <option value="comments">Comments</option>
+                            <option value="shares">Shares</option>
                         </select>
                     </div>
-                    
+
                     <div class="quantity-slider">
-                        <label>Quantity: <span id="quantityValue">1,000</span></label>
-                        <input type="range" id="quantityRange" min="100" max="100000" step="100" value="1000">
-                        <div class="quantity-presets">
-                            <button data-qty="1000">1K</button>
-                            <button data-qty="5000">5K</button>
-                            <button data-qty="10000">10K</button>
-                            <button data-qty="50000">50K</button>
-                            <button data-qty="100000">100K</button>
+                        <label>Quantity</label>
+                        <div class="slider-container">
+                            <input type="range" id="quantity-slider" min="100" max="100000" step="100" value="1000">
+                            <div class="slider-input">
+                                <input type="number" id="quantity-input" min="100" max="100000" value="1000">
+                                <span class="input-suffix">units</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quality-tier">
+                        <label>Quality Tier</label>
+                        <div class="tier-options">
+                            <button class="tier-option active" data-tier="basic">
+                                <span class="tier-name">Basic</span>
+                                <span class="tier-desc">Standard delivery</span>
+                            </button>
+                            <button class="tier-option" data-tier="premium">
+                                <span class="tier-name">Premium</span>
+                                <span class="tier-desc">High retention</span>
+                            </button>
+                            <button class="tier-option" data-tier="elite">
+                                <span class="tier-name">Elite</span>
+                                <span class="tier-desc">Guaranteed + refill</span>
+                            </button>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="calculator-results">
                     <div class="result-card">
                         <div class="result-header">
-                            <h3>Estimated Cost</h3>
-                            <span class="tier-badge" id="serviceTier">JuneStudio Basic</span>
+                            <h3>Price Breakdown</h3>
+                            <span class="result-badge" id="tier-badge">Basic Tier</span>
                         </div>
-                        <div class="price-display">
-                            <div class="main-price">₦<span id="totalPrice">0</span></div>
-                            <div class="unit-price">₦<span id="unitPrice">0</span> per 1,000</div>
+                        
+                        <div class="price-details">
+                            <div class="price-row">
+                                <span class="price-label">Base Price</span>
+                                <span class="price-value" id="base-price">₦3,625</span>
+                            </div>
+                            <div class="price-row">
+                                <span class="price-label">Platform Fee</span>
+                                <span class="price-value" id="platform-fee">₦0</span>
+                            </div>
+                            <div class="price-row discount">
+                                <span class="price-label">Bulk Discount</span>
+                                <span class="price-value" id="bulk-discount">-₦0</span>
+                            </div>
+                            <div class="price-divider"></div>
+                            <div class="price-row total">
+                                <span class="price-label">Total Cost</span>
+                                <span class="price-value" id="total-price">₦3,625</span>
+                            </div>
                         </div>
-                        <div class="savings-highlight" id="savingsHighlight" style="display: none;">
-                            <i class="fas fa-tag"></i> You're saving ₦<span id="savingsAmount">0</span>
+
+                        <div class="cost-analysis">
+                            <div class="analysis-item">
+                                <span class="analysis-label">Cost per Unit</span>
+                                <span class="analysis-value" id="cost-per-unit">₦3.63</span>
+                            </div>
+                            <div class="analysis-item">
+                                <span class="analysis-label">You're Saving</span>
+                                <span class="analysis-value savings" id="savings-amount">₦0</span>
+                            </div>
                         </div>
+
                         <div class="delivery-estimate">
-                            <i class="fas fa-clock"></i> Estimated delivery: <span id="deliveryTime">Instant - 1 hour</span>
+                            <div class="estimate-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                            </div>
+                            <div class="estimate-content">
+                                <span class="estimate-label">Estimated Delivery</span>
+                                <span class="estimate-value" id="delivery-time">15-30 minutes</span>
+                            </div>
                         </div>
-                        <button class="btn-primary full-width" id="quickOrderBtn">Quick Order</button>
-                    </div>
-                    
-                    <div class="cost-breakdown">
-                        <h4>Cost Factors</h4>
-                        <div class="breakdown-item">
-                            <span>Base Rate</span>
-                            <span>₦<span id="baseRate">0</span></span>
-                        </div>
-                        <div class="breakdown-item">
-                            <span>Platform Fee</span>
-                            <span>₦<span id="platformFee">0</span></span>
-                        </div>
-                        <div class="breakdown-item highlight">
-                            <span>Bulk Discount</span>
-                            <span>-₦<span id="bulkDiscount">0</span></span>
-                        </div>
+
+                        <button class="btn btn-primary-full btn-lg" id="calculator-order-btn">
+                            Order Now
+                        </button>
                     </div>
                 </div>
             </div>
@@ -236,325 +356,169 @@
     <section class="services-section" id="services">
         <div class="section-container">
             <div class="section-header">
-                <h2>Our Services</h2>
-                <div class="service-filters">
-                    <button class="filter-btn active" data-filter="all">All Services</button>
-                    <button class="filter-btn" data-filter="basic">JuneStudio Basic</button>
-                    <button class="filter-btn" data-filter="max">JuneStudio Max</button>
-                </div>
+                <h2 class="section-title">Enterprise Services</h2>
+                <p class="section-subtitle">Curated packages for agencies and high-volume resellers</p>
             </div>
-            
-            <div class="services-grid" id="servicesGrid">
-                <!-- Services will be dynamically loaded -->
+
+            <div class="services-filter">
+                <button class="filter-btn active" data-filter="all">All Services</button>
+                <button class="filter-btn" data-filter="basic">JuneStudio Basic</button>
+                <button class="filter-btn" data-filter="max">JuneStudio Max</button>
+                <button class="filter-btn" data-filter="digital">Digital Services</button>
+            </div>
+
+            <div class="services-grid" id="services-grid">
+                <!-- Services loaded dynamically -->
             </div>
         </div>
     </section>
 
-    <!-- Bundles Section -->
-    <section class="bundles-section" id="bundles">
+    <!-- Features Section -->
+    <section class="features-section" id="features">
         <div class="section-container">
             <div class="section-header">
-                <h2>Curated Bundle Packages</h2>
-                <p>Save up to 50% when you bundle multiple services</p>
+                <h2 class="section-title">Built for Scale</h2>
+                <p class="section-subtitle">Enterprise features that automate your growth</p>
             </div>
-            
-            <div class="bundle-builder">
-                <div class="builder-steps">
-                    <div class="step active">
-                        <div class="step-number">1</div>
-                        <div class="step-label">Choose Services</div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+                        </svg>
                     </div>
-                    <div class="step">
-                        <div class="step-number">2</div>
-                        <div class="step-label">Review Bundle</div>
-                    </div>
-                    <div class="step">
-                        <div class="step-number">3</div>
-                        <div class="step-label">Checkout</div>
-                    </div>
+                    <h3>Instant Delivery</h3>
+                    <p>Automated order processing with average delivery time under 70ms. Real-time status updates.</p>
                 </div>
-                
-                <div class="bundle-selection">
-                    <div class="selected-services" id="selectedServices">
-                        <div class="empty-state">
-                            <i class="fas fa-plus-circle"></i>
-                            <p>Select services to build your bundle</p>
-                        </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
                     </div>
-                    
-                    <div class="bundle-summary">
-                        <div class="summary-row">
-                            <span>Subtotal</span>
-                            <span>₦<span id="bundleSubtotal">0</span></span>
-                        </div>
-                        <div class="summary-row discount">
-                            <span>Bundle Discount (<span id="discountPercent">0</span>%)</span>
-                            <span>-₦<span id="discountAmount">0</span></span>
-                        </div>
-                        <div class="summary-row total">
-                            <span>Total</span>
-                            <span>₦<span id="bundleTotal">0</span></span>
-                        </div>
-                        <button class="btn-primary full-width" id="checkoutBundleBtn" disabled>Proceed to Checkout</button>
-                    </div>
+                    <h3>Secure Payments</h3>
+                    <p>Bank transfer, OPay, PalmPay with WhatsApp receipt verification. Crypto coming soon.</p>
                 </div>
-            </div>
-            
-            <div class="premade-bundles">
-                <h3>Popular Pre-made Bundles</h3>
-                <div class="bundles-grid">
-                    <div class="bundle-card">
-                        <div class="bundle-badge">Starter</div>
-                        <h4>Social Kickstart</h4>
-                        <ul>
-                            <li><i class="fas fa-check"></i> 1,000 Instagram Followers</li>
-                            <li><i class="fas fa-check"></i> 500 TikTok Views</li>
-                            <li><i class="fas fa-check"></i> 200 Facebook Likes</li>
-                        </ul>
-                        <div class="bundle-price">
-                            <span class="original">₦15,000</span>
-                            <span class="discounted">₦12,000</span>
-                        </div>
-                        <button class="btn-outline">Select Bundle</button>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                        </svg>
                     </div>
-                    
-                    <div class="bundle-card featured">
-                        <div class="bundle-badge popular">Most Popular</div>
-                        <h4>Growth Accelerator</h4>
-                        <ul>
-                            <li><i class="fas fa-check"></i> 5,000 Instagram Followers</li>
-                            <li><i class="fas fa-check"></i> 2,000 TikTok Views</li>
-                            <li><i class="fas fa-check"></i> 1,000 YouTube Views</li>
-                            <li><i class="fas fa-check"></i> 500 Twitter Followers</li>
-                        </ul>
-                        <div class="bundle-price">
-                            <span class="original">₦45,000</span>
-                            <span class="discounted">₦29,250</span>
-                        </div>
-                        <button class="btn-primary">Select Bundle</button>
+                    <h3>Live Analytics</h3>
+                    <p>Real-time order tracking, success metrics, and performance dashboards for data-driven decisions.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
                     </div>
-                    
-                    <div class="bundle-card">
-                        <div class="bundle-badge">Enterprise</div>
-                        <h4>Brand Dominance</h4>
-                        <ul>
-                            <li><i class="fas fa-check"></i> 10,000 Instagram Followers</li>
-                            <li><i class="fas fa-check"></i> 5,000 TikTok Views</li>
-                            <li><i class="fas fa-check"></i> 3,000 YouTube Views</li>
-                            <li><i class="fas fa-check"></i> 2,000 Facebook Likes</li>
-                            <li><i class="fas fa-check"></i> 1,000 Twitter Followers</li>
-                        </ul>
-                        <div class="bundle-price">
-                            <span class="original">₦95,000</span>
-                            <span class="discounted">₦47,500</span>
-                        </div>
-                        <button class="btn-outline">Select Bundle</button>
+                    <h3>Multi-User Access</h3>
+                    <p>Team management, role-based permissions, and white-label options for agencies.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                        </svg>
                     </div>
+                    <h3>API Integration</h3>
+                    <p>Full REST API access for resellers. Webhook support for automated order routing via n8n.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                    </div>
+                    <h3>AI Assistant</h3>
+                    <p>Built-in AI expert for social media strategy, content design, marketing, and Nigerian market insights.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Cost Factor Transparency -->
-    <section class="transparency-section">
+    <!-- Cost Transparency Section -->
+    <section class="transparency-section" id="transparency">
         <div class="section-container">
             <div class="section-header">
-                <h2>Understanding Pricing</h2>
-                <p>Why do costs vary? Here's complete transparency.</p>
+                <h2 class="section-title">Understanding Pricing</h2>
+                <p class="section-subtitle">Why costs vary and how we ensure fair pricing</p>
             </div>
-            
-            <div class="accordion">
+
+            <div class="accordion-grid">
                 <div class="accordion-item">
                     <button class="accordion-header">
-                        <span><i class="fas fa-tachometer-alt"></i> Delivery Speed</span>
-                        <i class="fas fa-chevron-down"></i>
+                        <span>Delivery Speed Tiers</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
                     </button>
                     <div class="accordion-content">
-                        <p>Faster delivery requires more sophisticated infrastructure and priority routing through our provider network. Instant delivery services command a premium due to the real-time processing requirements.</p>
+                        <p>Faster delivery requires more sophisticated infrastructure and priority routing through our provider network. Basic tiers deliver within 15-60 minutes, while Premium and Elite tiers offer instant or scheduled delivery with higher success rates.</p>
                     </div>
                 </div>
-                
+
                 <div class="accordion-item">
                     <button class="accordion-header">
-                        <span><i class="fas fa-shield-alt"></i> Retention Level</span>
-                        <i class="fas fa-chevron-down"></i>
+                        <span>Retention Levels</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
                     </button>
                     <div class="accordion-content">
-                        <p>High-retention services use premium accounts with established history, ensuring longer-lasting results. Standard services may have higher drop-off rates but come at a lower cost point.</p>
+                        <p>Higher retention accounts (real-looking profiles with activity history) cost more to maintain. Our Elite tier includes guaranteed refills if drops occur within 30 days, ensuring your investment is protected.</p>
                     </div>
                 </div>
-                
+
                 <div class="accordion-item">
                     <button class="accordion-header">
-                        <span><i class="fas fa-brain"></i> Algorithm Constraints</span>
-                        <i class="fas fa-chevron-down"></i>
+                        <span>Platform Algorithm Constraints</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
                     </button>
                     <div class="accordion-content">
-                        <p>Each platform has unique algorithmic patterns. Services that mimic organic growth patterns require more sophisticated delivery methods, impacting pricing while ensuring account safety.</p>
+                        <p>Each social platform has different detection mechanisms. Instagram and TikTok require more sophisticated delivery patterns to avoid flags, while Twitter and Facebook allow faster throughput. Our system automatically optimizes delivery per platform.</p>
                     </div>
                 </div>
-                
+
                 <div class="accordion-item">
                     <button class="accordion-header">
-                        <span><i class="fas fa-globe"></i> Geographic Targeting</span>
-                        <i class="fas fa-chevron-down"></i>
+                        <span>Bulk Discount Structure</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
                     </button>
                     <div class="accordion-content">
-                        <p>Targeted delivery to specific countries or regions requires access to localized account networks. Global services are more affordable, while geo-targeted services command a premium for their specificity.</p>
+                        <p>Ordering 1,000+ units unlocks 10% discount, 5,000+ gets 20%, and 10,000+ receives 30% off. Bundle packages combining multiple services or platforms receive additional 20-50% discounts automatically applied at checkout.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- AI Assistant Section -->
-    <section class="ai-section" id="ai-assistant">
-        <div class="section-container">
-            <div class="section-header">
-                <h2>AI Marketing Assistant</h2>
-                <p>Your personal expert for social media strategy, content design, and Nigerian market insights</p>
-            </div>
-            
-            <div class="ai-interface">
-                <div class="ai-modes">
-                    <button class="mode-btn active" data-mode="social">
-                        <i class="fas fa-share-alt"></i>
-                        <span>Social Media Expert</span>
-                    </button>
-                    <button class="mode-btn" data-mode="content">
-                        <i class="fas fa-paint-brush"></i>
-                        <span>Content Design</span>
-                    </button>
-                    <button class="mode-btn" data-mode="marketing">
-                        <i class="fas fa-bullhorn"></i>
-                        <span>Marketing Strategy</span>
-                    </button>
-                    <button class="mode-btn" data-mode="nigerian">
-                        <i class="fas fa-flag"></i>
-                        <span>Nigerian Expert</span>
-                    </button>
-                </div>
-                
-                <div class="chat-container">
-                    <div class="chat-messages" id="chatMessages">
-                        <div class="message ai">
-                            <div class="message-content">
-                                Hello! I'm your Imagine AI Assistant. How can I help you grow your social media presence today?
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="chat-input">
-                        <input type="text" id="chatInput" placeholder="Ask me anything about social media growth...">
-                        <button id="sendChatBtn"><i class="fas fa-paper-plane"></i></button>
-                    </div>
-                </div>
-                
-                <div class="chat-history" id="chatHistory">
-                    <h4>Recent Conversations</h4>
-                    <div id="historyList">
-                        <!-- History items will be loaded here -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Add Funds Section -->
-    <section class="funds-section" id="addFunds">
-        <div class="section-container">
-            <div class="section-header">
-                <h2>Add Funds to Wallet</h2>
-                <p>Secure bank transfer with instant confirmation via WhatsApp</p>
-            </div>
-            
-            <div class="funds-grid">
-                <div class="funds-form">
-                    <div class="form-group">
-                        <label>Amount to Send (₦)</label>
-                        <input type="number" id="fundAmount" placeholder="Enter amount" min="1000" step="100">
-                    </div>
-                    
-                    <div class="payment-methods">
-                        <h3>Transfer To:</h3>
-                        
-                        <div class="payment-card">
-                            <div class="payment-header">
-                                <i class="fas fa-university"></i>
-                                <h4>OPay / PalmPay</h4>
-                            </div>
-                            <div class="payment-details">
-                                <div class="detail-row">
-                                    <span>Account Number:</span>
-                                    <strong>8081515375</strong>
-                                </div>
-                                <div class="detail-row">
-                                    <span>Account Name:</span>
-                                    <strong>Sulaiman Sheriff-Akorede</strong>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="payment-card">
-                            <div class="payment-header">
-                                <i class="fas fa-landmark"></i>
-                                <h4>First Bank</h4>
-                            </div>
-                            <div class="payment-details">
-                                <div class="detail-row">
-                                    <span>Account Number:</span>
-                                    <strong>3084635140</strong>
-                                </div>
-                                <div class="detail-row">
-                                    <span>Account Name:</span>
-                                    <strong>Sulaiman Sheriff-Akorede</strong>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="payment-card coming-soon">
-                            <div class="payment-header">
-                                <i class="fab fa-bitcoin"></i>
-                                <h4>Cryptocurrency <span class="badge-soon">Coming Soon</span></h4>
-                            </div>
-                            <p>Bitcoin and other crypto payments coming soon for international users.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="confirmation-steps">
-                        <h3>Confirmation Process:</h3>
-                        <ol>
-                            <li>Enter the amount you want to send above</li>
-                            <li>Make transfer to any of the accounts listed</li>
-                            <li>Take a screenshot of your transfer receipt</li>
-                            <li>Send receipt to WhatsApp: <strong>+2348081515375</strong></li>
-                            <li>Your wallet will be credited within 15 minutes</li>
-                        </ol>
-                    </div>
-                    
-                    <button class="btn-primary full-width" id="confirmTransferBtn">
-                        I Have Sent Receipt to WhatsApp
-                    </button>
-                </div>
-                
-                <div class="funds-info">
-                    <div class="info-card">
-                        <i class="fas fa-shield-alt"></i>
-                        <h4>Secure & Verified</h4>
-                        <p>All transfers are manually verified by our team before crediting your account.</p>
-                    </div>
-                    
-                    <div class="info-card">
-                        <i class="fas fa-clock"></i>
-                        <h4>Fast Processing</h4>
-                        <p>Wallet credits are processed within 15 minutes during business hours.</p>
-                    </div>
-                    
-                    <div class="info-card">
-                        <i class="fas fa-headset"></i>
-                        <h4>24/7 Support</h4>
-                        <p>Need help? Contact our support team on WhatsApp anytime.</p>
-                    </div>
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-container">
+            <div class="cta-content">
+                <h2>Ready to Scale Your Agency?</h2>
+                <p>Join 229,000+ professionals using JuneStudio Imagine for automated social media growth.</p>
+                <div class="cta-actions">
+                    <button class="btn btn-primary btn-lg" id="cta-signup-btn">Start Free Trial</button>
+                    <button class="btn btn-ghost btn-lg" id="cta-demo-btn">Book Demo</button>
                 </div>
             </div>
         </div>
@@ -565,107 +529,184 @@
         <div class="footer-container">
             <div class="footer-grid">
                 <div class="footer-brand">
-                    <div class="logo">
-                        <span class="logo-text">IMAGINE</span>
+                    <div class="brand-logo">
+                        <div class="logo-mark"></div>
                     </div>
-                    <p>Premium SMM marketplace trusted by over 229,000 users worldwide.</p>
+                    <span class="logo-text">JuneStudio <em>Imagine</em></span>
+                    <p>Enterprise SMM infrastructure for agencies and resellers.</p>
                     <div class="social-links">
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-facebook"></i></a>
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="social-link" aria-label="Twitter">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="LinkedIn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                            </svg>
+                        </a>
+                        <a href="https://wa.me/2348081515375" class="social-link" aria-label="WhatsApp">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                            </svg>
+                        </a>
                     </div>
                 </div>
-                
+
                 <div class="footer-links">
-                    <h4>Services</h4>
+                    <h4>Platform</h4>
                     <ul>
-                        <li><a href="#">Instagram</a></li>
-                        <li><a href="#">TikTok</a></li>
-                        <li><a href="#">YouTube</a></li>
-                        <li><a href="#">Facebook</a></li>
-                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#api">API</a></li>
+                        <li><a href="#features">Features</a></li>
                     </ul>
                 </div>
-                
+
                 <div class="footer-links">
                     <h4>Support</h4>
                     <ul>
-                        <li><a href="#">Help Center</a></li>
-                        <li><a href="#">API Documentation</a></li>
-                        <li><a href="#">Status Page</a></li>
-                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="https://wa.me/2348081515375">Contact</a></li>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">Status</a></li>
+                        <li><a href="#">Terms of Service</a></li>
                     </ul>
                 </div>
-                
-                <div class="footer-contact">
-                    <h4>Contact</h4>
-                    <p><i class="fab fa-whatsapp"></i> +2348081515375</p>
-                    <p><i class="fas fa-envelope"></i> junestudioimagineai@gmail.com</p>
-                    <p><i class="fas fa-map-marker-alt"></i> Lagos, Nigeria</p>
+
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
                 </div>
             </div>
-            
+
             <div class="footer-bottom">
-                <p>&copy; 2024 Imagine by JuneStudio. All rights reserved.</p>
+                <p>&copy; 2025 JuneStudio. All rights reserved.</p>
+                <p>Powered by JustAnotherPanel & MoreThanPanel</p>
             </div>
         </div>
     </footer>
 
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav" id="mobile-bottom-nav">
+        <a href="#services" class="bottom-nav-item">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="7" height="7"></rect>
+                <rect x="14" y="3" width="7" height="7"></rect>
+                <rect x="14" y="14" width="7" height="7"></rect>
+                <rect x="3" y="14" width="7" height="7"></rect>
+            </svg>
+            <span>Services</span>
+        </a>
+        <a href="#calculator" class="bottom-nav-item">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="1" x2="12" y2="23"></line>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+            <span>Pricing</span>
+        </a>
+        <button class="bottom-nav-item auth-trigger" id="mobile-auth-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span>Account</span>
+        </button>
+    </nav>
+
+    <!-- AI Assistant Floating Button -->
+    <button class="ai-assistant-btn" id="ai-assistant-btn" aria-label="AI Assistant">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+        <span class="assistant-badge">AI</span>
+    </button>
+
     <!-- Modals -->
-    <div class="modal" id="authModal">
-        <div class="modal-content">
-            <button class="modal-close">&times;</button>
-            <h2 id="modalTitle">Sign In</h2>
-            <form id="authForm">
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" id="authEmail" required>
+    <div id="auth-modal" class="modal">
+        <div class="modal-content modal-auth">
+            <button class="modal-close" id="auth-modal-close">&times;</button>
+            <!-- Auth content loaded dynamically -->
+        </div>
+    </div>
+
+    <div id="ai-modal" class="modal">
+        <div class="modal-content modal-ai">
+            <button class="modal-close" id="ai-modal-close">&times;</button>
+            <div class="ai-header">
+                <h3>JuneStudio AI Assistant</h3>
+                <p>Your expert for social media, content, marketing & Nigerian markets</p>
+            </div>
+            <div class="ai-modes">
+                <button class="ai-mode-btn active" data-mode="social">Social Media Expert</button>
+                <button class="ai-mode-btn" data-mode="content">Content Design</button>
+                <button class="ai-mode-btn" data-mode="marketing">Marketing Strategy</button>
+                <button class="ai-mode-btn" data-mode="nigerian">Nigerian Expert</button>
+            </div>
+            <div class="ai-chat">
+                <div class="chat-messages" id="chat-messages"></div>
+                <div class="chat-input">
+                    <input type="text" id="chat-input" placeholder="Ask anything...">
+                    <button id="chat-send-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                    </button>
                 </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" id="authPassword" required>
-                </div>
-                <button type="submit" class="btn-primary full-width">Continue</button>
-            </form>
-            <div class="oauth-section">
-                <div class="divider"><span>or continue with</span></div>
-                <button class="btn-oauth" id="modalGoogleBtn">
-                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
-                    Google
-                </button>
             </div>
         </div>
     </div>
 
-    <div class="modal" id="orderModal">
-        <div class="modal-content">
-            <button class="modal-close">&times;</button>
-            <h2>Place Order</h2>
-            <form id="orderForm">
-                <div class="form-group">
-                    <label>Service</label>
-                    <input type="text" id="orderService" readonly>
+    <div id="payment-modal" class="modal">
+        <div class="modal-content modal-payment">
+            <button class="modal-close" id="payment-modal-close">&times;</button>
+            <div class="payment-header">
+                <h3>Add Funds to Wallet</h3>
+                <p>Secure bank transfer with WhatsApp verification</p>
+            </div>
+            <div class="payment-methods">
+                <div class="payment-method active" data-method="opay">
+                    <h4>OPay / PalmPay</h4>
+                    <div class="account-details">
+                        <p class="account-number">8081515375</p>
+                        <p class="account-name">Sulaiman Sheriff-Akorede</p>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Link</label>
-                    <input type="url" id="orderLink" placeholder="https://..." required>
-                    <small id="linkValidation"></small>
+                <div class="payment-method" data-method="firstbank">
+                    <h4>First Bank</h4>
+                    <div class="account-details">
+                        <p class="account-number">3084635140</p>
+                        <p class="account-name">Sulaiman Sheriff-Akorede</p>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Quantity</label>
-                    <input type="number" id="orderQuantity" min="100" required>
+                <div class="payment-method disabled" data-method="crypto">
+                    <h4>Cryptocurrency</h4>
+                    <p class="coming-soon">Coming Soon</p>
                 </div>
+            </div>
+            <div class="payment-steps">
+                <h4>How to Add Funds:</h4>
+                <ol>
+                    <li>Enter the amount you want to send</li>
+                    <li>Make transfer to the account above</li>
+                    <li>Tap "I've Sent" button</li>
+                    <li>Send receipt screenshot to WhatsApp: <strong>+2348081515375</strong></li>
+                    <li>Wait for admin confirmation (usually within 15 mins)</li>
+                </ol>
+            </div>
+            <div class="payment-form">
                 <div class="form-group">
-                    <label>Total Price</label>
-                    <div class="price-display">₦<span id="orderTotal">0</span></div>
+                    <label for="transfer-amount">Amount Sending (₦)</label>
+                    <input type="number" id="transfer-amount" placeholder="e.g., 10000" min="1000">
                 </div>
-                <div class="form-group">
-                    <label>Wallet Balance</label>
-                    <div class="balance-display">₦<span id="walletBalance">0</span></div>
-                </div>
-                <button type="submit" class="btn-primary full-width">Confirm Order</button>
-            </form>
+                <button class="btn btn-primary-full btn-lg" id="confirm-transfer-btn">I've Sent Receipt</button>
+            </div>
         </div>
     </div>
 
