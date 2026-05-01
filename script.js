@@ -1,225 +1,432 @@
-// Configuration - Local Paths
+// Imagine SMM Marketplace - Full Application Logic
+
+// Configuration
 const CONFIG = {
-    whatsapp: {
-        ceo: '2348081515375',
-        agent: '2348101365054'
-    },
-    images: {
-        logo: 'logo.png',
-        founder: 'founder-sulaiman.jpg',
-        showcases: [
-            'saasul-showcase-1.jpg',
-            'saasul-showcase-2.jpg',
-            'saasul-showcase-3.jpg',
-            'saasul-showcase-4.jpg',
-            'saasul-showcase-5.jpg'
-        ]
-    }
+    JAP_API_KEY: 'fc5f37722f01550a7c956a0d4ecf63bb',
+    JAP_API_URL: 'https://justanotherpanel.com/api/v2',
+    WHATSAPP_NUMBER: '+2348081515375',
+    ADMIN_EMAIL: 'junestudioimagineai@gmail.com',
+    OPAY_ACCOUNT: '8081515375',
+    PALMPAY_ACCOUNT: '8081515375',
+    BANK_ACCOUNT: '3084635140',
+    BANK_NAME: 'Firstbank',
+    ACCOUNT_NAME: 'Sulaiman Sheriff-Akorede',
+    PROFIT_MARGIN: 1.5 // 150% markup
 };
 
-// Initialize GSAP
-if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-    gsap.registerPlugin(ScrollTrigger);
+// State Management
+let currentUser = null;
+let selectedServices = [];
+let chatHistory = [];
 
-    gsap.from(".hero-content > *", {
-        y: 30,
-        opacity: 0,
-        duration: 1,
-        stagger: 0.1,
-        ease: "power3.out",
-        delay: 0.2
-    });
+// Sample Services Database (with 150% markup applied)
+const services = [
+    { id: 1, name: 'Instagram Followers', category: 'instagram', basePrice: 500, price: 750, per: 1000 },
+    { id: 2, name: 'Instagram Likes', category: 'instagram', basePrice: 300, price: 450, per: 1000 },
+    { id: 3, name: 'Instagram Views', category: 'instagram', basePrice: 100, price: 150, per: 1000 },
+    { id: 4, name: 'Facebook Likes', category: 'facebook', basePrice: 400, price: 600, per: 1000 },
+    { id: 5, name: 'Facebook Followers', category: 'facebook', basePrice: 600, price: 900, per: 1000 },
+    { id: 6, name: 'Twitter Followers', category: 'twitter', basePrice: 700, price: 1050, per: 1000 },
+    { id: 7, name: 'Twitter Retweets', category: 'twitter', basePrice: 500, price: 750, per: 1000 },
+    { id: 8, name: 'TikTok Views', category: 'tiktok', basePrice: 200, price: 300, per: 1000 },
+    { id: 9, name: 'TikTok Followers', category: 'tiktok', basePrice: 800, price: 1200, per: 1000 },
+    { id: 10, name: 'YouTube Subscribers', category: 'youtube', basePrice: 1500, price: 2250, per: 1000 },
+    { id: 11, name: 'YouTube Views', category: 'youtube', basePrice: 1000, price: 1500, per: 1000 },
+    { id: 12, name: 'LinkedIn Connections', category: 'linkedin', basePrice: 2000, price: 3000, per: 1000 }
+];
 
-    gsap.utils.toArray('.animate-up').forEach((element, i) => {
-        gsap.from(element, {
-            scrollTrigger: {
-                trigger: element,
-                start: "top 85%",
-                toggleActions: "play none none reverse",
-                once: true
-            },
-            y: 50,
-            opacity: 0,
-            duration: 0.8,
-            ease: "power2.out",
-            delay: i * 0.05
-        });
-    });
+// Initialize App
+document.addEventListener('DOMContentLoaded', () => {
+    checkAuth();
+    renderServices('all');
+    renderBundleBuilder();
+});
 
-    ScrollTrigger.create({
-        start: "top -100",
-        end: 99999,
-        toggleClass: { className: "scrolled", targets: "#navbar" }
-    });
-} else {
-    document.querySelectorAll('.animate-up').forEach(el => {
-        el.style.opacity = '1';
-        el.style.transform = 'none';
-    });
+// Authentication Functions
+function checkAuth() {
+    const user = localStorage.getItem('imagine_user');
+    if (user) {
+        currentUser = JSON.parse(user);
+        updateUIForLoggedInUser();
+    }
 }
 
-// Mobile Menu
-const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-const mobileMenu = document.getElementById('mobile-menu');
-
-if (mobileMenuBtn && mobileMenu) {
-    mobileMenuBtn.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-        mobileMenu.classList.toggle('active');
-    });
-}
-
-// Image Error Handling
-window.handleImageError = function(img, type) {
-    console.log(`Image failed to load: ${img.src}, type: ${type}`);
-    img.classList.add('error');
-    img.style.display = 'none';
+function handleEmailLogin(e) {
+    e.preventDefault();
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
     
-    const container = img.parentElement;
-    
-    if (type === 'founder') {
-        const fallback = document.createElement('div');
-        fallback.className = 'w-full h-full bg-slate-800 flex flex-col items-center justify-center text-slate-600';
-        fallback.innerHTML = `
-            <span class="text-6xl mb-4">👤</span>
-            <span class="font-mono text-sm">Sulaiman Sheriff-Akorede</span>
-        `;
-        const existingFallback = container.querySelector('.bg-slate-800');
-        if (!existingFallback) {
-            container.appendChild(fallback);
-        }
-    } else if (type === 'logo') {
-        const logoContainer = img.closest('.logo-container');
-        if (logoContainer) {
-            logoContainer.innerHTML = 'J';
-            logoContainer.classList.add('bg-gradient-to-br', 'from-indigo-500', 'to-cyan-400');
-        }
-    }
-};
-
-// Setup image error handlers
-document.addEventListener('DOMContentLoaded', function() {
-    preloadImages();
-    
-    const logoImg = document.querySelector('.logo-container img');
-    if (logoImg) {
-        if (logoImg.complete && logoImg.naturalHeight === 0) {
-            handleImageError(logoImg, 'logo');
-        } else {
-            logoImg.addEventListener('error', function() { handleImageError(this, 'logo'); });
-            logoImg.addEventListener('load', function() { this.classList.add('loaded'); });
-        }
+    // Check if admin
+    if (email === CONFIG.ADMIN_EMAIL) {
+        currentUser = { email, name: 'Admin', isAdmin: true, balance: 0 };
+        localStorage.setItem('imagine_user', JSON.stringify(currentUser));
+        window.location.href = 'admin.html';
+        return;
     }
     
-    const founderImg = document.getElementById('founder-image');
-    if (founderImg) {
-        if (founderImg.complete && founderImg.naturalHeight === 0) {
-            handleImageError(founderImg, 'founder');
-        } else {
-            founderImg.addEventListener('error', function() { handleImageError(this, 'founder'); });
-            founderImg.addEventListener('load', function() { this.classList.add('loaded'); });
-        }
-    }
+    // Regular user login (simplified - in production use backend)
+    const users = JSON.parse(localStorage.getItem('imagine_users') || '[]');
+    const user = users.find(u => u.email === email && u.password === password);
     
-    document.querySelectorAll('.showcase-image img').forEach((img) => {
-        if (img.complete && img.naturalHeight === 0) {
-            handleImageError(img, 'showcase');
-        } else {
-            img.addEventListener('error', function() { handleImageError(this, 'showcase'); });
-            img.addEventListener('load', function() { this.classList.add('loaded'); });
-        }
-    });
-});
-
-// Showcase Image Click Handler
-document.querySelectorAll('.showcase-image').forEach((img, index) => {
-    img.addEventListener('click', function() {
-        const showcaseId = this.dataset.showcase;
-        const titles = [
-            'AI Marketing Infrastructure',
-            'Fashion AI Synthetic Modeling',
-            'Auto-Compliance Systems',
-            'Data Isolation Protocols',
-            'Tax Routing Matrix'
-        ];
-        
-        const notification = document.createElement('div');
-        notification.className = 'fixed bottom-8 right-8 glass-panel px-6 py-4 rounded-xl border-indigo-500/30 z-50 animate-up max-w-sm';
-        notification.innerHTML = `
-            <div class="flex items-start gap-3">
-                <div class="w-8 h-8 rounded-full bg-indigo-500/20 flex items-center justify-center flex-shrink-0 mt-1">
-                    <span class="text-indigo-400 text-xs font-mono">0${showcaseId}</span>
-                </div>
-                <div>
-                    <h4 class="font-bold text-white text-sm mb-1">${titles[index]}</h4>
-                    <p class="text-xs text-slate-400">SaaSul Project Showcase</p>
-                    <a href="https://wa.me/2348081515375?text=Inquiry%20about%20SaaSul%20Project%200${showcaseId}:%20${titles[index]}" target="_blank" class="inline-block mt-3 text-xs text-indigo-400 hover:text-indigo-300 font-semibold">Inquire via WhatsApp →</a>
-                </div>
-            </div>
-        `;
-        document.body.appendChild(notification);
-        setTimeout(() => notification.remove(), 5000);
-    });
-});
-
-// Smooth Scroll
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            const offset = 100;
-            const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - offset;
-            window.scrollTo({
-                top: targetPosition,
-                behavior: 'smooth'
-            });
-            if (mobileMenu) {
-                mobileMenu.classList.add('hidden');
-                mobileMenu.classList.remove('active');
-            }
-        }
-    });
-});
-
-// Terms & Conditions Toggle
-window.toggleTerms = function() {
-    const content = document.getElementById('terms-content');
-    const chevron = document.getElementById('terms-chevron');
-    
-    if (content.classList.contains('hidden')) {
-        content.classList.remove('hidden');
-        chevron.classList.add('rotated');
+    if (user) {
+        currentUser = user;
+        localStorage.setItem('imagine_user', JSON.stringify(user));
+        updateUIForLoggedInUser();
+        closeLoginModal();
+        showNotification('Welcome back!', 'success');
     } else {
-        content.classList.add('hidden');
-        chevron.classList.remove('rotated');
+        showNotification('Invalid credentials', 'error');
     }
-};
+}
 
-console.log('%cJUNESTUDIOS', 'color: #6366f1; font-size: 24px; font-weight: bold;');
-console.log('%cThe Emerging Market OS | Founded by Sulaiman Sheriff-Akorede', 'color: #22d3ee; font-size: 12px;');
-
-function preloadImages() {
-    const imagesToPreload = [
-        { src: CONFIG.images.logo, type: 'logo', selector: '.logo-container img' },
-        { src: CONFIG.images.founder, type: 'founder', selector: '#founder-image' },
-        ...CONFIG.images.showcases.map((src, i) => ({ 
-            src: src, 
-            type: 'showcase', 
-            selector: `.showcase-image[data-showcase="${i+1}"] img` 
-        }))
-    ];
+function handleEmailSignup(e) {
+    e.preventDefault();
+    const name = document.getElementById('signupName').value;
+    const email = document.getElementById('signupEmail').value;
+    const password = document.getElementById('signupPassword').value;
     
-    imagesToPreload.forEach(({ src, type, selector }) => {
-        const img = new Image();
-        img.onload = function() {
-            const domImg = document.querySelector(selector);
-            if (domImg) domImg.classList.add('loaded');
+    const users = JSON.parse(localStorage.getItem('imagine_users') || '[]');
+    
+    if (users.find(u => u.email === email)) {
+        showNotification('Email already registered', 'error');
+        return;
+    }
+    
+    const newUser = {
+        name,
+        email,
+        password,
+        balance: 0,
+        isAdmin: false,
+        joinedAt: new Date().toISOString()
+    };
+    
+    users.push(newUser);
+    localStorage.setItem('imagine_users', JSON.stringify(users));
+    
+    currentUser = newUser;
+    localStorage.setItem('imagine_user', JSON.stringify(newUser));
+    updateUIForLoggedInUser();
+    closeSignupModal();
+    showNotification('Account created successfully!', 'success');
+}
+
+function handleGoogleSignIn(response) {
+    // Decode JWT and create user
+    const userInfo = jwt_decode(response.credential);
+    
+    const users = JSON.parse(localStorage.getItem('imagine_users') || '[]');
+    let user = users.find(u => u.email === userInfo.email);
+    
+    if (!user) {
+        user = {
+            name: userInfo.name,
+            email: userInfo.email,
+            picture: userInfo.picture,
+            balance: 0,
+            isAdmin: userInfo.email === CONFIG.ADMIN_EMAIL,
+            googleId: userInfo.sub
         };
-        img.onerror = function() {
-            const domImg = document.querySelector(selector);
-            if (domImg) handleImageError(domImg, type);
-        };
-        img.src = src;
+        users.push(user);
+        localStorage.setItem('imagine_users', JSON.stringify(users));
+    }
+    
+    currentUser = user;
+    localStorage.setItem('imagine_user', JSON.stringify(user));
+    
+    if (user.isAdmin) {
+        window.location.href = 'admin.html';
+    } else {
+        updateUIForLoggedInUser();
+        closeLoginModal();
+        closeSignupModal();
+        showNotification(`Welcome, ${user.name}!`, 'success');
+    }
+}
+
+function logout() {
+    currentUser = null;
+    localStorage.removeItem('imagine_user');
+    location.reload();
+}
+
+function updateUIForLoggedInUser() {
+    document.getElementById('navLoginBtn').classList.add('hidden');
+    document.getElementById('navSignupBtn').classList.add('hidden');
+    document.getElementById('navLogoutBtn').classList.remove('hidden');
+    document.getElementById('mobileLoginBtn').classList.add('hidden');
+    document.getElementById('mobileSignupBtn').classList.add('hidden');
+    document.getElementById('mobileLogoutBtn').classList.remove('hidden');
+    document.getElementById('navUserBalance').classList.remove('hidden');
+    document.getElementById('navUserBalance').textContent = `₦${(currentUser.balance || 0).toLocaleString()}`;
+    
+    // Show chat history tab
+    document.getElementById('chatHistoryTab').classList.remove('hidden');
+    loadChatHistory();
+}
+
+// Services Functions
+function renderServices(category) {
+    const grid = document.getElementById('servicesGrid');
+    let filtered = category === 'all' ? services : services.filter(s => s.category === category);
+    
+    // Sort by price (cheapest first)
+    filtered.sort((a, b) => a.price - b.price);
+    
+    grid.innerHTML = filtered.map(service => `
+        <div class="glass-card service-card rounded-2xl p-6 border border-white/10 hover:border-indigo-500/50 transition-all cursor-pointer" onclick="handleServiceClick(${service.id})">
+            <div class="flex justify-between items-start mb-4">
+                <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                    </svg>
+                </div>
+                <span class="text-xs text-green-400 bg-green-400/10 px-2 py-1 rounded-full">Available</span>
+            </div>
+            <h3 class="font-semibold text-lg mb-2">${service.name}</h3>
+            <p class="text-slate-400 text-sm mb-4">Per ${service.per.toLocaleString()} units</p>
+            <div class="flex justify-between items-center">
+                <div>
+                    <span class="text-2xl font-bold text-indigo-400">₦${service.price.toLocaleString()}</span>
+                </div>
+                <button class="bg-gradient-to-r from-indigo-500 to-purple-600 px-4 py-2 rounded-full text-sm font-semibold hover:shadow-lg hover:shadow-indigo-500/30 transition-all">
+                    Order Now
+                </button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function filterServices(category) {
+    document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    renderServices(category);
+}
+
+function handleServiceClick(serviceId) {
+    if (!currentUser) {
+        document.getElementById('loginPrompt').classList.remove('hidden');
+        return;
+    }
+    
+    const service = services.find(s => s.id === serviceId);
+    // Open order modal (simplified)
+    showNotification(`Ordering ${service.name}. Contact WhatsApp for payment.`, 'info');
+    window.open(`https://wa.me/${CONFIG.WHATSAPP_NUMBER}?text=I want to order: ${service.name}`, '_blank');
+}
+
+function closeLoginPrompt() {
+    document.getElementById('loginPrompt').classList.add('hidden');
+}
+
+// Bundle Functions
+function addToBundle(type) {
+    const bundles = {
+        starter: [1, 4, 6],
+        growth: [1, 1, 1, 1, 10],
+        enterprise: [1, 4, 6, 8, 10, 12, 12]
+    };
+    
+    selectedServices = [...new Set([...selectedServices, ...bundles[type]])];
+    updateBundleUI();
+    showNotification('Bundle added to cart!', 'success');
+}
+
+function renderBundleBuilder() {
+    const container = document.getElementById('bundleBuilder');
+    container.innerHTML = services.slice(0, 8).map(service => `
+        <div class="glass-card p-4 rounded-xl border border-white/10 hover:border-indigo-500/50 transition-all cursor-pointer" onclick="toggleBundleService(${service.id})">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h4 class="font-semibold text-sm">${service.name}</h4>
+                    <p class="text-xs text-slate-400">₦${service.price.toLocaleString()}</p>
+                </div>
+                <input type="checkbox" class="w-5 h-5 rounded" data-service-id="${service.id}">
+            </div>
+        </div>
+    `).join('');
+}
+
+function toggleBundleService(serviceId) {
+    const index = selectedServices.indexOf(serviceId);
+    if (index > -1) {
+        selectedServices.splice(index, 1);
+    } else {
+        selectedServices.push(serviceId);
+    }
+    updateBundleUI();
+}
+
+function updateBundleUI() {
+    document.getElementById('selectedCount').textContent = selectedServices.length;
+    
+    let discount = 0;
+    if (selectedServices.length >= 7) discount = 50;
+    else if (selectedServices.length >= 5) discount = 35;
+    else if (selectedServices.length >= 3) discount = 20;
+    
+    document.getElementById('bundleDiscount').textContent = `${discount}%`;
+    
+    // Update checkboxes
+    document.querySelectorAll('#bundleBuilder input[type="checkbox"]').forEach(cb => {
+        cb.checked = selectedServices.includes(parseInt(cb.dataset.serviceId));
     });
+}
+
+function checkoutBundle() {
+    if (selectedServices.length === 0) {
+        showNotification('Select at least one service', 'error');
+        return;
+    }
+    
+    if (!currentUser) {
+        openLoginModal();
+        return;
+    }
+    
+    let total = selectedServices.reduce((sum, id) => {
+        const service = services.find(s => s.id === id);
+        return sum + service.price;
+    }, 0);
+    
+    let discount = 0;
+    if (selectedServices.length >= 7) discount = 50;
+    else if (selectedServices.length >= 5) discount = 35;
+    else if (selectedServices.length >= 3) discount = 20;
+    
+    const finalPrice = total * (1 - discount / 100);
+    
+    showNotification(`Bundle Total: ₦${finalPrice.toLocaleString()} (${discount}% off). Contact WhatsApp to complete order.`, 'success');
+    window.open(`https://wa.me/${CONFIG.WHATSAPP_NUMBER}?text=I want to order a custom bundle with ${selectedServices.length} services. Total: ₦${finalPrice.toLocaleString()}`, '_blank');
+}
+
+// AI Assistant Functions
+function changeAIMode() {
+    const mode = document.getElementById('aiMode').value;
+    const messages = {
+        social: "I'm your Social Media Expert! Ask me about engagement strategies, posting schedules, or platform-specific tips.",
+        content: "I'm your Content Design Pro! Need help with visuals, captions, or content planning?",
+        marketing: "I'm your Marketing Strategy advisor! Let's discuss campaigns, ROI, or growth hacking.",
+        nigerian: "I'm your Nigerian Content Expert! Ask me about local trends, Pidgin English captions, or cultural insights."
+    };
+    
+    addChatMessage('AI', messages[mode]);
+}
+
+function sendMessage() {
+    const input = document.getElementById('chatInput');
+    const message = input.value.trim();
+    
+    if (!message) return;
+    
+    addChatMessage('You', message);
+    input.value = '';
+    
+    // Simulate AI response
+    setTimeout(() => {
+        const mode = document.getElementById('aiMode').value;
+        const responses = {
+            social: "Great question! For better engagement, post when your audience is most active. In Nigeria, that's typically 7-9 AM and 7-10 PM. Use trending hashtags and engage with comments within the first hour.",
+            content: "For compelling content, follow the 80/20 rule: 80% value-driven posts, 20% promotional. Use high-quality visuals and write captions that tell a story.",
+            marketing: "A solid marketing strategy starts with knowing your audience. Define your USP, set clear KPIs, and always A/B test your campaigns.",
+            nigerian: "Na wa o! For Nigerian audience, use relatable content, mix English with Pidgin sometimes, and leverage trending topics like #BBNaija or local events."
+        };
+        
+        addChatMessage('AI', responses[mode]);
+        
+        // Save to history if logged in
+        if (currentUser) {
+            saveChatToHistory(message, responses[mode]);
+        }
+    }, 1000);
+}
+
+function addChatMessage(sender, message) {
+    const history = document.getElementById('chatHistory');
+    const isAI = sender === 'AI';
+    
+    history.innerHTML += `
+        <div class="flex gap-3 chat-message ${isAI ? '' : 'flex-row-reverse'}">
+            <div class="w-8 h-8 ${isAI ? 'bg-gradient-to-br from-indigo-500 to-purple-600' : 'bg-gradient-to-br from-green-500 to-emerald-600'} rounded-full flex-shrink-0 flex items-center justify-center text-xs font-bold">${isAI ? 'AI' : 'U'}</div>
+            <div class="glass-card px-4 py-3 rounded-2xl ${isAI ? 'rounded-tl-none' : 'rounded-tr-none'} max-w-[80%]">
+                <p class="text-sm">${message}</p>
+            </div>
+        </div>
+    `;
+    
+    history.scrollTop = history.scrollHeight;
+}
+
+function saveChatToHistory(userMsg, aiMsg) {
+    const history = JSON.parse(localStorage.getItem('imagine_chat_history') || '[]');
+    history.push({
+        userId: currentUser.email,
+        timestamp: new Date().toISOString(),
+        userMessage: userMsg,
+        aiResponse: aiMsg,
+        mode: document.getElementById('aiMode').value
+    });
+    localStorage.setItem('imagine_chat_history', JSON.stringify(history));
+    loadChatHistory();
+}
+
+function loadChatHistory() {
+    const history = JSON.parse(localStorage.getItem('imagine_chat_history') || '[]');
+    const userHistory = history.filter(h => h.userId === currentUser.email).slice(-5);
+    
+    const container = document.getElementById('userChatHistory');
+    container.innerHTML = userHistory.map(h => `
+        <div class="glass-card p-3 rounded-lg text-sm">
+            <p class="text-slate-300 truncate">${h.userMessage}</p>
+            <p class="text-xs text-slate-500 mt-1">${new Date(h.timestamp).toLocaleDateString()}</p>
+        </div>
+    `).join('') || '<p class="text-sm text-slate-400">No chat history yet</p>';
+}
+
+// UI Helper Functions
+function openLoginModal() {
+    document.getElementById('loginModal').classList.remove('hidden');
+}
+
+function closeLoginModal() {
+    document.getElementById('loginModal').classList.add('hidden');
+}
+
+function openSignupModal() {
+    document.getElementById('signupModal').classList.remove('hidden');
+}
+
+function closeSignupModal() {
+    document.getElementById('signupModal').classList.add('hidden');
+}
+
+function switchToSignup() {
+    closeLoginModal();
+    openSignupModal();
+}
+
+function switchToLogin() {
+    closeSignupModal();
+    openLoginModal();
+}
+
+function toggleMobileMenu() {
+    document.getElementById('mobileMenu').classList.toggle('hidden');
+}
+
+function scrollToSection(id) {
+    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+}
+
+function showNotification(message, type = 'info') {
+    // Simple notification (in production use a proper toast library)
+    alert(`${type.toUpperCase()}: ${message}`);
+}
+
+// JWT Decode helper (for Google Sign-In)
+function jwt_decode(token) {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+    return JSON.parse(jsonPayload);
 }
