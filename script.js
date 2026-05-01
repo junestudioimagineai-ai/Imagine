@@ -716,3 +716,33 @@ window.sendAIMessage = sendAIMessage;
 window.confirmPaymentSent = confirmPaymentSent;
 window.updateCalculator = updateCalculator;
 window.renderOrders = renderOrders;
+
+// App namespace for HTML onclick handlers
+window.app = {
+    navigate: showPage,
+    openAuth: (type) => {
+        showPage('auth');
+        setTimeout(() => {
+            const loginForm = document.getElementById('login-form');
+            const signupForm = document.getElementById('signup-form');
+            if (type === 'login' && loginForm) {
+                loginForm.classList.remove('hidden');
+                signupForm?.classList.add('hidden');
+            } else if (type === 'signup' && signupForm) {
+                signupForm.classList.remove('hidden');
+                loginForm?.classList.add('hidden');
+            }
+        }, 100);
+    },
+    closeMobileMenu: () => {
+        const mobileMenu = document.querySelector('.mobile-menu');
+        if (mobileMenu) mobileMenu.classList.remove('active');
+    },
+    logout: handleLogout
+};
+
+// Mobile menu toggle
+window.toggleMobileMenu = () => {
+    const mobileMenu = document.querySelector('.mobile-menu');
+    if (mobileMenu) mobileMenu.classList.toggle('active');
+};
