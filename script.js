@@ -30,15 +30,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initializeApp() {
-    // Hide loader immediately
-    setTimeout(() => {
-        const loader = document.getElementById('pageLoader');
-        if (loader) {
-            loader.style.opacity = '0';
-            setTimeout(() => loader.remove(), 500);
-        }
-    }, 800);
-
+    // No loader - show content immediately
+    
     // Load data from localStorage
     loadUserData();
     loadServices();
