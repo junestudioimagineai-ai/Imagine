@@ -1,759 +1,709 @@
-// Imagine SMM Marketplace - Complete Setup
-// Dual API Integration: JustAnotherPanel & MoreThanPanel
-// JuneStudio Basic (JAP) and JuneStudio Max (MTP) tiers
+/* ===================================
+   IMAGINE - Enterprise SMM Marketplace
+   Complete Application Logic
+   =================================== */
 
+// Configuration
 const CONFIG = {
     JAP_API_KEY: 'fc5f37722f01550a7c956a0d4ecf63bb',
     MTP_API_KEY: '3cb77c7355e039af290c6ba07097d85f',
-    WHATSAPP: '+2348081515375',
+    JAP_URL: 'https://justanotherpanel.com/api/v2',
+    MTP_URL: 'https://morethanpanel.com/api/v2',
+    FX_RATE: 1450, // Naira per Dollar (hidden)
+    MARKUP: 2.5, // 150% profit markup
     ADMIN_EMAIL: 'junestudioimagineai@gmail.com',
-    MARKUP: 1.5, // 150% profit margin
+    WHATSAPP: '+2348081515375',
     GOOGLE_CLIENT_ID: '1031396840174-7kq44t5hn9nji3ssvcb0q2a5mbjie0ag.apps.googleusercontent.com'
 };
 
-// State
-let currentUser = null;
-let services = [];
-let bundle = [];
-let currentMode = 'social';
-let currentView = 'smm'; // 'smm' or 'digital'
+// State Management
+let state = {
+    currentUser: null,
+    currentTier: 'basic', // 'basic' or 'max'
+    currentCategory: 'all',
+    services: [],
+    bundle: [],
+    aiMode: 'social',
+    chatHistory: []
+};
 
-// Initialize on load
+// Initialize Application
 document.addEventListener('DOMContentLoaded', () => {
-    initTheme();
-    initAuth();
-    loadServices();
-    checkAuth();
-    setupEventListeners();
+    initializeApp();
 });
 
-// Theme Management
-function initTheme() {
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    document.documentElement.setAttribute('data-theme', savedTheme);
-    updateThemeIcon(savedTheme);
-    
-    document.getElementById('theme-toggle')?.addEventListener('click', () => {
-        const current = document.documentElement.getAttribute('data-theme');
-        const next = current === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', next);
-        localStorage.setItem('theme', next);
-        updateThemeIcon(next);
-    });
+async function initializeApp() {
+    loadUserFromStorage();
+    await loadServices();
+    renderServices();
+    setupEventListeners();
+    loadChatHistory();
 }
 
-function updateThemeIcon(theme) {
-    const icon = document.querySelector('#theme-toggle i');
-    if (icon) {
-        icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+// User Authentication
+function loadUserFromStorage() {
+    const user = localStorage.getItem('imagine_user');
+    if (user) {
+        state.currentUser = JSON.parse(user);
+        updateUserUI();
     }
 }
 
-// View Toggle (SMM vs Digital Services)
-function toggleView() {
-    currentView = currentView === 'smm' ? 'digital' : 'smm';
-    const btn = document.getElementById('view-toggle');
-    if (btn) {
-        btn.textContent = currentView === 'smm' 
-            ? 'Switch to Non-SMM Services' 
-            : 'Back to SMM Services';
-    }
-    renderServices(services);
-}
-
-// Service Generation with Dual API Sources
-function generateServices() {
-    const allServices = [];
-    let id = 1;
+function updateUserUI() {
+    const authButtons = document.getElementById('authButtons');
+    const userMenu = document.getElementById('userMenu');
     
-    // JuneStudio Basic (JustAnotherPanel) Services
-    const japCategories = [
-        { id: 'instagram', name: 'Instagram', provider: 'basic' },
-        { id: 'tiktok', name: 'TikTok', provider: 'basic' },
-        { id: 'facebook', name: 'Facebook', provider: 'basic' },
-        { id: 'twitter', name: 'Twitter', provider: 'basic' },
-        { id: 'youtube', name: 'YouTube', provider: 'basic' },
-        { id: 'telegram', name: 'Telegram', provider: 'basic' },
-        { id: 'whatsapp', name: 'WhatsApp', provider: 'basic' },
-        { id: 'linkedin', name: 'LinkedIn', provider: 'basic' }
-    ];
-    
-    const japServices = [
-        { name: 'Followers', basePrice: 0.005 },
-        { name: 'Likes', basePrice: 0.001 },
-        { name: 'Views', basePrice: 0.0005 },
-        { name: 'Comments', basePrice: 0.01 },
-        { name: 'Shares', basePrice: 0.02 }
-    ];
-    
-    japCategories.forEach(cat => {
-        japServices.forEach(service => {
-            [100, 500, 1000, 5000, 10000].forEach(qty => {
-                const price = service.basePrice * qty * CONFIG.MARKUP;
-                allServices.push({
-                    id: id++,
-                    service_id: `JAP-${cat.id}-${service.name}-${qty}`,
-                    name: `${cat.name} ${service.name} (${qty.toLocaleString()})`,
-                    category: cat.id,
-                    description: `High quality ${cat.name.toLowerCase()} ${service.name.toLowerCase()} - Fast delivery from JuneStudio Basic`,
-                    price: parseFloat(price.toFixed(2)),
-                    min_quantity: qty,
-                    max_quantity: qty * 10,
-                    provider: 'basic',
-                    providerName: 'JuneStudio Basic'
-                });
-            });
-        });
-    });
-    
-    // JuneStudio Max (MoreThanPanel) Services - Premium Tier
-    const mtpCategories = [
-        { id: 'instagram', name: 'Instagram', provider: 'max' },
-        { id: 'tiktok', name: 'TikTok', provider: 'max' },
-        { id: 'facebook', name: 'Facebook', provider: 'max' },
-        { id: 'twitter', name: 'Twitter', provider: 'max' },
-        { id: 'youtube', name: 'YouTube', provider: 'max' },
-        { id: 'telegram', name: 'Telegram', provider: 'max' },
-        { id: 'snapchat', name: 'Snapchat', provider: 'max' },
-        { id: 'pinterest', name: 'Pinterest', provider: 'max' },
-        { id: 'reddit', name: 'Reddit', provider: 'max' }
-    ];
-    
-    const mtpServices = [
-        { name: 'Followers Premium', basePrice: 0.008 },
-        { name: 'Likes Premium', basePrice: 0.002 },
-        { name: 'Views Premium', basePrice: 0.001 },
-        { name: 'Engagement Package', basePrice: 0.015 },
-        { name: 'Growth Boost', basePrice: 0.025 }
-    ];
-    
-    mtpCategories.forEach(cat => {
-        mtpServices.forEach(service => {
-            [100, 500, 1000, 5000, 10000, 50000].forEach(qty => {
-                const price = service.basePrice * qty * CONFIG.MARKUP;
-                allServices.push({
-                    id: id++,
-                    service_id: `MTP-${cat.id}-${service.name}-${qty}`,
-                    name: `${cat.name} ${service.name} (${qty.toLocaleString()})`,
-                    category: cat.id,
-                    description: `Premium ${cat.name.toLowerCase()} ${service.name.toLowerCase()} - Priority delivery from JuneStudio Max`,
-                    price: parseFloat(price.toFixed(2)),
-                    min_quantity: qty,
-                    max_quantity: qty * 10,
-                    provider: 'max',
-                    providerName: 'JuneStudio Max'
-                });
-            });
-        });
-    });
-    
-    // Digital Services (Non-SMM)
-    if (currentView === 'digital') {
-        const digitalServices = [
-            { id: 'logo-design', name: 'Logo Design Basic', price: 150, category: 'branding' },
-            { id: 'logo-premium', name: 'Logo Design Premium', price: 300, category: 'branding' },
-            { id: 'brand-identity', name: 'Complete Brand Identity', price: 750, category: 'branding' },
-            { id: 'landing-page', name: 'Landing Page Design', price: 225, category: 'web' },
-            { id: 'business-site', name: 'Business Website', price: 450, category: 'web' },
-            { id: 'ecommerce', name: 'E-commerce Store', price: 750, category: 'web' },
-            { id: 'seo-audit', name: 'SEO Audit', price: 150, category: 'seo' },
-            { id: 'seo-monthly', name: 'Monthly SEO Package', price: 300, category: 'seo' },
-            { id: 'content-strategy', name: 'Content Strategy', price: 200, category: 'marketing' },
-            { id: 'social-management', name: 'Social Media Management', price: 350, category: 'marketing' },
-            { id: 'video-edit-basic', name: 'Video Editing Basic', price: 100, category: 'content' },
-            { id: 'video-edit-pro', name: 'Video Editing Pro', price: 250, category: 'content' }
-        ];
-        
-        digitalServices.forEach(ds => {
-            allServices.push({
-                id: id++,
-                service_id: `DIGITAL-${ds.id}`,
-                name: ds.name,
-                category: ds.category,
-                description: `Professional ${ds.name.toLowerCase()} by JuneStudio experts`,
-                price: ds.price * CONFIG.MARKUP,
-                min_quantity: 1,
-                max_quantity: 10,
-                provider: 'digital',
-                providerName: 'JuneStudio Digital'
-            });
-        });
-    }
-    
-    return allServices;
-}
-
-function loadServices() {
-    services = generateServices();
-    renderServices(services);
-    updatePlatformFilter();
-}
-
-function renderServices(list) {
-    const grid = document.getElementById('services-grid');
-    if (!grid) return;
-    
-    // Filter by view type
-    let filtered = list;
-    if (currentView === 'smm') {
-        filtered = list.filter(s => s.provider !== 'digital');
+    if (state.currentUser) {
+        authButtons.style.display = 'none';
+        userMenu.style.display = 'flex';
+        document.getElementById('userNameDisplay').textContent = state.currentUser.name.split(' ')[0];
+        document.getElementById('userBalanceDisplay').textContent = formatCurrency(state.currentUser.balance || 0);
     } else {
-        filtered = list.filter(s => s.provider === 'digital');
+        authButtons.style.display = 'flex';
+        userMenu.style.display = 'none';
     }
-    
-    if (filtered.length === 0) {
-        grid.innerHTML = '<p style="text-align:center;grid-column:1/-1;color:var(--text-secondary);">No services found in this category</p>';
-        return;
-    }
-    
-    grid.innerHTML = filtered.map(s => `
-        <div class="service-card" data-category="${s.category}" data-provider="${s.provider}">
-            <span class="provider-badge provider-${s.provider}">${s.providerName}</span>
-            <span class="category">${s.category.toUpperCase()}</span>
-            <h3>${s.name}</h3>
-            <p class="description">${s.description}</p>
-            <div class="price">₦${s.price.toFixed(2)}</div>
-            <button class="btn btn-primary btn-block" onclick="openOrderModal(${s.id})" ${!currentUser ? 'disabled style="opacity:0.5"' : ''}>
-                ${currentUser ? 'Order Now' : 'Login to Order'}
-            </button>
-        </div>
-    `).join('');
-}
-
-function updatePlatformFilter() {
-    const filter = document.getElementById('platform-filter');
-    if (!filter) return;
-    
-    const providers = [...new Set(services.map(s => s.provider))];
-    filter.innerHTML = '<option value="all">All Providers</option>' +
-        providers.map(p => {
-            const name = p === 'basic' ? 'JuneStudio Basic' : p === 'max' ? 'JuneStudio Max' : 'JuneStudio Digital';
-            return `<option value="${p}">${name}</option>`;
-        }).join('');
-}
-
-function filterServices() {
-    const search = document.getElementById('service-search')?.value.toLowerCase() || '';
-    const category = document.getElementById('category-filter')?.value || 'all';
-    const platform = document.getElementById('platform-filter')?.value || 'all';
-    
-    let filtered = services;
-    
-    // Apply view filter first
-    if (currentView === 'smm') {
-        filtered = filtered.filter(s => s.provider !== 'digital');
-    } else {
-        filtered = filtered.filter(s => s.provider === 'digital');
-    }
-    
-    if (category !== 'all') filtered = filtered.filter(s => s.category === category);
-    if (platform !== 'all') filtered = filtered.filter(s => s.provider === platform);
-    if (search) filtered = filtered.filter(s => s.name.toLowerCase().includes(search));
-    
-    renderServices(filtered);
-}
-
-// Auth Functions
-function initAuth() {
-    // Check for existing session
-    const saved = localStorage.getItem('currentUser');
-    if (saved) {
-        currentUser = JSON.parse(saved);
-        updateUI();
-    }
-}
-
-function checkAuth() {
-    const saved = localStorage.getItem('currentUser');
-    if (saved) {
-        currentUser = JSON.parse(saved);
-        updateUI();
-    }
-}
-
-function showModal(type) {
-    const modal = document.getElementById('auth-modal');
-    const loginForm = document.getElementById('login-form');
-    const signupForm = document.getElementById('signup-form');
-    
-    if (type === 'login') {
-        loginForm.style.display = 'block';
-        signupForm.style.display = 'none';
-    } else {
-        loginForm.style.display = 'none';
-        signupForm.style.display = 'block';
-    }
-    
-    modal.style.display = 'block';
-}
-
-function closeModal() {
-    document.getElementById('auth-modal').style.display = 'none';
-}
-
-function showSignup() {
-    document.getElementById('login-form').style.display = 'none';
-    document.getElementById('signup-form').style.display = 'block';
 }
 
 function showLogin() {
-    document.getElementById('signup-form').style.display = 'none';
-    document.getElementById('login-form').style.display = 'block';
+    document.getElementById('loginModal').classList.add('show');
 }
 
-function handleLogin(e) {
-    e.preventDefault();
-    const email = document.getElementById('login-email').value;
-    const password = document.getElementById('login-password').value;
-    
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    const user = users.find(u => u.email === email && u.password === password);
-    
-    if (user) {
-        currentUser = user;
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        updateUI();
-        closeModal();
-        alert('Welcome back, ' + (user.businessName || user.email) + '!');
+function showSignup() {
+    document.getElementById('signupModal').classList.add('show');
+}
+
+function switchAuth(type) {
+    closeModal('loginModal');
+    closeModal('signupModal');
+    if (type === 'login') {
+        showLogin();
     } else {
-        alert('Invalid credentials. Please try again.');
+        showSignup();
     }
 }
 
-function handleSignup(e) {
-    e.preventDefault();
-    const businessName = document.getElementById('signup-business').value;
-    const email = document.getElementById('signup-email').value;
-    const password = document.getElementById('signup-password').value;
+function handleLogin(event) {
+    event.preventDefault();
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
     
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    // Simulate login (in production, this would call your backend)
+    const users = JSON.parse(localStorage.getItem('imagine_users') || '[]');
+    const user = users.find(u => u.email === email && u.password === password);
+    
+    if (user) {
+        state.currentUser = user;
+        localStorage.setItem('imagine_user', JSON.stringify(user));
+        updateUserUI();
+        closeModal('loginModal');
+        showNotification('Welcome back, ' + user.name + '!', 'success');
+    } else {
+        showNotification('Invalid credentials', 'error');
+    }
+}
+
+function handleSignup(event) {
+    event.preventDefault();
+    const name = document.getElementById('signupName').value;
+    const email = document.getElementById('signupEmail').value;
+    const password = document.getElementById('signupPassword').value;
+    
+    const users = JSON.parse(localStorage.getItem('imagine_users') || '[]');
     
     if (users.find(u => u.email === email)) {
-        alert('Email already registered. Please login instead.');
+        showNotification('Email already registered', 'error');
         return;
     }
     
     const newUser = {
         id: Date.now(),
-        businessName: businessName,
-        email: email,
-        password: password,
+        name,
+        email,
+        password,
         balance: 0,
-        role: email === CONFIG.ADMIN_EMAIL ? 'admin' : 'user',
+        orders: [],
+        isAdmin: email === CONFIG.ADMIN_EMAIL,
         createdAt: new Date().toISOString()
     };
     
     users.push(newUser);
-    localStorage.setItem('users', JSON.stringify(users));
+    localStorage.setItem('imagine_users', JSON.stringify(users));
     
-    currentUser = newUser;
-    localStorage.setItem('currentUser', JSON.stringify(newUser));
-    
-    updateUI();
-    closeModal();
-    alert('Account created successfully! Welcome to Imagine.');
+    state.currentUser = newUser;
+    localStorage.setItem('imagine_user', JSON.stringify(newUser));
+    updateUserUI();
+    closeModal('signupModal');
+    showNotification('Account created successfully!', 'success');
 }
 
-function handleGoogleLogin(response) {
-    const userInfo = {
-        email: response.email,
-        name: response.name,
-        picture: response.picture
-    };
+function googleSignIn() {
+    // Google OAuth implementation
+    const clientId = CONFIG.GOOGLE_CLIENT_ID;
+    const redirectUri = window.location.href.split('#')[0];
+    const scope = 'email profile';
     
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    let user = users.find(u => u.email === userInfo.email);
+    const authUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=${encodeURIComponent(scope)}`;
     
-    if (!user) {
-        user = {
-            id: Date.now(),
-            businessName: userInfo.name,
-            email: userInfo.email,
-            password: '',
-            balance: 0,
-            role: userInfo.email === CONFIG.ADMIN_EMAIL ? 'admin' : 'user',
-            createdAt: new Date().toISOString()
-        };
-        users.push(user);
-        localStorage.setItem('users', JSON.stringify(users));
+    // Check for hash token in URL
+    const hash = window.location.hash;
+    if (hash && hash.includes('access_token')) {
+        const params = new URLSearchParams(hash.substring(1));
+        const accessToken = params.get('access_token');
+        
+        // Fetch user info from Google
+        fetch(`https://www.googleapis.com/oauth2/v2/userinfo?access_token=${accessToken}`)
+            .then(res => res.json())
+            .then(data => {
+                const users = JSON.parse(localStorage.getItem('imagine_users') || '[]');
+                let user = users.find(u => u.email === data.email);
+                
+                if (!user) {
+                    user = {
+                        id: Date.now(),
+                        name: data.name,
+                        email: data.email,
+                        password: '',
+                        balance: 0,
+                        orders: [],
+                        isAdmin: data.email === CONFIG.ADMIN_EMAIL,
+                        createdAt: new Date().toISOString()
+                    };
+                    users.push(user);
+                    localStorage.setItem('imagine_users', JSON.stringify(users));
+                }
+                
+                state.currentUser = user;
+                localStorage.setItem('imagine_user', JSON.stringify(user));
+                updateUserUI();
+                window.location.hash = '';
+                showNotification('Welcome, ' + user.name + '!', 'success');
+            })
+            .catch(err => {
+                showNotification('Google sign-in failed', 'error');
+            });
+    } else {
+        window.location.href = authUrl;
     }
-    
-    currentUser = user;
-    localStorage.setItem('currentUser', JSON.stringify(user));
-    updateUI();
-    alert('Welcome, ' + userInfo.name + '!');
 }
 
 function logout() {
-    currentUser = null;
-    localStorage.removeItem('currentUser');
-    updateUI();
-    alert('Logged out successfully');
+    state.currentUser = null;
+    localStorage.removeItem('imagine_user');
+    updateUserUI();
+    showNotification('Logged out successfully', 'success');
 }
 
-function updateUI() {
-    const authSection = document.getElementById('auth-section');
-    const userSection = document.getElementById('user-section');
-    const usernameDisplay = document.getElementById('nav-username');
-    const balanceDisplay = document.getElementById('nav-balance');
-    const adminLink = document.getElementById('admin-link');
+function toggleUserDropdown() {
+    document.getElementById('userDropdown').classList.toggle('show');
+}
+
+// Service Management
+async function loadServices() {
+    try {
+        // Load from both APIs
+        const [japServices, mtpServices] = await Promise.all([
+            fetchServicesFromAPI('JAP'),
+            fetchServicesFromAPI('MTP')
+        ]);
+        
+        state.services = [
+            ...japServices.map(s => ({...s, tier: 'basic'})),
+            ...mtpServices.map(s => ({...s, tier: 'max'}))
+        ];
+        
+        renderServices();
+    } catch (error) {
+        console.error('Error loading services:', error);
+        // Fallback to demo services if APIs fail
+        loadDemoServices();
+    }
+}
+
+async function fetchServicesFromAPI(provider) {
+    const apiKey = provider === 'JAP' ? CONFIG.JAP_API_KEY : CONFIG.MTP_API_KEY;
+    const apiUrl = provider === 'JAP' ? CONFIG.JAP_URL : CONFIG.MTP_URL;
     
-    if (currentUser) {
-        authSection.style.display = 'none';
-        userSection.style.display = 'flex';
-        userSection.style.alignItems = 'center';
-        userSection.style.gap = '1rem';
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                key: apiKey,
+                action: 'services'
+            })
+        });
         
-        usernameDisplay.textContent = currentUser.businessName || currentUser.email;
-        balanceDisplay.textContent = (currentUser.balance || 0).toFixed(2);
+        const data = await response.json();
         
-        if (adminLink) {
-            adminLink.style.display = currentUser.role === 'admin' ? 'block' : 'none';
+        if (data && Array.isArray(data)) {
+            return data.map(service => ({
+                id: service.service,
+                name: service.name,
+                category: categorizeService(service.name),
+                price: service.rate,
+                min: service.min,
+                max: service.max,
+                description: getServiceDescription(service.name),
+                provider: provider
+            }));
         }
-    } else {
-        authSection.style.display = 'flex';
-        userSection.style.display = 'none';
-        if (adminLink) adminLink.style.display = 'none';
+        
+        return [];
+    } catch (error) {
+        console.error(`Error fetching from ${provider}:`, error);
+        return [];
     }
-    
-    // Re-render services to update button states
-    filterServices();
 }
 
-// Order Functions
-let currentService = null;
-
-function closeOrderModal() {
-    document.getElementById('order-modal').style.display = 'none';
+function categorizeService(name) {
+    const lowerName = name.toLowerCase();
+    if (lowerName.includes('instagram')) return 'instagram';
+    if (lowerName.includes('tiktok')) return 'tiktok';
+    if (lowerName.includes('facebook')) return 'facebook';
+    if (lowerName.includes('twitter') || lowerName.includes('x')) return 'twitter';
+    if (lowerName.includes('youtube')) return 'youtube';
+    if (lowerName.includes('telegram')) return 'telegram';
+    if (lowerName.includes('whatsapp')) return 'whatsapp';
+    if (lowerName.includes('snapchat')) return 'other';
+    if (lowerName.includes('pinterest')) return 'other';
+    if (lowerName.includes('reddit')) return 'other';
+    if (lowerName.includes('linkedin')) return 'other';
+    return 'other';
 }
 
-function openOrderModal(serviceId) {
-    if (!currentUser) {
-        showModal('login');
-        return;
-    }
-    
-    currentService = services.find(s => s.id === serviceId);
-    if (!currentService) return;
-    
-    const modal = document.getElementById('order-modal');
-    const details = document.getElementById('order-details');
-    
-    details.innerHTML = `
-        <h3>${currentService.name}</h3>
-        <p>Category: ${currentService.category.toUpperCase()}</p>
-        <p>Provider: ${currentService.providerName}</p>
-    `;
-    
-    document.getElementById('unit-price').textContent = currentService.price.toFixed(2);
-    document.getElementById('order-quantity').min = currentService.min_quantity;
-    document.getElementById('order-quantity').max = currentService.max_quantity;
-    document.getElementById('order-quantity').value = currentService.min_quantity;
-    document.getElementById('min-qty').textContent = currentService.min_quantity;
-    document.getElementById('user-balance-display').textContent = (currentUser.balance || 0).toFixed(2);
-    
-    updateOrderTotal();
-    modal.style.display = 'block';
+function getServiceDescription(name) {
+    if (name.toLowerCase().includes('follower')) return 'High-quality followers';
+    if (name.toLowerCase().includes('like')) return 'Engaged likes';
+    if (name.toLowerCase().includes('view')) return 'Instant views';
+    if (name.toLowerCase().includes('comment')) return 'Custom comments';
+    if (name.toLowerCase().includes('share')) return 'Viral shares';
+    return 'Premium service';
 }
 
-function updateOrderTotal() {
-    const quantity = parseInt(document.getElementById('order-quantity').value) || 0;
-    const total = quantity * currentService.price;
-    document.getElementById('order-total').textContent = total.toFixed(2);
+function loadDemoServices() {
+    // Demo services as fallback
+    const demoServices = [
+        { id: 1, name: 'Instagram Followers', category: 'instagram', price: 0.50, min: 100, max: 10000, description: 'High-quality followers', tier: 'basic' },
+        { id: 2, name: 'Instagram Likes', category: 'instagram', price: 0.15, min: 50, max: 5000, description: 'Engaged likes', tier: 'basic' },
+        { id: 3, name: 'TikTok Views', category: 'tiktok', price: 0.05, min: 1000, max: 100000, description: 'Instant views', tier: 'basic' },
+        { id: 4, name: 'Facebook Likes', category: 'facebook', price: 0.20, min: 50, max: 5000, description: 'Page likes', tier: 'basic' },
+        { id: 5, name: 'Twitter Followers', category: 'twitter', price: 0.40, min: 100, max: 10000, description: 'Real followers', tier: 'basic' },
+        { id: 6, name: 'YouTube Subscribers', category: 'youtube', price: 1.50, min: 50, max: 5000, description: 'Active subscribers', tier: 'basic' },
+        { id: 7, name: 'Telegram Members', category: 'telegram', price: 0.30, min: 100, max: 10000, description: 'Channel members', tier: 'basic' },
+        { id: 8, name: 'WhatsApp Channel Followers', category: 'whatsapp', price: 0.35, min: 100, max: 5000, description: 'Channel followers', tier: 'basic' },
+        
+        { id: 9, name: 'Instagram Followers Premium', category: 'instagram', price: 0.60, min: 100, max: 20000, description: 'Premium followers with warranty', tier: 'max' },
+        { id: 10, name: 'TikTok Followers Max', category: 'tiktok', price: 0.45, min: 100, max: 10000, description: 'Priority delivery', tier: 'max' },
+        { id: 11, name: 'Snapchat Followers', category: 'other', price: 0.55, min: 100, max: 5000, description: 'Story viewers included', tier: 'max' },
+        { id: 12, name: 'Pinterest Followers', category: 'other', price: 0.50, min: 100, max: 5000, description: 'Pin savers', tier: 'max' },
+        { id: 13, name: 'Reddit Upvotes', category: 'other', price: 0.25, min: 50, max: 5000, description: 'Post upvotes', tier: 'max' },
+        { id: 14, name: 'LinkedIn Connections', category: 'other', price: 0.80, min: 50, max: 2000, description: 'Professional network', tier: 'max' }
+    ];
+    
+    state.services = demoServices;
+    renderServices();
 }
 
-function submitOrder(e) {
-    e.preventDefault();
-    
-    const quantity = parseInt(document.getElementById('order-quantity').value);
-    const link = document.getElementById('order-link').value;
-    const total = quantity * currentService.price;
-    
-    if (total > (currentUser.balance || 0)) {
-        alert(`Insufficient balance. Your current balance is ₦${(currentUser.balance || 0).toFixed(2)}. Please add funds via bank transfer or OPay/PalmPay and send receipt to WhatsApp: ${CONFIG.WHATSAPP}`);
-        return;
-    }
-    
-    // Deduct balance
-    currentUser.balance -= total;
-    
-    // Save order
-    const orders = JSON.parse(localStorage.getItem('orders') || '[]');
-    orders.push({
-        id: Date.now(),
-        userId: currentUser.id,
-        service: currentService,
-        quantity: quantity,
-        link: link,
-        total: total,
-        status: 'pending',
-        createdAt: new Date().toISOString()
+function renderServices() {
+    const grid = document.getElementById('servicesGrid');
+    const filtered = state.services.filter(service => {
+        const tierMatch = service.tier === state.currentTier;
+        const categoryMatch = state.currentCategory === 'all' || service.category === state.currentCategory;
+        return tierMatch && categoryMatch;
     });
-    localStorage.setItem('orders', JSON.stringify(orders));
     
-    // Update user balance in storage
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    const userIndex = users.findIndex(u => u.id === currentUser.id);
-    if (userIndex !== -1) {
-        users[userIndex].balance = currentUser.balance;
-        localStorage.setItem('users', JSON.stringify(users));
-    }
-    
-    // Update current user
-    localStorage.setItem('currentUser', JSON.stringify(currentUser));
-    
-    closeOrderModal();
-    updateUI();
-    alert('Order placed successfully! Your order will be processed shortly. You can track it in your dashboard.');
-}
-
-// Bundle Functions
-function addToBundle() {
-    if (!currentUser) {
-        showModal('login');
+    if (filtered.length === 0) {
+        grid.innerHTML = '<div class="empty-state" style="grid-column: 1/-1; padding: 3rem;">No services found in this category</div>';
         return;
     }
     
-    const selected = prompt('Enter the service ID or name to add to your bundle:');
-    if (!selected) return;
+    grid.innerHTML = filtered.map(service => {
+        const nairaPrice = convertToNaira(service.price);
+        return `
+            <div class="service-card">
+                <div class="service-header">
+                    <div class="service-icon">
+                        <i class="fab fa-${getServiceIcon(service.category)}"></i>
+                    </div>
+                    <div class="service-info">
+                        <h4>${service.name}</h4>
+                        <span class="service-category">${service.category}</span>
+                    </div>
+                </div>
+                <div class="service-details">
+                    <div class="service-detail-row">
+                        <span>Min Order:</span>
+                        <span>${service.min}</span>
+                    </div>
+                    <div class="service-detail-row">
+                        <span>Max Order:</span>
+                        <span>${service.max.toLocaleString()}</span>
+                    </div>
+                    <div class="service-detail-row">
+                        <span>Description:</span>
+                        <span>${service.description}</span>
+                    </div>
+                </div>
+                <div class="service-price">${formatCurrency(nairaPrice)}</div>
+                <button class="btn btn-primary btn-block" onclick="addToBundle(${service.id})">
+                    <i class="fas fa-cart-plus"></i> Add to Bundle
+                </button>
+                <button class="btn btn-outline btn-block mt-2" onclick="quickOrder(${service.id})">
+                    <i class="fas fa-bolt"></i> Quick Order
+                </button>
+            </div>
+        `;
+    }).join('');
+}
+
+function getServiceIcon(category) {
+    const icons = {
+        instagram: 'instagram',
+        tiktok: 'tiktok',
+        facebook: 'facebook',
+        twitter: 'twitter',
+        youtube: 'youtube',
+        telegram: 'telegram',
+        whatsapp: 'whatsapp',
+        other: 'star'
+    };
+    return icons[category] || 'star';
+}
+
+function filterServices(tier) {
+    state.currentTier = tier;
     
-    const service = services.find(s => 
-        s.id.toString() === selected || 
-        s.name.toLowerCase().includes(selected.toLowerCase())
-    );
+    document.querySelectorAll('.toggle-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.tier === tier);
+    });
     
-    if (service) {
-        bundle.push(service);
-        updateBundleDisplay();
-        alert(`${service.name} added to bundle!`);
+    renderServices();
+}
+
+function filterCategory(category) {
+    state.currentCategory = category;
+    
+    document.querySelectorAll('.category-tab').forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.category === category);
+    });
+    
+    renderServices();
+}
+
+// Currency Conversion
+function convertToNaira(dollarAmount) {
+    const markedUp = dollarAmount * CONFIG.MARKUP;
+    return Math.round(markedUp * CONFIG.FX_RATE);
+}
+
+function formatCurrency(amount) {
+    return '₦' + amount.toLocaleString('en-NG', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
+
+// Bundle System
+function addToBundle(serviceId) {
+    const service = state.services.find(s => s.id === serviceId);
+    if (!service) return;
+    
+    const existing = state.bundle.find(item => item.id === serviceId);
+    if (existing) {
+        existing.quantity += 1;
     } else {
-        alert('Service not found. Please check the ID or name and try again.');
+        state.bundle.push({...service, quantity: 1});
     }
+    
+    updateBundleUI();
+    showNotification('Added to bundle!', 'success');
 }
 
-function updateBundleDisplay() {
-    const itemsContainer = document.getElementById('bundle-items');
-    const countDisplay = document.getElementById('bundle-count');
-    const discountDisplay = document.getElementById('bundle-discount');
-    const finalPriceDisplay = document.getElementById('bundle-final-price');
-    const buyButton = document.getElementById('buy-bundle-btn');
+function removeFromBundle(serviceId) {
+    state.bundle = state.bundle.filter(item => item.id !== serviceId);
+    updateBundleUI();
+}
+
+function updateBundleUI() {
+    const container = document.getElementById('selectedServices');
+    const subtotalEl = document.getElementById('bundleSubtotal');
+    const discountEl = document.getElementById('bundleDiscount');
+    const totalEl = document.getElementById('bundleTotal');
+    const checkoutBtn = document.getElementById('checkoutBundleBtn');
     
-    if (!itemsContainer) return;
-    
-    if (bundle.length === 0) {
-        itemsContainer.innerHTML = '<p style="color:var(--text-muted);">No items in bundle yet. Click "Add Service to Bundle" to start building!</p>';
-        countDisplay.textContent = '0';
-        discountDisplay.textContent = '0%';
-        finalPriceDisplay.textContent = '0.00';
-        if (buyButton) buyButton.disabled = true;
+    if (state.bundle.length === 0) {
+        container.innerHTML = '<p class="empty-state">Click "Add to Bundle" on any service to start building</p>';
+        subtotalEl.textContent = '₦0';
+        discountEl.textContent = '-₦0';
+        totalEl.textContent = '₦0';
+        checkoutBtn.disabled = true;
         return;
     }
     
-    itemsContainer.innerHTML = bundle.map((s, index) => `
-        <div style="display:flex;justify-content:space-between;align-items:center;padding:0.75rem;border-bottom:1px solid var(--border-color);">
-            <span>${s.name}</span>
-            <span>₦${s.price.toFixed(2)} 
-                <button onclick="removeFromBundle(${index})" style="background:none;border:none;color:var(--danger-color);cursor:pointer;font-size:1.2rem;">×</button>
-            </span>
+    const subtotal = state.bundle.reduce((sum, item) => {
+        return sum + (convertToNaira(item.price) * item.quantity);
+    }, 0);
+    
+    // Calculate discount
+    const totalItems = state.bundle.reduce((sum, item) => sum + item.quantity, 0);
+    let discountRate = 0;
+    if (totalItems >= 7) discountRate = 0.50;
+    else if (totalItems >= 5) discountRate = 0.35;
+    else if (totalItems >= 3) discountRate = 0.20;
+    
+    const discount = subtotal * discountRate;
+    const total = subtotal - discount;
+    
+    container.innerHTML = state.bundle.map(item => `
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: var(--white); border-radius: 8px; margin-bottom: 0.5rem;">
+            <div>
+                <strong>${item.name}</strong>
+                <div style="font-size: 0.875rem; color: var(--gray-500);">Qty: ${item.quantity} × ${formatCurrency(convertToNaira(item.price))}</div>
+            </div>
+            <button onclick="removeFromBundle(${item.id})" style="background: none; border: none; color: var(--danger); cursor: pointer;">
+                <i class="fas fa-trash"></i>
+            </button>
         </div>
     `).join('');
     
-    // Calculate discount
-    const subtotal = bundle.reduce((sum, s) => sum + s.price, 0);
-    let discount = 0;
+    subtotalEl.textContent = formatCurrency(subtotal);
+    discountEl.textContent = '-' + formatCurrency(discount);
+    totalEl.textContent = formatCurrency(total);
+    checkoutBtn.disabled = false;
     
-    if (bundle.length >= 7) discount = 0.5; // 50% off
-    else if (bundle.length >= 5) discount = 0.35; // 35% off
-    else if (bundle.length >= 3) discount = 0.2; // 20% off
-    
-    const finalPrice = subtotal * (1 - discount);
-    
-    countDisplay.textContent = bundle.length;
-    discountDisplay.textContent = (discount * 100) + '%';
-    finalPriceDisplay.textContent = finalPrice.toFixed(2);
-    
-    if (buyButton) buyButton.disabled = false;
-}
-
-function removeFromBundle(index) {
-    bundle.splice(index, 1);
-    updateBundleDisplay();
-}
-
-function purchaseBundle() {
-    if (bundle.length === 0) return;
-    
-    const subtotal = bundle.reduce((sum, s) => sum + s.price, 0);
-    let discount = 0;
-    
-    if (bundle.length >= 7) discount = 0.5;
-    else if (bundle.length >= 5) discount = 0.35;
-    else if (bundle.length >= 3) discount = 0.2;
-    
-    const finalPrice = subtotal * (1 - discount);
-    
-    if (finalPrice > (currentUser.balance || 0)) {
-        alert(`Insufficient balance. You need ₦${finalPrice.toFixed(2)} but have ₦${(currentUser.balance || 0).toFixed(2)}. Please add funds first.`);
-        return;
-    }
-    
-    if (!confirm(`Purchase ${bundle.length} services for ₦${finalPrice.toFixed(2)}? (Original price: ₦${subtotal.toFixed(2)}, You save: ₦${(subtotal - finalPrice).toFixed(2)})`)) {
-        return;
-    }
-    
-    currentUser.balance -= finalPrice;
-    
-    // Create orders for each service
-    const orders = JSON.parse(localStorage.getItem('orders') || '[]');
-    bundle.forEach(s => {
-        orders.push({
-            id: Date.now() + Math.random(),
-            userId: currentUser.id,
-            service: s,
-            quantity: 1,
-            link: 'Bundle order',
-            total: s.price * (1 - discount),
-            status: 'pending',
-            createdAt: new Date().toISOString()
-        });
+    // Update discount tiers UI
+    document.querySelectorAll('.discount-tier').forEach((tier, index) => {
+        const thresholds = [3, 5, 7];
+        tier.classList.toggle('active', totalItems >= thresholds[index]);
     });
-    localStorage.setItem('orders', JSON.stringify(orders));
-    
-    // Update user balance
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    const userIndex = users.findIndex(u => u.id === currentUser.id);
-    if (userIndex !== -1) {
-        users[userIndex].balance = currentUser.balance;
-        localStorage.setItem('users', JSON.stringify(users));
-    }
-    
-    localStorage.setItem('currentUser', JSON.stringify(currentUser));
-    
-    bundle = [];
-    updateBundleDisplay();
-    updateUI();
-    alert(`Bundle purchased successfully! Total: ₦${finalPrice.toFixed(2)}. You saved ₦${(subtotal - finalPrice).toFixed(2)}!`);
 }
 
-// Pre-made Packages
-function orderPreMade(packageType) {
-    if (!currentUser) {
-        showModal('login');
+function checkoutBundle() {
+    if (!state.currentUser) {
+        showNotification('Please login to checkout', 'error');
+        showLogin();
         return;
     }
     
+    const total = state.bundle.reduce((sum, item) => sum + (convertToNaira(item.price) * item.quantity), 0);
+    const totalItems = state.bundle.reduce((sum, item) => sum + item.quantity, 0);
+    
+    let discountRate = 0;
+    if (totalItems >= 7) discountRate = 0.50;
+    else if (totalItems >= 5) discountRate = 0.35;
+    else if (totalItems >= 3) discountRate = 0.20;
+    
+    const finalTotal = total * (1 - discountRate);
+    
+    if (state.currentUser.balance < finalTotal) {
+        showNotification('Insufficient balance. Please add funds.', 'error');
+        showAddFunds();
+        return;
+    }
+    
+    // Process order
+    state.currentUser.balance -= finalTotal;
+    state.currentUser.orders = state.currentUser.orders || [];
+    state.currentUser.orders.push({
+        id: Date.now(),
+        items: [...state.bundle],
+        total: finalTotal,
+        date: new Date().toISOString(),
+        status: 'pending'
+    });
+    
+    saveUserState();
+    state.bundle = [];
+    updateBundleUI();
+    updateUserUI();
+    
+    showNotification('Bundle order placed successfully!', 'success');
+}
+
+function loadPackage(type) {
     const packages = {
-        starter: { name: 'Starter Pack', price: 44.99, services: ['1000 Instagram Followers', '500 TikTok Followers', '500 Facebook Likes'] },
-        growth: { name: 'Growth Pack', price: 119.99, services: ['5000 Instagram Followers', '2000 TikTok Followers', '2000 Facebook Likes', '1000 Twitter Followers'] },
-        enterprise: { name: 'Enterprise Pack', price: 299.99, services: ['10000 Instagram Followers', '5000 TikTok Followers', '5000 Facebook Likes', '3000 Twitter Followers', '1000 YouTube Subscribers'] }
+        starter: [1, 3, 4],
+        growth: [1, 3, 4, 5],
+        enterprise: [1, 3, 4, 5, 6]
     };
     
-    const pkg = packages[packageType];
-    if (!pkg) return;
-    
-    if ((currentUser.balance || 0) < pkg.price) {
-        alert(`Insufficient balance. This package costs ₦${pkg.price}. Please add funds via bank transfer or OPay/PalmPay.`);
+    packages[type].forEach(id => addToBundle(id));
+    scrollToSection('bundles');
+}
+
+// Quick Order
+let currentOrderService = null;
+
+function quickOrder(serviceId) {
+    if (!state.currentUser) {
+        showNotification('Please login to order', 'error');
+        showLogin();
         return;
     }
     
-    if (!confirm(`Purchase ${pkg.name} for ₦${pkg.price}?`)) return;
+    const service = state.services.find(s => s.id === serviceId);
+    if (!service) return;
     
-    currentUser.balance -= pkg.price;
+    currentOrderService = service;
+    const nairaPrice = convertToNaira(service.price);
     
-    const orders = JSON.parse(localStorage.getItem('orders') || '[]');
-    orders.push({
-        id: Date.now(),
-        userId: currentUser.id,
-        service: { name: pkg.name, category: 'bundle' },
-        quantity: 1,
-        link: 'Premade package',
-        total: pkg.price,
-        status: 'pending',
-        createdAt: new Date().toISOString()
-    });
-    localStorage.setItem('orders', JSON.stringify(orders));
+    document.getElementById('orderServiceName').textContent = service.name;
+    document.getElementById('orderPricePerUnit').textContent = formatCurrency(nairaPrice);
+    document.getElementById('orderCurrentBalance').textContent = formatCurrency(state.currentUser.balance);
+    document.getElementById('orderQuantity').value = service.min;
     
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    const userIndex = users.findIndex(u => u.id === currentUser.id);
-    if (userIndex !== -1) {
-        users[userIndex].balance = currentUser.balance;
-        localStorage.setItem('users', JSON.stringify(users));
-    }
-    
-    localStorage.setItem('currentUser', JSON.stringify(currentUser));
-    updateUI();
-    alert(`${pkg.name} purchased successfully! Your order will be processed shortly.`);
+    updateOrderTotal();
+    document.getElementById('orderModal').classList.add('show');
 }
 
-// AI Assistant Functions
-function switchMode(mode) {
-    currentMode = mode;
+function updateOrderTotal() {
+    if (!currentOrderService) return;
+    
+    const quantity = parseInt(document.getElementById('orderQuantity').value) || 0;
+    const nairaPrice = convertToNaira(currentOrderService.price);
+    const total = nairaPrice * quantity;
+    
+    document.getElementById('orderTotalCost').textContent = formatCurrency(total);
+}
+
+function submitOrder(event) {
+    event.preventDefault();
+    
+    if (!currentOrderService) return;
+    
+    const link = document.getElementById('orderLink').value;
+    const quantity = parseInt(document.getElementById('orderQuantity').value);
+    const nairaPrice = convertToNaira(currentOrderService.price);
+    const total = nairaPrice * quantity;
+    
+    if (state.currentUser.balance < total) {
+        showNotification('Insufficient balance', 'error');
+        return;
+    }
+    
+    // Deduct balance and create order
+    state.currentUser.balance -= total;
+    state.currentUser.orders = state.currentUser.orders || [];
+    state.currentUser.orders.push({
+        id: Date.now(),
+        service: currentOrderService.name,
+        link,
+        quantity,
+        total,
+        date: new Date().toISOString(),
+        status: 'pending'
+    });
+    
+    saveUserState();
+    updateUserUI();
+    closeModal('orderModal');
+    
+    showNotification('Order placed successfully!', 'success');
+}
+
+document.getElementById('orderQuantity')?.addEventListener('input', updateOrderTotal);
+
+// Add Funds
+function showAddFunds() {
+    document.getElementById('addFundsModal').classList.add('show');
+}
+
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        showNotification('Copied to clipboard!', 'success');
+    });
+}
+
+// AI Assistant
+function switchAIMode(mode) {
+    state.aiMode = mode;
+    
     document.querySelectorAll('.mode-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.mode === mode);
     });
+    
+    const messages = document.getElementById('chatMessages');
+    const modeNames = {
+        social: 'Social Media Expert',
+        design: 'Content Designer',
+        marketing: 'Marketing Strategist',
+        nigerian: 'Nigerian Market Expert'
+    };
+    
+    messages.innerHTML += `
+        <div class="message ai-message">
+            <div class="message-avatar"><i class="fas fa-robot"></i></div>
+            <div class="message-content">
+                <p>I'm now in ${modeNames[mode]} mode. How can I help you?</p>
+            </div>
+        </div>
+    `;
+    
+    messages.scrollTop = messages.scrollHeight;
 }
 
 function sendMessage() {
-    const input = document.getElementById('chat-input');
+    const input = document.getElementById('chatInput');
     const message = input.value.trim();
     
     if (!message) return;
     
-    const messagesContainer = document.getElementById('chat-messages');
+    const messages = document.getElementById('chatMessages');
     
     // Add user message
-    messagesContainer.innerHTML += `
-        <div class="message user">
-            <p>${escapeHtml(message)}</p>
+    messages.innerHTML += `
+        <div class="message user-message">
+            <div class="message-avatar"><i class="fas fa-user"></i></div>
+            <div class="message-content">
+                <p>${message}</p>
+            </div>
         </div>
     `;
     
     input.value = '';
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
     
-    // Simulate AI response
+    // Generate AI response
     setTimeout(() => {
-        const response = generateAIResponse(message, currentMode);
-        messagesContainer.innerHTML += `
-            <div class="message bot">
-                <p>${response}</p>
+        const response = generateAIResponse(message, state.aiMode);
+        
+        messages.innerHTML += `
+            <div class="message ai-message">
+                <div class="message-avatar"><i class="fas fa-robot"></i></div>
+                <div class="message-content">
+                    <p>${response}</p>
+                </div>
             </div>
         `;
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        
+        messages.scrollTop = messages.scrollHeight;
         
         // Save to history if logged in
-        if (currentUser) {
-            saveChatHistory(message, response);
+        if (state.currentUser) {
+            saveChatToHistory(message, response);
         }
-    }, 600);
+    }, 1000);
 }
 
 function generateAIResponse(message, mode) {
     const responses = {
         social: [
-            "For optimal social media growth, I recommend posting consistently during peak engagement hours (9-11 AM and 7-9 PM).",
-            "Engagement is crucial! Try responding to comments within the first hour of posting to boost algorithm visibility.",
-            "Have you considered using a mix of trending and niche-specific hashtags? This strategy can increase reach by up to 30%.",
-            "Cross-promotion across platforms is key. Share your Instagram content on Stories, TikTok, and Twitter for maximum exposure."
+            "For optimal social media growth, I recommend posting consistently at peak hours (7-9 AM and 6-9 PM). Use trending hashtags and engage with your audience within the first hour of posting.",
+            "Based on current trends, short-form video content is performing exceptionally well across all platforms. Consider creating 15-30 second videos with hooks in the first 3 seconds.",
+            "To increase engagement, try the 80/20 rule: 80% valuable content, 20% promotional. Ask questions in your captions to encourage comments."
         ],
-        content: [
-            "Great content tells a compelling story. What's your brand's unique narrative that sets you apart?",
-            "Visual consistency builds brand recognition. Stick to a cohesive color palette and style across all posts.",
-            "Video content generates 12x more shares than text and images combined. Consider incorporating more Reels and TikToks!",
-            "User-generated content builds trust and community. Encourage your followers to create content featuring your brand."
+        design: [
+            "For eye-catching social media graphics, use the rule of thirds and maintain consistent brand colors. Tools like Canva or Adobe Express work great for quick designs.",
+            "When designing for mobile-first audiences, ensure text is large enough to read without zooming. Use high contrast colors for better readability.",
+            "Video thumbnails should have bold text, expressive faces, and vibrant colors. The first frame is crucial for click-through rates."
         ],
         marketing: [
-            "Your target audience defines everything. Who exactly are you trying to reach, and what problems do you solve for them?",
-            "A/B testing is essential for optimization. Test different headlines, images, and CTAs to find what resonates.",
-            "ROI tracking separates successful campaigns from failures. Always set clear KPIs before launching any campaign.",
-            "Email marketing still delivers the highest ROI of any digital channel - an average of ₦42 for every ₦1 spent!"
+            "For Nigerian markets, WhatsApp marketing has a 98% open rate. Combine it with Instagram for maximum reach. Consider influencer partnerships for authentic promotion.",
+            "A successful funnel: Awareness (social ads) → Interest (valuable content) → Decision (testimonials) → Action (limited-time offer). Track each stage.",
+            "ROI tip: Retargeting ads convert 70% better than cold ads. Create custom audiences from website visitors and engagers."
         ],
         nigerian: [
-            "Naija audience dey love authentic and relatable content! Make sure your posts reflect local culture and humor.",
-            "For Nigerian market, WhatsApp marketing very effective o! Create broadcast lists and engage customers directly.",
-            "Influencer marketing for Nigeria - micro-influencers fit better and give more value for money than big celebs.",
-            "Payment integration for Nigeria - make sure you get Paystack or Flutterwave. Customers want seamless checkout experience.",
-            "Nigerians love video content especially short-form. TikTok and Instagram Reels go viral quick for Naija brands!"
+            "Nigerian audiences respond well to relatable content using local slang (pidgin), trending sounds, and cultural references. Authenticity wins over polished content.",
+            "For e-commerce in Nigeria, trust is key. Use customer testimonials, behind-the-scenes content, and live videos to build credibility before selling.",
+            "Payment integration: Offer multiple options (bank transfer, USSD, card). Many Nigerians prefer paying after delivery, so consider escrow services."
         ]
     };
     
@@ -761,123 +711,239 @@ function generateAIResponse(message, mode) {
     return modeResponses[Math.floor(Math.random() * modeResponses.length)];
 }
 
-function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
+function handleChatKeyPress(event) {
+    if (event.key === 'Enter') {
+        sendMessage();
+    }
 }
 
-function saveChatHistory(userMessage, botMessage) {
-    const history = JSON.parse(localStorage.getItem('chatHistory') || '{}');
-    
-    if (!history[currentUser.email]) {
-        history[currentUser.email] = [];
-    }
-    
-    history[currentUser.email].push({
+function saveChatToHistory(userMessage, aiResponse) {
+    state.chatHistory.push({
+        mode: state.aiMode,
         user: userMessage,
-        bot: botMessage,
-        mode: currentMode,
+        ai: aiResponse,
         timestamp: new Date().toISOString()
     });
     
-    // Keep only last 50 messages
-    if (history[currentUser.email].length > 50) {
-        history[currentUser.email] = history[currentUser.email].slice(-50);
+    // Keep last 20 conversations
+    if (state.chatHistory.length > 20) {
+        state.chatHistory = state.chatHistory.slice(-20);
     }
     
-    localStorage.setItem('chatHistory', JSON.stringify(history));
+    localStorage.setItem(`chat_history_${state.currentUser.id}`, JSON.stringify(state.chatHistory));
     loadChatHistory();
 }
 
 function loadChatHistory() {
-    if (!currentUser) return;
+    if (!state.currentUser) return;
     
-    const history = JSON.parse(localStorage.getItem('chatHistory') || '{}');
-    const userHistory = history[currentUser.email] || [];
-    const historyList = document.getElementById('history-list');
+    const history = JSON.parse(localStorage.getItem(`chat_history_${state.currentUser.id}`) || '[]');
+    state.chatHistory = history;
     
-    if (!historyList) return;
-    
-    if (userHistory.length === 0) {
-        historyList.innerHTML = '<p style="color:var(--text-muted);padding:1rem;">No chat history yet. Start chatting to see your history here!</p>';
+    const historyList = document.getElementById('historyList');
+    if (history.length === 0) {
+        historyList.innerHTML = '<p style="color: var(--gray-400); font-size: 0.875rem;">No recent conversations</p>';
         return;
     }
     
-    historyList.innerHTML = userHistory.slice(-10).reverse().map((chat, index) => `
-        <div style="padding:0.75rem;border-bottom:1px solid var(--border-color);cursor:pointer:hover;background:var(--bg-tertiary);" onclick="loadChat(${userHistory.length - 1 - index})">
-            <small style="color:var(--text-muted);">${new Date(chat.timestamp).toLocaleDateString()} - ${chat.mode.toUpperCase()}</small>
-            <p style="margin:0.25rem 0;font-size:0.9rem;">${escapeHtml(chat.user.substring(0, 60))}${chat.user.length > 60 ? '...' : ''}</p>
+    historyList.innerHTML = history.slice(-5).reverse().map((chat, index) => `
+        <div style="padding: 0.75rem; background: rgba(255,255,255,0.05); border-radius: 8px; margin-bottom: 0.5rem; cursor: pointer;" onclick="loadChat(${index})">
+            <div style="font-size: 0.75rem; color: var(--gray-400);">${new Date(chat.timestamp).toLocaleDateString()}</div>
+            <div style="font-size: 0.875rem; color: var(--white); truncate;">${chat.user}</div>
         </div>
     `).join('');
 }
 
 function loadChat(index) {
-    if (!currentUser) return;
-    
-    const history = JSON.parse(localStorage.getItem('chatHistory') || '{}');
-    const userHistory = history[currentUser.email] || [];
-    const chat = userHistory[index];
-    
+    const chat = state.chatHistory[state.chatHistory.length - 1 - index];
     if (!chat) return;
     
-    const messagesContainer = document.getElementById('chat-messages');
-    messagesContainer.innerHTML = `
-        <div class="message user">
-            <p>${escapeHtml(chat.user)}</p>
+    const messages = document.getElementById('chatMessages');
+    messages.innerHTML = `
+        <div class="message user-message">
+            <div class="message-avatar"><i class="fas fa-user"></i></div>
+            <div class="message-content">
+                <p>${chat.user}</p>
+            </div>
         </div>
-        <div class="message bot">
-            <p>${escapeHtml(chat.bot)}</p>
+        <div class="message ai-message">
+            <div class="message-avatar"><i class="fas fa-robot"></i></div>
+            <div class="message-content">
+                <p>${chat.ai}</p>
+            </div>
         </div>
     `;
+}
+
+// Utility Functions
+function closeModal(modalId) {
+    document.getElementById(modalId).classList.remove('show');
+}
+
+function scrollToSection(sectionId) {
+    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+}
+
+function toggleMobileMenu() {
+    document.getElementById('navLinks').classList.toggle('show');
+}
+
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.innerHTML = `
+        <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+        <span>${message}</span>
+    `;
     
-    currentMode = chat.mode;
-    document.querySelectorAll('.mode-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.mode === currentMode);
+    Object.assign(notification.style, {
+        position: 'fixed',
+        bottom: '2rem',
+        right: '2rem',
+        background: type === 'success' ? 'var(--success)' : type === 'error' ? 'var(--danger)' : 'var(--primary)',
+        color: 'white',
+        padding: '1rem 1.5rem',
+        borderRadius: '12px',
+        boxShadow: 'var(--shadow-xl)',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '0.75rem',
+        zIndex: 3000,
+        animation: 'slideUp 0.3s ease-out',
+        fontWeight: '500'
     });
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.style.animation = 'fadeIn 0.3s ease-out reverse';
+        setTimeout(() => notification.remove(), 300);
+    }, 3000);
 }
 
-// Payment & Support
-function contactSupport() {
-    const message = encodeURIComponent('Hello, I need help with my account or order. Please assist me.');
-    window.open(`https://wa.me/${CONFIG.WHATSAPP.replace('+', '')}?text=${message}`, '_blank');
+function saveUserState() {
+    localStorage.setItem('imagine_users', JSON.stringify(
+        JSON.parse(localStorage.getItem('imagine_users') || '[]')
+            .map(u => u.id === state.currentUser.id ? state.currentUser : u)
+    ));
+    localStorage.setItem('imagine_user', JSON.stringify(state.currentUser));
 }
 
-// Event Listeners
+function showDashboard() {
+    showNotification('Dashboard feature coming soon!', 'info');
+}
+
+function showOrders() {
+    if (!state.currentUser?.orders?.length) {
+        showNotification('No orders yet', 'info');
+        return;
+    }
+    
+    const orderList = state.currentUser.orders.map(o => 
+        `${new Date(o.date).toLocaleDateString()} - ${o.service || 'Bundle'} - ${formatCurrency(o.total)} - ${o.status}`
+    ).join('\n');
+    
+    alert('Your Orders:\n\n' + orderList);
+}
+
+function sendContactMessage(event) {
+    event.preventDefault();
+    showNotification('Message sent! We\'ll respond within 24 hours', 'success');
+    event.target.reset();
+}
+
+function subscribeNewsletter(event) {
+    event.preventDefault();
+    showNotification('Thanks for subscribing!', 'success');
+    event.target.reset();
+}
+
+function orderDigital(service) {
+    if (!state.currentUser) {
+        showNotification('Please login to order digital services', 'error');
+        showLogin();
+        return;
+    }
+    showNotification('Digital service order initiated. Our team will contact you via WhatsApp', 'success');
+}
+
+// Close modals when clicking outside
+window.addEventListener('click', (event) => {
+    if (event.target.classList.contains('modal')) {
+        event.target.classList.remove('show');
+    }
+});
+
+// Close dropdowns when clicking outside
+document.addEventListener('click', (event) => {
+    if (!event.target.closest('.dropdown')) {
+        document.getElementById('userDropdown')?.classList.remove('show');
+    }
+});
+
+// Setup event listeners
 function setupEventListeners() {
-    // Search and filter
-    document.getElementById('service-search')?.addEventListener('input', filterServices);
-    document.getElementById('category-filter')?.addEventListener('change', filterServices);
-    document.getElementById('platform-filter')?.addEventListener('change', filterServices);
-    
-    // AI Assistant modes
-    document.querySelectorAll('.mode-btn').forEach(btn => {
-        btn.addEventListener('click', () => switchMode(btn.dataset.mode));
+    // Smooth scroll for nav links
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute('href');
+            document.querySelector(targetId)?.scrollIntoView({ behavior: 'smooth' });
+            
+            // Update active state
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+            
+            // Close mobile menu
+            document.getElementById('navLinks').classList.remove('show');
+        });
     });
     
-    // Chat input
-    document.getElementById('chat-input')?.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') sendMessage();
-    });
-    
-    // Modal close on outside click
-    window.onclick = (event) => {
-        if (event.target.classList.contains('modal')) {
-            event.target.style.display = 'none';
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+        const navbar = document.getElementById('navbar');
+        if (window.scrollY > 50) {
+            navbar.style.boxShadow = 'var(--shadow-lg)';
+        } else {
+            navbar.style.boxShadow = 'var(--shadow-md)';
         }
-    };
-    
-    // View toggle
-    document.getElementById('view-toggle')?.addEventListener('click', toggleView);
+    });
 }
 
-// Initialize app
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        loadServices();
-        checkAuth();
-    });
-} else {
-    loadServices();
-    checkAuth();
+// Initialize particles for hero
+function createParticles() {
+    const container = document.getElementById('heroParticles');
+    if (!container) return;
+    
+    for (let i = 0; i < 50; i++) {
+        const particle = document.createElement('div');
+        particle.style.cssText = `
+            position: absolute;
+            width: ${Math.random() * 4 + 2}px;
+            height: ${Math.random() * 4 + 2}px;
+            background: rgba(255, 255, 255, ${Math.random() * 0.5 + 0.3});
+            border-radius: 50%;
+            left: ${Math.random() * 100}%;
+            top: ${Math.random() * 100}%;
+            animation: float ${Math.random() * 10 + 10}s infinite linear;
+        `;
+        container.appendChild(particle);
+    }
 }
+
+// Add floating animation
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes float {
+        0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% { transform: translateY(-100vh) translateX(${Math.random() * 100 - 50}px); opacity: 0; }
+    }
+`;
+document.head.appendChild(style);
+
+// Create particles on load
+setTimeout(createParticles, 100);
+
+console.log('Imagine Marketplace initialized successfully! 🚀');
