@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Imagine by Junestudios</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-950 text-white min-h-screen">
+    <nav class="glass-nav border-b border-white/10 backdrop-blur-xl sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-red-500 to-orange-400 flex items-center justify-center font-bold text-white">A</div>
+                <div>
+                    <span class="font-bold text-xl">Admin Dashboard</span>
+                    <span class="text-xs text-slate-400 block">Imagine by Junestudios</span>
+                </div>
+            </div>
+            <button onclick="logout()" class="text-sm text-red-400 hover:text-red-300 font-medium">Logout</button>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-6 py-8">
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="glass-panel p-6 rounded-2xl">
+                <div class="text-slate-400 text-sm mb-2">Total Users</div>
+                <div class="text-3xl font-bold" id="total-users">0</div>
+            </div>
+            <div class="glass-panel p-6 rounded-2xl">
+                <div class="text-slate-400 text-sm mb-2">Total Revenue</div>
+                <div class="text-3xl font-bold text-green-400">₦<span id="total-revenue">0.00</span></div>
+            </div>
+            <div class="glass-panel p-6 rounded-2xl">
+                <div class="text-slate-400 text-sm mb-2">Pending Orders</div>
+                <div class="text-3xl font-bold text-yellow-400" id="pending-orders">0</div>
+            </div>
+            <div class="glass-panel p-6 rounded-2xl">
+                <div class="text-slate-400 text-sm mb-2">Active Bundles</div>
+                <div class="text-3xl font-bold text-brand-400" id="active-bundles">0</div>
+            </div>
+        </div>
+
+        <!-- User Management -->
+        <div class="glass-panel rounded-2xl p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-6">User Management</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="text-left text-slate-400 text-sm border-b border-white/10">
+                            <th class="pb-3 font-medium">Name</th>
+                            <th class="pb-3 font-medium">Email</th>
+                            <th class="pb-3 font-medium">Balance</th>
+                            <th class="pb-3 font-medium">Role</th>
+                            <th class="pb-3 font-medium">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-table" class="text-sm">
+                        <!-- Dynamic users -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Add Funds Confirmation -->
+        <div class="glass-panel rounded-2xl p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-6">Add Funds Confirmation</h2>
+            <p class="text-slate-400 mb-6">Manually update user balances after confirming WhatsApp transfer receipts.</p>
+            
+            <form onsubmit="handleManualFundAdd(event)" class="space-y-4 max-w-md">
+                <div>
+                    <label class="block text-sm text-slate-400 mb-2">User Email</label>
+                    <input type="email" id="fund-email" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-500">
+                </div>
+                <div>
+                    <label class="block text-sm text-slate-400 mb-2">Amount (₦)</label>
+                    <input type="number" id="fund-amount" required min="1" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-500">
+                </div>
+                <button type="submit" class="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-6 py-3 rounded-full font-semibold hover:shadow-lg">Confirm & Add Funds</button>
+            </form>
+        </div>
+
+        <!-- All Orders -->
+        <div class="glass-panel rounded-2xl p-6">
+            <h2 class="text-2xl font-bold mb-6">All Orders</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="text-left text-slate-400 text-sm border-b border-white/10">
+                            <th class="pb-3 font-medium">Order ID</th>
+                            <th class="pb-3 font-medium">User</th>
+                            <th class="pb-3 font-medium">Service</th>
+                            <th class="pb-3 font-medium">Quantity</th>
+                            <th class="pb-3 font-medium">Total</th>
+                            <th class="pb-3 font-medium">Status</th>
+                            <th class="pb-3 font-medium">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orders-table" class="text-sm">
+                        <!-- Dynamic orders -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Admin authentication check
+        const adminEmail = 'junestudioimagineai@gmail.com';
+        const currentUser = JSON.parse(localStorage.getItem('imagine_user'));
+        
+        if (!currentUser || currentUser.email !== adminEmail) {
+            window.location.href = 'index.html';
+        }
+
+        function loadAdminData() {
+            const users = JSON.parse(localStorage.getItem('imagine_users') || '[]');
+            const allOrders = [];
+            
+            users.forEach(user => {
+                if (user.orders) {
+                    user.orders.forEach(order => {
+                        allOrders.push({ ...order, userEmail: user.email, userName: user.name });
+                    });
+                }
+            });
+
+            // Update stats
+            document.getElementById('total-users').textContent = users.length;
+            
+            const totalRevenue = allOrders.reduce((sum, order) => sum + (order.total || 0), 0);
+            document.getElementById('total-revenue').textContent = totalRevenue.toFixed(2);
+            
+            const pendingCount = allOrders.filter(o => o.status === 'pending').length;
+            document.getElementById('pending-orders').textContent = pendingCount;
+            
+            const bundleCount = allOrders.filter(o => o.type === 'bundle').length;
+            document.getElementById('active-bundles').textContent = bundleCount;
+
+            // Render users table
+            document.getElementById('users-table').innerHTML = users.map(user => `
+                <tr class="border-b border-white/5">
+                    <td class="py-3">${user.name}</td>
+                    <td class="py-3">${user.email}</td>
+                    <td class="py-3">₦${user.balance?.toFixed(2) || '0.00'}</td>
+                    <td class="py-3"><span class="px-2 py-1 rounded-full text-xs ${user.role === 'admin' ? 'bg-red-500/20 text-red-400' : 'bg-slate-500/20 text-slate-400'}">${user.role || 'user'}</span></td>
+                    <td class="py-3">
+                        <button onclick="editUserBalance('${user.email}')" class="text-brand-400 hover:text-brand-300 text-xs">Edit Balance</button>
+                    </td>
+                </tr>
+            `).join('');
+
+            // Render orders table
+            document.getElementById('orders-table').innerHTML = allOrders.reverse().map(order => `
+                <tr class="border-b border-white/5">
+                    <td class="py-3 font-mono text-xs">#${order.id}</td>
+                    <td class="py-3">${order.userName || order.userEmail}</td>
+                    <td class="py-3">${order.serviceName || 'Bundle'}</td>
+                    <td class="py-3">${order.quantity || '-'}</td>
+                    <td class="py-3">₦${order.total?.toFixed(2) || '0.00'}</td>
+                    <td class="py-3"><span class="px-2 py-1 rounded-full text-xs ${order.status === 'pending' ? 'bg-yellow-500/20 text-yellow-400' : 'bg-green-500/20 text-green-400'}">${order.status}</span></td>
+                    <td class="py-3 text-slate-400">${new Date(order.createdAt).toLocaleDateString()}</td>
+                </tr>
+            `).join('');
+        }
+
+        function handleManualFundAdd(event) {
+            event.preventDefault();
+            const email = document.getElementById('fund-email').value;
+            const amount = parseFloat(document.getElementById('fund-amount').value);
+            
+            const users = JSON.parse(localStorage.getItem('imagine_users') || '[]');
+            const userIndex = users.findIndex(u => u.email === email);
+            
+            if (userIndex === -1) {
+                alert('User not found!');
+                return;
+            }
+            
+            users[userIndex].balance = (users[userIndex].balance || 0) + amount;
+            localStorage.setItem('imagine_users', JSON.stringify(users));
+            
+            alert(`Added ₦${amount.toFixed(2)} to ${email}'s balance`);
+            document.getElementById('fund-email').value = '';
+            document.getElementById('fund-amount').value = '';
+            loadAdminData();
+        }
+
+        function editUserBalance(email) {
+            const amount = prompt('Enter new balance amount:');
+            if (amount !== null) {
+                const users = JSON.parse(localStorage.getItem('imagine_users') || '[]');
+                const userIndex = users.findIndex(u => u.email === email);
+                
+                if (userIndex !== -1) {
+                    users[userIndex].balance = parseFloat(amount);
+                    localStorage.setItem('imagine_users', JSON.stringify(users));
+                    loadAdminData();
+                }
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('imagine_user');
+            window.location.href = 'index.html';
+        }
+
+        loadAdminData();
+    </script>
+</body>
+</html>
