@@ -3,448 +3,415 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Imagine | Premium SMM Marketplace - Junestudio</title>
-    <meta name="description" content="Premium SMM services with AI-powered marketing assistance. Bundle discounts up to 50%.">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Imagine SMM | Premium Social Media & Digital Services</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
-<body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen text-white">
+<body>
     <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-50 glass-nav border-b border-white/10 backdrop-blur-xl">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center space-x-3">
-                    <img src="logo.png" alt="Imagine" class="h-10 w-10 rounded-lg" onerror="this.style.display='none'">
-                    <div class="logo-fallback hidden" id="logoFallback">
-                        <div class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center font-bold text-xl">I</div>
-                    </div>
-                    <span class="text-xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">IMAGINE</span>
-                    <span class="text-xs text-slate-400 hidden sm:block">by Junestudio</span>
-                </div>
-                
-                <div class="hidden md:flex items-center space-x-6">
-                    <a href="#services" class="text-sm text-slate-300 hover:text-white transition-colors">Services</a>
-                    <a href="#bundles" class="text-sm text-slate-300 hover:text-white transition-colors">Bundles</a>
-                    <a href="#ai-assistant" class="text-sm text-slate-300 hover:text-white transition-colors">AI Assistant</a>
-                    <button onclick="openLoginModal()" class="text-sm text-slate-300 hover:text-white transition-colors" id="navLoginBtn">Login</button>
-                    <button onclick="openLoginModal()" class="bg-gradient-to-r from-indigo-500 to-purple-600 px-5 py-2 rounded-full text-sm font-semibold hover:shadow-lg hover:shadow-indigo-500/30 transition-all transform hover:scale-105" id="navSignupBtn">Get Started</button>
-                    <button onclick="logout()" class="hidden text-sm text-red-400 hover:text-red-300 transition-colors" id="navLogoutBtn">Logout</button>
-                    <span class="hidden text-sm text-green-400" id="navUserBalance">₦0.00</span>
-                </div>
-
-                <button onclick="toggleMobileMenu()" class="md:hidden text-white p-2">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-                </button>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="logo.png" alt="Imagine Logo" onerror="this.style.display='none'">
+                <span>Imagine<span class="highlight">Studio</span></span>
             </div>
-        </div>
-        
-        <!-- Mobile Menu -->
-        <div class="hidden md:hidden glass-nav border-t border-white/10" id="mobileMenu">
-            <div class="px-4 py-4 space-y-3">
-                <a href="#services" class="block text-sm text-slate-300 hover:text-white py-2">Services</a>
-                <a href="#bundles" class="block text-sm text-slate-300 hover:text-white py-2">Bundles</a>
-                <a href="#ai-assistant" class="block text-sm text-slate-300 hover:text-white py-2">AI Assistant</a>
-                <button onclick="openLoginModal()" class="block w-full text-left text-sm text-slate-300 hover:text-white py-2" id="mobileLoginBtn">Login</button>
-                <button onclick="openLoginModal()" class="w-full bg-gradient-to-r from-indigo-500 to-purple-600 px-5 py-2 rounded-full text-sm font-semibold mt-2" id="mobileSignupBtn">Get Started</button>
-                <button onclick="logout()" class="hidden block w-full text-left text-sm text-red-400 hover:text-red-300 py-2" id="mobileLogoutBtn">Logout</button>
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#services">Services</a>
+                <a href="#bundles">Bundles</a>
+                <a href="#ai-assistant">AI Assistant</a>
+                <a href="#web-dev">Web Dev</a>
+                <a href="#seo">SEO</a>
+                <a href="#branding">Branding</a>
+            </div>
+            <div class="nav-actions">
+                <button id="theme-toggle" class="theme-btn"><i class="fas fa-moon"></i></button>
+                <div id="auth-section">
+                    <button class="btn btn-outline" onclick="showModal('login')">Login</button>
+                    <button class="btn btn-primary" onclick="showModal('signup')">Sign Up</button>
+                </div>
+                <div id="user-section" style="display:none;">
+                    <span class="username-display" id="nav-username"></span>
+                    <button class="btn btn-outline" onclick="logout()">Logout</button>
+                    <button class="btn btn-primary" onclick="window.location.href='admin.html'" id="admin-link" style="display:none;">Admin</button>
+                </div>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="pt-32 pb-20 px-4">
-        <div class="max-w-7xl mx-auto text-center">
-            <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-                Premium <span class="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">SMM Services</span>
-                <br>at Unbeatable Prices
-            </h1>
-            <p class="text-xl text-slate-300 mb-8 max-w-3xl mx-auto">
-                Connect to multiple panels including JustAnotherPanel. Get up to 50% off on bundle packages. 
-                Powered by AI marketing experts.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <button onclick="scrollToSection('services')" class="bg-gradient-to-r from-indigo-500 to-purple-600 px-8 py-4 rounded-full font-semibold text-lg hover:shadow-xl hover:shadow-indigo-500/30 transition-all transform hover:scale-105">
-                    Browse Services
-                </button>
-                <button onclick="scrollToSection('bundles')" class="glass-card px-8 py-4 rounded-full font-semibold text-lg border border-white/20 hover:border-indigo-500/50 transition-all">
-                    View Bundles & Save
-                </button>
-            </div>
-            
-            <!-- Stats -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16 max-w-4xl mx-auto">
-                <div class="glass-card p-6 rounded-2xl">
-                    <div class="text-3xl font-bold text-indigo-400">150+</div>
-                    <div class="text-sm text-slate-400">Services</div>
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Premium Digital Services Marketplace</h1>
+            <p>Boost your social media, grow your business, and dominate your niche with our automated services.</p>
+            <div class="hero-stats">
+                <div class="stat">
+                    <h3>5000+</h3>
+                    <p>Services</p>
                 </div>
-                <div class="glass-card p-6 rounded-2xl">
-                    <div class="text-3xl font-bold text-purple-400">50%</div>
-                    <div class="text-sm text-slate-400">Max Discount</div>
+                <div class="stat">
+                    <h3>150K+</h3>
+                    <p>Orders</p>
                 </div>
-                <div class="glass-card p-6 rounded-2xl">
-                    <div class="text-3xl font-bold text-pink-400">24/7</div>
-                    <div class="text-sm text-slate-400">AI Support</div>
-                </div>
-                <div class="glass-card p-6 rounded-2xl">
-                    <div class="text-3xl font-bold text-green-400">Instant</div>
-                    <div class="text-sm text-slate-400">Delivery</div>
+                <div class="stat">
+                    <h3>99.9%</h3>
+                    <p>Uptime</p>
                 </div>
             </div>
+            <button class="btn btn-large btn-primary" onclick="document.getElementById('services').scrollIntoView({behavior: 'smooth'})">Explore Services</button>
         </div>
     </section>
 
-    <!-- Services Section (Non-users can see but not order) -->
-    <section id="services" class="py-20 px-4">
-        <div class="max-w-7xl mx-auto">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold mb-4">Our Services</h2>
-                <p class="text-slate-300 max-w-2xl mx-auto">Choose from hundreds of premium SMM services across all major platforms</p>
-                <div class="mt-4 flex gap-2 justify-center flex-wrap" id="categoryFilters">
-                    <button onclick="filterServices('all')" class="category-btn active px-4 py-2 rounded-full text-sm bg-indigo-500 text-white">All</button>
-                    <button onclick="filterServices('instagram')" class="category-btn px-4 py-2 rounded-full text-sm glass-card hover:bg-indigo-500/20">Instagram</button>
-                    <button onclick="filterServices('facebook')" class="category-btn px-4 py-2 rounded-full text-sm glass-card hover:bg-indigo-500/20">Facebook</button>
-                    <button onclick="filterServices('twitter')" class="category-btn px-4 py-2 rounded-full text-sm glass-card hover:bg-indigo-500/20">Twitter</button>
-                    <button onclick="filterServices('tiktok')" class="category-btn px-4 py-2 rounded-full text-sm glass-card hover:bg-indigo-500/20">TikTok</button>
-                    <button onclick="filterServices('youtube')" class="category-btn px-4 py-2 rounded-full text-sm glass-card hover:bg-indigo-500/20">YouTube</button>
-                </div>
+    <!-- Services Section -->
+    <section id="services" class="services-section">
+        <div class="container">
+            <h2 class="section-title">Our Services</h2>
+            <div class="services-filter">
+                <input type="text" id="service-search" placeholder="Search 5000+ services..." onkeyup="filterServices()">
+                <select id="category-filter" onchange="filterServices()">
+                    <option value="all">All Categories</option>
+                    <option value="social">Social Media</option>
+                    <option value="web">Web Development</option>
+                    <option value="seo">SEO Services</option>
+                    <option value="branding">Branding</option>
+                    <option value="marketing">Marketing</option>
+                </select>
             </div>
-
-            <!-- Services Grid - Shows cheapest 1000 for non-users -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="servicesGrid">
+            <div id="services-grid" class="services-grid">
                 <!-- Services loaded dynamically -->
             </div>
-
-            <!-- Login Prompt for Non-Users -->
-            <div id="loginPrompt" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
-                <div class="glass-card p-8 rounded-3xl max-w-md mx-4 text-center border border-indigo-500/30">
-                    <div class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-2">Create Account to Order</h3>
-                    <p class="text-slate-300 mb-6">Sign up now to access our full range of services and start ordering instantly.</p>
-                    <button onclick="closeLoginPrompt(); openLoginModal()" class="w-full bg-gradient-to-r from-indigo-500 to-purple-600 py-3 rounded-full font-semibold mb-3">Create Account</button>
-                    <button onclick="closeLoginPrompt()" class="w-full glass-card py-3 rounded-full font-semibold border border-white/20">Maybe Later</button>
-                </div>
-            </div>
         </div>
     </section>
 
-    <!-- Bundle Packages Section -->
-    <section id="bundles" class="py-20 px-4 bg-gradient-to-b from-transparent via-purple-900/20 to-transparent">
-        <div class="max-w-7xl mx-auto">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold mb-4">Bundle & Save Big</h2>
-                <p class="text-slate-300 max-w-2xl mx-auto">Combine services from 3+ platforms and get automatic discounts up to 50%</p>
-                <div class="mt-6 flex flex-wrap justify-center gap-4">
-                    <div class="glass-card px-6 py-3 rounded-full border border-green-500/30">
-                        <span class="text-green-400 font-semibold">3-4 Services: 20% OFF</span>
+    <!-- Bundles Section -->
+    <section id="bundles" class="bundles-section">
+        <div class="container">
+            <h2 class="section-title">Bundle Packages</h2>
+            <p class="section-subtitle">Save up to 50% when you bundle services</p>
+            <div class="bundle-calculator">
+                <div class="bundle-builder">
+                    <h3>Custom Bundle Builder</h3>
+                    <div id="bundle-items"></div>
+                    <button class="btn btn-secondary" onclick="addToBundle()">+ Add Service to Bundle</button>
+                    <div class="bundle-total">
+                        <p>Total Services: <span id="bundle-count">0</span></p>
+                        <p>Discount: <span id="bundle-discount">0%</span></p>
+                        <p>Final Price: $<span id="bundle-final-price">0.00</span></p>
                     </div>
-                    <div class="glass-card px-6 py-3 rounded-full border border-blue-500/30">
-                        <span class="text-blue-400 font-semibold">5-6 Services: 35% OFF</span>
-                    </div>
-                    <div class="glass-card px-6 py-3 rounded-full border border-purple-500/30">
-                        <span class="text-purple-400 font-semibold">7+ Services: 50% OFF</span>
-                    </div>
+                    <button class="btn btn-primary" onclick="purchaseBundle()" id="buy-bundle-btn" disabled>Purchase Bundle</button>
                 </div>
             </div>
-
-            <!-- Pre-built Bundles -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-                <!-- Starter Bundle -->
-                <div class="glass-card rounded-3xl p-8 border border-white/10 hover:border-indigo-500/50 transition-all group">
-                    <div class="text-indigo-400 text-sm font-semibold mb-2">STARTER</div>
-                    <h3 class="text-2xl font-bold mb-4">Social Kickstart</h3>
-                    <ul class="space-y-3 mb-6 text-slate-300">
-                        <li class="flex items-center gap-2"><svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>1000 Instagram Followers</li>
-                        <li class="flex items-center gap-2"><svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>500 Facebook Likes</li>
-                        <li class="flex items-center gap-2"><svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>1000 Twitter Impressions</li>
+            <div class="premade-bundles">
+                <div class="bundle-card">
+                    <h3>Starter Pack</h3>
+                    <p>Perfect for new businesses</p>
+                    <ul>
+                        <li>1000 Instagram Followers</li>
+                        <li>500 TikTok Views</li>
+                        <li>Basic Logo Design</li>
                     </ul>
-                    <div class="mb-6">
-                        <span class="text-slate-400 line-through text-lg">₦8,500</span>
-                        <div class="text-3xl font-bold text-indigo-400">₦6,800 <span class="text-sm text-green-400 font-normal">(-20%)</span></div>
-                    </div>
-                    <button onclick="addToBundle('starter')" class="w-full bg-gradient-to-r from-indigo-500 to-purple-600 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-indigo-500/30 transition-all">Add to Cart</button>
+                    <div class="price">$29.99 <span class="old-price">$45.00</span></div>
+                    <button class="btn btn-primary" onclick="orderPreMade('starter')">Order Now</button>
                 </div>
-
-                <!-- Growth Bundle -->
-                <div class="glass-card rounded-3xl p-8 border-2 border-indigo-500/50 relative transform scale-105">
-                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-indigo-500 to-purple-600 px-6 py-1 rounded-full text-sm font-bold">MOST POPULAR</div>
-                    <div class="text-purple-400 text-sm font-semibold mb-2">GROWTH</div>
-                    <h3 class="text-2xl font-bold mb-4">Brand Builder</h3>
-                    <ul class="space-y-3 mb-6 text-slate-300">
-                        <li class="flex items-center gap-2"><svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>5000 Instagram Followers</li>
-                        <li class="flex items-center gap-2"><svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>2000 Facebook Likes</li>
-                        <li class="flex items-center gap-2"><svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>5000 Twitter Impressions</li>
-                        <li class="flex items-center gap-2"><svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>1000 TikTok Views</li>
-                        <li class="flex items-center gap-2"><svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>500 YouTube Subscribers</li>
+                <div class="bundle-card popular">
+                    <div class="popular-tag">Most Popular</div>
+                    <h3>Growth Pack</h3>
+                    <p>Accelerate your growth</p>
+                    <ul>
+                        <li>5000 Instagram Followers</li>
+                        <li>2000 TikTok Views</li>
+                        <li>SEO Audit</li>
+                        <li>Social Media Strategy</li>
                     </ul>
-                    <div class="mb-6">
-                        <span class="text-slate-400 line-through text-lg">₦22,000</span>
-                        <div class="text-3xl font-bold text-purple-400">₦14,300 <span class="text-sm text-green-400 font-normal">(-35%)</span></div>
-                    </div>
-                    <button onclick="addToBundle('growth')" class="w-full bg-gradient-to-r from-indigo-500 to-purple-600 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-indigo-500/30 transition-all">Add to Cart</button>
+                    <div class="price">$79.99 <span class="old-price">$150.00</span></div>
+                    <button class="btn btn-primary" onclick="orderPreMade('growth')">Order Now</button>
                 </div>
-
-                <!-- Enterprise Bundle -->
-                <div class="glass-card rounded-3xl p-8 border border-white/10 hover:border-indigo-500/50 transition-all group">
-                    <div class="text-pink-400 text-sm font-semibold mb-2">ENTERPRISE</div>
-                    <h3 class="text-2xl font-bold mb-4">Dominance Pack</h3>
-                    <ul class="space-y-3 mb-6 text-slate-300">
-                        <li class="flex items-center gap-2"><svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>10K Instagram Followers</li>
-                        <li class="flex items-center gap-2"><svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>5000 Facebook Likes</li>
-                        <li class="flex items-center gap-2"><svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>10K Twitter Impressions</li>
-                        <li class="flex items-center gap-2"><svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>5000 TikTok Views</li>
-                        <li class="flex items-center gap-2"><svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>2000 YouTube Subscribers</li>
-                        <li class="flex items-center gap-2"><svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>5000 LinkedIn Connections</li>
-                        <li class="flex items-center gap-2"><svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Premium Support</li>
+                <div class="bundle-card">
+                    <h3>Enterprise Pack</h3>
+                    <p>Complete digital dominance</p>
+                    <ul>
+                        <li>20000 Instagram Followers</li>
+                        <li>10000 TikTok Views</li>
+                        <li>Full Website Development</li>
+                        <li>Advanced SEO Package</li>
+                        <li>Complete Branding Suite</li>
                     </ul>
-                    <div class="mb-6">
-                        <span class="text-slate-400 line-through text-lg">₦58,000</span>
-                        <div class="text-3xl font-bold text-pink-400">₦29,000 <span class="text-sm text-green-400 font-normal">(-50%)</span></div>
-                    </div>
-                    <button onclick="addToBundle('enterprise')" class="w-full bg-gradient-to-r from-indigo-500 to-purple-600 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-indigo-500/30 transition-all">Add to Cart</button>
-                </div>
-            </div>
-
-            <!-- Custom Bundle Builder -->
-            <div class="glass-card rounded-3xl p-8 border border-white/10">
-                <h3 class="text-2xl font-bold mb-6 text-center">Build Your Custom Bundle</h3>
-                <p class="text-slate-300 text-center mb-8">Select services from different platforms. Discount applies automatically at checkout!</p>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="bundleBuilder">
-                    <!-- Dynamically populated -->
-                </div>
-                <div class="mt-8 flex flex-col md:flex-row gap-4 items-center justify-between">
-                    <div class="text-center md:text-left">
-                        <div class="text-slate-400">Selected: <span id="selectedCount" class="text-white font-semibold">0</span> services</div>
-                        <div class="text-indigo-400 font-semibold">Discount: <span id="bundleDiscount">0%</span></div>
-                    </div>
-                    <button onclick="checkoutBundle()" class="bg-gradient-to-r from-indigo-500 to-purple-600 px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-indigo-500/30 transition-all">Proceed to Checkout</button>
+                    <div class="price">$199.99 <span class="old-price">$500.00</span></div>
+                    <button class="btn btn-primary" onclick="orderPreMade('enterprise')">Order Now</button>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- AI Assistant Section -->
-    <section id="ai-assistant" class="py-20 px-4">
-        <div class="max-w-7xl mx-auto">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold mb-4">AI Marketing Assistant</h2>
-                <p class="text-slate-300 max-w-2xl mx-auto">Get expert advice on social media strategy, content design, and Nigerian market insights</p>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- AI Chat Interface -->
-                <div class="lg:col-span-2 glass-card rounded-3xl p-6 border border-white/10">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                            </div>
-                            <div>
-                                <h3 class="font-semibold">Imagine AI</h3>
-                                <p class="text-xs text-green-400">Online • Ready to help</p>
-                            </div>
-                        </div>
-                        <select id="aiMode" onchange="changeAIMode()" class="glass-card px-4 py-2 rounded-full text-sm border border-white/20">
-                            <option value="social">Social Media Expert</option>
-                            <option value="content">Content Design Pro</option>
-                            <option value="marketing">Marketing Strategy</option>
-                            <option value="nigerian">Nigerian Content Expert</option>
-                        </select>
-                    </div>
-
-                    <div class="h-96 overflow-y-auto mb-4 space-y-4" id="chatHistory">
-                        <div class="flex gap-3">
-                            <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex-shrink-0 flex items-center justify-center text-xs font-bold">AI</div>
-                            <div class="glass-card px-4 py-3 rounded-2xl rounded-tl-none max-w-[80%]">
-                                <p class="text-sm">Hello! I'm your Imagine AI assistant. I can help you with social media strategy, content creation, marketing plans, or Nigerian market insights. What would you like to work on today?</p>
-                            </div>
+    <section id="ai-assistant" class="ai-section">
+        <div class="container">
+            <h2 class="section-title">AI Marketing Assistant</h2>
+            <div class="ai-interface">
+                <div class="ai-modes">
+                    <button class="mode-btn active" data-mode="social">Social Media Expert</button>
+                    <button class="mode-btn" data-mode="content">Content Design</button>
+                    <button class="mode-btn" data-mode="marketing">Marketing Strategy</button>
+                    <button class="mode-btn" data-mode="nigerian">Nigerian Content Expert</button>
+                </div>
+                <div class="chat-container">
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="message bot">
+                            <p>Hello! I'm your Imagine AI Assistant. How can I help you today?</p>
                         </div>
                     </div>
-
-                    <div class="flex gap-3">
-                        <input type="text" id="chatInput" placeholder="Ask me anything..." class="flex-1 glass-card px-4 py-3 rounded-full border border-white/20 focus:border-indigo-500/50 outline-none text-sm" onkeypress="if(event.key==='Enter')sendMessage()">
-                        <button onclick="sendMessage()" class="bg-gradient-to-r from-indigo-500 to-purple-600 px-6 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-indigo-500/30 transition-all">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
-                        </button>
-                    </div>
-
-                    <!-- History Tab for Logged-in Users -->
-                    <div id="chatHistoryTab" class="hidden mt-6 pt-6 border-t border-white/10">
-                        <h4 class="font-semibold mb-3">Chat History</h4>
-                        <div class="space-y-2 max-h-40 overflow-y-auto" id="userChatHistory">
-                            <!-- Populated dynamically -->
-                        </div>
+                    <div class="chat-input-area">
+                        <input type="text" id="chat-input" placeholder="Ask me anything about social media, content, marketing...">
+                        <button class="btn btn-primary" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
                     </div>
                 </div>
+                <div class="chat-history" id="chat-history">
+                    <h3>History</h3>
+                    <div id="history-list"></div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                <!-- Quick Tips -->
-                <div class="space-y-4">
-                    <div class="glass-card rounded-2xl p-6 border border-white/10">
-                        <h4 class="font-semibold mb-3 flex items-center gap-2">
-                            <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                            Quick Tips
-                        </h4>
-                        <ul class="space-y-3 text-sm text-slate-300">
-                            <li class="flex gap-2"><span class="text-indigo-400">•</span>Post consistently for better engagement</li>
-                            <li class="flex gap-2"><span class="text-indigo-400">•</span>Use trending hashtags in Nigeria</li>
-                            <li class="flex gap-2"><span class="text-indigo-400">•</span>Engage with your audience within 1 hour</li>
-                            <li class="flex gap-2"><span class="text-indigo-400">•</span>Video content gets 3x more reach</li>
-                        </ul>
-                    </div>
+    <!-- Web Development Section -->
+    <section id="web-dev" class="feature-section">
+        <div class="container">
+            <h2 class="section-title">Web Development Services</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-laptop-code"></i>
+                    <h3>Custom Websites</h3>
+                    <p>Tailored websites built from scratch to match your brand identity.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h3>E-commerce Solutions</h3>
+                    <p>Full online stores with payment integration and inventory management.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h3>Responsive Design</h3>
+                    <p>Websites that look perfect on all devices and screen sizes.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-bolt"></i>
+                    <h3>Fast Performance</h3>
+                    <p>Optimized code and hosting for lightning-fast load times.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                    <div class="glass-card rounded-2xl p-6 border border-white/10">
-                        <h4 class="font-semibold mb-3 flex items-center gap-2">
-                            <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-                            Resources
-                        </h4>
-                        <ul class="space-y-3 text-sm text-slate-300">
-                            <li><a href="#" class="hover:text-indigo-400 transition-colors">Content Calendar Template</a></li>
-                            <li><a href="#" class="hover:text-indigo-400 transition-colors">Hashtag Research Guide</a></li>
-                            <li><a href="#" class="hover:text-indigo-400 transition-colors">Nigerian Market Report 2024</a></li>
-                        </ul>
-                    </div>
+    <!-- SEO Section -->
+    <section id="seo" class="feature-section alt-bg">
+        <div class="container">
+            <h2 class="section-title">SEO Services</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-search"></i>
+                    <h3>Keyword Research</h3>
+                    <p>Find the best keywords to drive targeted traffic to your site.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>On-Page Optimization</h3>
+                    <p>Optimize your content and structure for better rankings.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-link"></i>
+                    <h3>Link Building</h3>
+                    <p>High-quality backlinks to boost your domain authority.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-file-alt"></i>
+                    <h3>Content Strategy</h3>
+                    <p>Data-driven content plans that attract and convert visitors.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Branding Section -->
+    <section id="branding" class="feature-section">
+        <div class="container">
+            <h2 class="section-title">Branding Services</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-paint-brush"></i>
+                    <h3>Logo Design</h3>
+                    <p>Memorable logos that represent your brand's unique identity.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-palette"></i>
+                    <h3>Brand Identity</h3>
+                    <p>Complete visual systems including colors, typography, and guidelines.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-bullhorn"></i>
+                    <h3>Marketing Materials</h3>
+                    <p>Business cards, brochures, and digital assets that impress.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-hashtag"></i>
+                    <h3>Social Branding</h3>
+                    <p>Cohesive social media profiles that strengthen your brand presence.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Payment Info -->
+    <section class="payment-info">
+        <div class="container">
+            <h2>Add Funds</h2>
+            <div class="payment-methods">
+                <div class="payment-card">
+                    <h3>OPay / PalmPay</h3>
+                    <p class="account-number">8081515375</p>
+                    <p class="account-name">Sulaiman Sheriff-Akorede</p>
+                    <p class="instruction">Send receipt to WhatsApp: +2348081515375</p>
+                </div>
+                <div class="payment-card">
+                    <h3>First Bank Transfer</h3>
+                    <p class="account-number">3084635140</p>
+                    <p class="account-name">Sulaiman Sheriff-Akorede</p>
+                    <p class="instruction">Send receipt to WhatsApp: +2348081515375</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="border-t border-white/10 py-12 px-4">
-        <div class="max-w-7xl mx-auto">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-                <div>
-                    <div class="flex items-center gap-2 mb-4">
-                        <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center font-bold">I</div>
-                        <span class="font-bold">IMAGINE</span>
-                    </div>
-                    <p class="text-sm text-slate-400">Premium SMM services powered by Junestudio. Connecting you to multiple panels for the best prices.</p>
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>Imagine<span class="highlight">Studio</span></h3>
+                    <p>Premium digital services marketplace powered by AI and automation.</p>
                 </div>
-                <div>
-                    <h4 class="font-semibold mb-4">Quick Links</h4>
-                    <ul class="space-y-2 text-sm text-slate-400">
-                        <li><a href="#services" class="hover:text-white transition-colors">Services</a></li>
-                        <li><a href="#bundles" class="hover:text-white transition-colors">Bundles</a></li>
-                        <li><a href="#ai-assistant" class="hover:text-white transition-colors">AI Assistant</a></li>
-                    </ul>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <a href="#services">Services</a>
+                    <a href="#bundles">Bundles</a>
+                    <a href="#ai-assistant">AI Assistant</a>
+                    <a href="#" onclick="showModal('login')">Login</a>
                 </div>
-                <div>
-                    <h4 class="font-semibold mb-4">Payment Methods</h4>
-                    <ul class="space-y-2 text-sm text-slate-400">
-                        <li>OPay Transfer</li>
-                        <li>PalmPay Transfer</li>
-                        <li>Bank Transfer</li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-semibold mb-4">Contact</h4>
-                    <ul class="space-y-2 text-sm text-slate-400">
-                        <li>WhatsApp: +234 808 151 5375</li>
-                        <li>Email: junestudioimagineai@gmail.com</li>
-                    </ul>
+                <div class="footer-contact">
+                    <h4>Contact</h4>
+                    <p><i class="fab fa-whatsapp"></i> +2348081515375</p>
+                    <p><i class="fas fa-envelope"></i> junestudioimagineai@gmail.com</p>
                 </div>
             </div>
-            <div class="border-t border-white/10 pt-8 text-center text-sm text-slate-400">
-                <p>&copy; 2024 Imagine by Junestudio. All rights reserved.</p>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Imagine Studio. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
-    <!-- Login Modal -->
-    <div id="loginModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
-        <div class="glass-card p-8 rounded-3xl max-w-md mx-4 w-full border border-white/20">
-            <div class="text-center mb-6">
-                <h2 class="text-2xl font-bold mb-2">Welcome Back</h2>
-                <p class="text-slate-300 text-sm">Login to access your dashboard</p>
+    <!-- Auth Modal -->
+    <div id="auth-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="login-form">
+                <h2>Login</h2>
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="login-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Login</button>
+                    <div class="divider">OR</div>
+                    <div id="google-login-btn"></div>
+                    <p class="form-footer">Forgot password? <a href="#" onclick="contactSupport()">Contact WhatsApp Support</a></p>
+                    <p class="form-footer">Don't have an account? <a href="#" onclick="showSignup()">Sign Up</a></p>
+                </form>
             </div>
-
-            <!-- Google Sign In -->
-            <div id="g_id_onload"
-                 data-client_id="1031396840174-7kq44t5hn9nji3ssvcb0q2a5mbjie0ag.apps.googleusercontent.com"
-                 data-callback="handleGoogleSignIn"
-                 data-auto_prompt="false">
+            <div id="signup-form" style="display:none;">
+                <h2>Create Account</h2>
+                <form onsubmit="handleSignup(event)">
+                    <div class="form-group">
+                        <label>Business Name</label>
+                        <input type="text" id="signup-business" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="signup-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password (min 8 chars, include number & special char)</label>
+                        <input type="password" id="signup-password" required pattern="(?=.*\d)(?=.*[!@#$%^&*]).{8,}" title="Must contain at least one number, one special character, and be at least 8 characters long">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+                    <div class="divider">OR</div>
+                    <div id="google-signup-btn"></div>
+                    <p class="form-footer">Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
+                </form>
             </div>
-            <div class="g_id_signin" data-type="standard" data-size="large" data-theme="filled_black" data-text="signin_with" data-shape="pill" data-logo_alignment="left" class="mb-6"></div>
-
-            <div class="relative my-6">
-                <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-white/10"></div></div>
-                <div class="relative flex justify-center text-sm"><span class="px-4 bg-slate-900 text-slate-400">Or continue with email</span></div>
-            </div>
-
-            <form onsubmit="handleEmailLogin(event)" class="space-y-4">
-                <div>
-                    <label class="block text-sm text-slate-300 mb-2">Email</label>
-                    <input type="email" id="loginEmail" required class="w-full glass-card px-4 py-3 rounded-xl border border-white/20 focus:border-indigo-500/50 outline-none transition-colors" placeholder="your@email.com">
-                </div>
-                <div>
-                    <label class="block text-sm text-slate-300 mb-2">Password</label>
-                    <input type="password" id="loginPassword" required class="w-full glass-card px-4 py-3 rounded-xl border border-white/20 focus:border-indigo-500/50 outline-none transition-colors" placeholder="••••••••">
-                </div>
-                <button type="submit" class="w-full bg-gradient-to-r from-indigo-500 to-purple-600 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-indigo-500/30 transition-all">Login</button>
-            </form>
-
-            <p class="text-center text-sm text-slate-400 mt-6">
-                Don't have an account? <button onclick="switchToSignup()" class="text-indigo-400 hover:text-indigo-300 font-semibold">Sign up</button>
-            </p>
-            <button onclick="closeLoginModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-            </button>
         </div>
     </div>
 
-    <!-- Signup Modal -->
-    <div id="signupModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
-        <div class="glass-card p-8 rounded-3xl max-w-md mx-4 w-full border border-white/20">
-            <div class="text-center mb-6">
-                <h2 class="text-2xl font-bold mb-2">Create Account</h2>
-                <p class="text-slate-300 text-sm">Join thousands of satisfied customers</p>
-            </div>
-
-            <div id="g_id_onload_signup"
-                 data-client_id="1031396840174-7kq44t5hn9nji3ssvcb0q2a5mbjie0ag.apps.googleusercontent.com"
-                 data-callback="handleGoogleSignIn"
-                 data-auto_prompt="false">
-            </div>
-            <div class="g_id_signin" data-type="standard" data-size="large" data-theme="filled_black" data-text="signup_with" data-shape="pill" data-logo_alignment="left" class="mb-6"></div>
-
-            <div class="relative my-6">
-                <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-white/10"></div></div>
-                <div class="relative flex justify-center text-sm"><span class="px-4 bg-slate-900 text-slate-400">Or sign up with email</span></div>
-            </div>
-
-            <form onsubmit="handleEmailSignup(event)" class="space-y-4">
-                <div>
-                    <label class="block text-sm text-slate-300 mb-2">Full Name</label>
-                    <input type="text" id="signupName" required class="w-full glass-card px-4 py-3 rounded-xl border border-white/20 focus:border-indigo-500/50 outline-none transition-colors" placeholder="John Doe">
+    <!-- Order Modal -->
+    <div id="order-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeOrderModal()">&times;</span>
+            <h2>Place Order</h2>
+            <div id="order-details"></div>
+            <form onsubmit="submitOrder(event)">
+                <div class="form-group">
+                    <label>Link/Username</label>
+                    <input type="text" id="order-link" required>
                 </div>
-                <div>
-                    <label class="block text-sm text-slate-300 mb-2">Email</label>
-                    <input type="email" id="signupEmail" required class="w-full glass-card px-4 py-3 rounded-xl border border-white/20 focus:border-indigo-500/50 outline-none transition-colors" placeholder="your@email.com">
+                <div class="form-group">
+                    <label>Quantity</label>
+                    <input type="number" id="order-quantity" min="1" required onchange="updateOrderTotal()">
                 </div>
-                <div>
-                    <label class="block text-sm text-slate-300 mb-2">Password</label>
-                    <input type="password" id="signupPassword" required class="w-full glass-card px-4 py-3 rounded-xl border border-white/20 focus:border-indigo-500/50 outline-none transition-colors" placeholder="••••••••" minlength="6">
+                <div class="order-summary">
+                    <p>Price per unit: $<span id="unit-price">0.00</span></p>
+                    <p>Total: $<span id="order-total">0.00</span></p>
+                    <p>Your Balance: $<span id="user-balance-display">0.00</span></p>
                 </div>
-                <button type="submit" class="w-full bg-gradient-to-r from-indigo-500 to-purple-600 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-indigo-500/30 transition-all">Create Account</button>
+                <button type="submit" class="btn btn-primary btn-block">Confirm Order</button>
             </form>
-
-            <p class="text-center text-sm text-slate-400 mt-6">
-                Already have an account? <button onclick="switchToLogin()" class="text-indigo-400 hover:text-indigo-300 font-semibold">Login</button>
-            </p>
-            <button onclick="closeSignupModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-            </button>
         </div>
     </div>
 
     <script src="script.js"></script>
     <script>
-        // Initialize logo fallback if image fails
-        document.querySelector('img[alt="Imagine"]').onerror = function() {
-            this.style.display = 'none';
-            document.getElementById('logoFallback').classList.remove('hidden');
+        function initGoogleAuth() {
+            if (typeof google !== 'undefined') {
+                google.accounts.id.initialize({
+                    client_id: '1031396840174-7kq44t5hn9nji3ssvcb0q2a5mbjie0ag.apps.googleusercontent.com',
+                    callback: handleGoogleResponse
+                });
+                
+                google.accounts.id.renderButton(
+                    document.getElementById("google-login-btn"),
+                    { theme: "outline", size: "large", width: "100%" }
+                );
+                
+                google.accounts.id.renderButton(
+                    document.getElementById("google-signup-btn"),
+                    { theme: "outline", size: "large", width: "100%" }
+                );
+            }
+        }
+        
+        function handleGoogleResponse(response) {
+            const userInfo = JSON.parse(atob(response.credential.split('.')[1]));
+            handleGoogleLogin(userInfo);
+        }
+        
+        window.onload = function() {
+            initGoogleAuth();
+            loadServices();
+            checkAuth();
+            loadChatHistory();
         };
     </script>
 </body>

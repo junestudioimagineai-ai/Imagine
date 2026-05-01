@@ -3,312 +3,264 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard | Imagine - Junestudio</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Admin Dashboard | Imagine Studio</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .admin-container { max-width: 1400px; margin: 100px auto 0; padding: 2rem; }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+        .stat-card { background: var(--card-bg); padding: 1.5rem; border-radius: 12px; box-shadow: var(--shadow-md); }
+        .stat-card h3 { font-size: 2rem; color: var(--primary-color); margin-bottom: 0.5rem; }
+        .section-card { background: var(--card-bg); padding: 2rem; border-radius: 12px; box-shadow: var(--shadow-md); margin-bottom: 2rem; }
+        .data-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+        .data-table th, .data-table td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--border-color); }
+        .data-table th { background: var(--bg-tertiary); font-weight: 600; }
+        .badge { padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.875rem; font-weight: 600; }
+        .badge-pending { background: var(--warning-color); color: white; }
+        .badge-completed { background: var(--success-color); color: white; }
+        .action-btn { padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; margin-right: 0.5rem; }
+        .btn-approve { background: var(--success-color); color: white; }
+        .btn-reject { background: var(--danger-color); color: white; }
+    </style>
 </head>
-<body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen text-white">
-    <!-- Admin Navigation -->
-    <nav class="fixed top-0 w-full z-50 glass-nav border-b border-white/10 backdrop-blur-xl">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-gradient-to-br from-red-500 to-pink-600 rounded-lg flex items-center justify-center font-bold text-xl">A</div>
-                    <span class="text-xl font-bold">Admin Dashboard</span>
-                    <span class="text-xs text-slate-400 hidden sm:block">Imagine by Junestudio</span>
-                </div>
-                
-                <div class="flex items-center space-x-4">
-                    <span id="adminEmail" class="text-sm text-slate-300"></span>
-                    <button onclick="logout()" class="text-sm text-red-400 hover:text-red-300 transition-colors">Logout</button>
-                </div>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="logo.png" alt="Imagine Logo" onerror="this.style.display='none'">
+                <span>Imagine<span class="highlight">Studio</span> Admin</span>
+            </div>
+            <div class="nav-actions">
+                <button id="theme-toggle" class="theme-btn"><i class="fas fa-moon"></i></button>
+                <button class="btn btn-outline" onclick="window.location.href='index.html'">Back to Site</button>
+                <button class="btn btn-outline" onclick="logout()">Logout</button>
             </div>
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <main class="pt-24 pb-12 px-4">
-        <div class="max-w-7xl mx-auto">
-            <!-- Stats Overview -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                <div class="glass-card p-6 rounded-2xl border border-white/10">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-slate-400 text-sm">Total Users</h3>
-                        <svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-                    </div>
-                    <div class="text-3xl font-bold" id="totalUsers">0</div>
-                    <div class="text-xs text-green-400 mt-2">+12% from last week</div>
-                </div>
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1>Admin Dashboard</h1>
+            <p>Welcome, <span id="admin-name"></span></p>
+        </div>
 
-                <div class="glass-card p-6 rounded-2xl border border-white/10">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-slate-400 text-sm">Total Revenue</h3>
-                        <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    </div>
-                    <div class="text-3xl font-bold" id="totalRevenue">₦0</div>
-                    <div class="text-xs text-green-400 mt-2">+8% from last week</div>
-                </div>
-
-                <div class="glass-card p-6 rounded-2xl border border-white/10">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-slate-400 text-sm">Pending Orders</h3>
-                        <svg class="w-6 h-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    </div>
-                    <div class="text-3xl font-bold" id="pendingOrders">0</div>
-                    <div class="text-xs text-yellow-400 mt-2">Requires attention</div>
-                </div>
-
-                <div class="glass-card p-6 rounded-2xl border border-white/10">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-slate-400 text-sm">Balance Updates</h3>
-                        <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    </div>
-                    <div class="text-3xl font-bold" id="balanceUpdates">0</div>
-                    <div class="text-xs text-slate-400 mt-2">This month</div>
-                </div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3 id="total-users">0</h3>
+                <p>Total Users</p>
             </div>
-
-            <!-- Quick Actions -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-                <!-- Update User Balance -->
-                <div class="glass-card rounded-3xl p-8 border border-white/10">
-                    <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
-                        <svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-                        Update User Balance
-                    </h2>
-                    <form onsubmit="handleBalanceUpdate(event)" class="space-y-4">
-                        <div>
-                            <label class="block text-sm text-slate-300 mb-2">User Email</label>
-                            <input type="email" id="userEmail" required class="w-full glass-card px-4 py-3 rounded-xl border border-white/20 focus:border-indigo-500/50 outline-none transition-colors" placeholder="user@example.com">
-                        </div>
-                        <div>
-                            <label class="block text-sm text-slate-300 mb-2">Amount (₦)</label>
-                            <input type="number" id="updateAmount" required class="w-full glass-card px-4 py-3 rounded-xl border border-white/20 focus:border-indigo-500/50 outline-none transition-colors" placeholder="5000">
-                        </div>
-                        <div>
-                            <label class="block text-sm text-slate-300 mb-2">Payment Method</label>
-                            <select id="paymentMethod" class="w-full glass-card px-4 py-3 rounded-xl border border-white/20 focus:border-indigo-500/50 outline-none transition-colors">
-                                <option value="opay">OPay Transfer</option>
-                                <option value="palmpay">PalmPay Transfer</option>
-                                <option value="bank">Bank Transfer (Firstbank)</option>
-                            </select>
-                        </div>
-                        <div class="bg-indigo-500/10 border border-indigo-500/30 rounded-xl p-4">
-                            <p class="text-sm text-indigo-300">
-                                <strong>⚠️ Important:</strong> Only update balance after confirming receipt via WhatsApp (+234 808 151 5375). 
-                                Verify the screenshot/receipt before proceeding.
-                            </p>
-                        </div>
-                        <button type="submit" class="w-full bg-gradient-to-r from-indigo-500 to-purple-600 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-indigo-500/30 transition-all">
-                            Update Balance
-                        </button>
-                    </form>
-                </div>
-
-                <!-- Payment Details -->
-                <div class="glass-card rounded-3xl p-8 border border-white/10">
-                    <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
-                        <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
-                        Payment Account Details
-                    </h2>
-                    
-                    <div class="space-y-6">
-                        <div class="glass-card p-4 rounded-xl border border-green-500/30">
-                            <div class="flex items-center justify-between mb-2">
-                                <h3 class="font-semibold text-green-400">OPay / PalmPay</h3>
-                                <span class="text-xs text-slate-400">Instant Transfer</span>
-                            </div>
-                            <div class="space-y-1">
-                                <p class="text-2xl font-bold">8081515375</p>
-                                <p class="text-sm text-slate-300">Sulaiman Sheriff-Akorede</p>
-                            </div>
-                            <button onclick="copyToClipboard('8081515375')" class="mt-3 text-xs text-indigo-400 hover:text-indigo-300">Copy Account Number</button>
-                        </div>
-
-                        <div class="glass-card p-4 rounded-xl border border-blue-500/30">
-                            <div class="flex items-center justify-between mb-2">
-                                <h3 class="font-semibold text-blue-400">First Bank</h3>
-                                <span class="text-xs text-slate-400">Bank Transfer</span>
-                            </div>
-                            <div class="space-y-1">
-                                <p class="text-2xl font-bold">3084635140</p>
-                                <p class="text-sm text-slate-300">Sulaiman Sheriff-Akorede</p>
-                            </div>
-                            <button onclick="copyToClipboard('3084635140')" class="mt-3 text-xs text-indigo-400 hover:text-indigo-300">Copy Account Number</button>
-                        </div>
-
-                        <div class="bg-purple-500/10 border border-purple-500/30 rounded-xl p-4">
-                            <h4 class="font-semibold mb-2 text-purple-300">Confirmation Process</h4>
-                            <ol class="space-y-2 text-sm text-slate-300 list-decimal list-inside">
-                                <li>Customer makes transfer to account above</li>
-                                <li>Customer sends receipt to WhatsApp: <a href="https://wa.me/2348081515375" target="_blank" class="text-indigo-400 hover:text-indigo-300">+234 808 151 5375</a></li>
-                                <li>Admin verifies receipt in WhatsApp</li>
-                                <li>Admin updates user balance using form on left</li>
-                                <li>Customer receives notification and can order</li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
+            <div class="stat-card">
+                <h3 id="total-orders">0</h3>
+                <p>Total Orders</p>
             </div>
-
-            <!-- Users Table -->
-            <div class="glass-card rounded-3xl p-8 border border-white/10 mb-8">
-                <h2 class="text-2xl font-bold mb-6">All Users</h2>
-                <div class="overflow-x-auto">
-                    <table class="w-full">
-                        <thead>
-                            <tr class="border-b border-white/10">
-                                <th class="text-left py-3 px-4 text-sm text-slate-400">Name</th>
-                                <th class="text-left py-3 px-4 text-sm text-slate-400">Email</th>
-                                <th class="text-left py-3 px-4 text-sm text-slate-400">Balance</th>
-                                <th class="text-left py-3 px-4 text-sm text-slate-400">Joined</th>
-                                <th class="text-left py-3 px-4 text-sm text-slate-400">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="usersTable">
-                            <!-- Populated dynamically -->
-                        </tbody>
-                    </table>
-                </div>
+            <div class="stat-card">
+                <h3 id="pending-orders">0</h3>
+                <p>Pending Orders</p>
             </div>
-
-            <!-- JAP API Status -->
-            <div class="glass-card rounded-3xl p-8 border border-white/10">
-                <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
-                    <svg class="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                    JustAnotherPanel API Connection
-                </h2>
-                <div class="flex items-center gap-4 mb-4">
-                    <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-                    <span class="text-green-400 font-semibold">Connected & Active</span>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="glass-card p-4 rounded-xl">
-                        <p class="text-xs text-slate-400 mb-1">API Key</p>
-                        <p class="font-mono text-sm">fc5f...63bb</p>
-                    </div>
-                    <div class="glass-card p-4 rounded-xl">
-                        <p class="text-xs text-slate-400 mb-1">Endpoint</p>
-                        <p class="font-mono text-sm">justanotherpanel.com/api/v2</p>
-                    </div>
-                    <div class="glass-card p-4 rounded-xl">
-                        <p class="text-xs text-slate-400 mb-1">Method</p>
-                        <p class="font-mono text-sm">POST / JSON</p>
-                    </div>
-                </div>
+            <div class="stat-card">
+                <h3>$<span id="total-revenue">0.00</span></h3>
+                <p>Total Revenue</p>
             </div>
         </div>
-    </main>
+
+        <div class="section-card">
+            <h2>User Management</h2>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Business Name</th>
+                        <th>Balance</th>
+                        <th>Role</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="users-table"></tbody>
+            </table>
+        </div>
+
+        <div class="section-card">
+            <h2>Orders</h2>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>User</th>
+                        <th>Service</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="orders-table"></tbody>
+            </table>
+        </div>
+
+        <div class="section-card">
+            <h2>Add Funds to User</h2>
+            <form onsubmit="addFunds(event)" style="display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 1rem; align-items: end;">
+                <div>
+                    <label>Select User</label>
+                    <select id="fund-user" required style="width: 100%; padding: 0.75rem; border: 2px solid var(--border-color); border-radius: 8px;"></select>
+                </div>
+                <div>
+                    <label>Amount ($)</label>
+                    <input type="number" id="fund-amount" min="1" step="0.01" required style="width: 100%; padding: 0.75rem; border: 2px solid var(--border-color); border-radius: 8px;">
+                </div>
+                <div>
+                    <label>Note</label>
+                    <input type="text" id="fund-note" placeholder="e.g., Bank transfer confirmed" style="width: 100%; padding: 0.75rem; border: 2px solid var(--border-color); border-radius: 8px;">
+                </div>
+                <button type="submit" class="btn btn-primary">Add Funds</button>
+            </form>
+        </div>
+    </div>
 
     <script>
-        // Admin Configuration
         const ADMIN_EMAIL = 'junestudioimagineai@gmail.com';
-        const WHATSAPP_NUMBER = '+2348081515375';
+        let currentUser = null;
 
-        // Check Admin Auth
-        function checkAdminAuth() {
-            const user = localStorage.getItem('imagine_user');
-            if (!user) {
+        // Check admin access
+        function checkAdmin() {
+            const savedUser = localStorage.getItem('currentUser');
+            if (!savedUser) {
                 window.location.href = 'index.html';
                 return;
             }
             
-            const userData = JSON.parse(user);
-            if (!userData.isAdmin || userData.email !== ADMIN_EMAIL) {
+            currentUser = JSON.parse(savedUser);
+            if (currentUser.role !== 'admin') {
                 alert('Access denied. Admin only.');
                 window.location.href = 'index.html';
                 return;
             }
-            
-            document.getElementById('adminEmail').textContent = userData.email;
-            loadAdminData();
+
+            document.getElementById('admin-name').textContent = currentUser.businessName || currentUser.email;
+            loadDashboard();
         }
 
-        // Load Admin Data
-        function loadAdminData() {
-            const users = JSON.parse(localStorage.getItem('imagine_users') || '[]');
-            
-            // Update stats
-            document.getElementById('totalUsers').textContent = users.length;
-            document.getElementById('totalRevenue').textContent = '₦' + users.reduce((sum, u) => sum + (u.balance || 0), 0).toLocaleString();
-            
-            // Load users table
-            const tbody = document.getElementById('usersTable');
-            tbody.innerHTML = users.map(user => `
-                <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
-                    <td class="py-3 px-4">${user.name}</td>
-                    <td class="py-3 px-4">${user.email}</td>
-                    <td class="py-3 px-4 text-green-400">₦${(user.balance || 0).toLocaleString()}</td>
-                    <td class="py-3 px-4 text-slate-400">${new Date(user.joinedAt || Date.now()).toLocaleDateString()}</td>
-                    <td class="py-3 px-4">
-                        <button onclick="quickAddBalance('${user.email}')" class="text-xs bg-indigo-500 hover:bg-indigo-600 px-3 py-1 rounded-full transition-colors">
-                            Add Balance
-                        </button>
+        function loadDashboard() {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+
+            // Stats
+            document.getElementById('total-users').textContent = users.length;
+            document.getElementById('total-orders').textContent = orders.length;
+            document.getElementById('pending-orders').textContent = orders.filter(o => o.status === 'pending').length;
+            document.getElementById('total-revenue').textContent = orders.reduce((sum, o) => sum + o.total, 0).toFixed(2);
+
+            // Users table
+            const usersTable = document.getElementById('users-table');
+            usersTable.innerHTML = users.map(user => `
+                <tr>
+                    <td>${user.email}</td>
+                    <td>${user.businessName || '-'}</td>
+                    <td>$${(user.balance || 0).toFixed(2)}</td>
+                    <td><span class="badge ${user.role === 'admin' ? 'badge-completed' : 'badge-pending'}">${user.role}</span></td>
+                    <td>
+                        <button class="action-btn btn-approve" onclick="updateBalance(${user.id}, 10)">+$10</button>
+                        <button class="action-btn btn-reject" onclick="updateBalance(${user.id}, -10)">-$10</button>
                     </td>
                 </tr>
             `).join('');
+
+            // Orders table
+            const ordersTable = document.getElementById('orders-table');
+            ordersTable.innerHTML = orders.map(order => `
+                <tr>
+                    <td>#${order.id.toString().slice(-6)}</td>
+                    <td>${order.userId}</td>
+                    <td>${order.service?.name || 'Unknown'}</td>
+                    <td>${order.quantity}</td>
+                    <td>$${order.total.toFixed(2)}</td>
+                    <td><span class="badge badge-${order.status}">${order.status}</span></td>
+                    <td>
+                        ${order.status === 'pending' ? `
+                            <button class="action-btn btn-approve" onclick="updateOrderStatus(${order.id}, 'completed')">Approve</button>
+                            <button class="action-btn btn-reject" onclick="updateOrderStatus(${order.id}, 'cancelled')">Cancel</button>
+                        ` : '-'}
+                    </td>
+                </tr>
+            `).join('');
+
+            // Fund user dropdown
+            const fundSelect = document.getElementById('fund-user');
+            fundSelect.innerHTML = users.map(user => `<option value="${user.id}">${user.email} (${user.businessName || 'No name'})</option>`).join('');
         }
 
-        // Handle Balance Update
-        function handleBalanceUpdate(e) {
-            e.preventDefault();
-            
-            const email = document.getElementById('userEmail').value;
-            const amount = parseFloat(document.getElementById('updateAmount').value);
-            const method = document.getElementById('paymentMethod').value;
-            
-            const users = JSON.parse(localStorage.getItem('imagine_users') || '[]');
-            const userIndex = users.findIndex(u => u.email === email);
-            
-            if (userIndex === -1) {
-                alert('User not found!');
-                return;
+        function updateBalance(userId, amount) {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const userIndex = users.findIndex(u => u.id === userId);
+            if (userIndex !== -1) {
+                users[userIndex].balance = (users[userIndex].balance || 0) + amount;
+                localStorage.setItem('users', JSON.stringify(users));
+                loadDashboard();
+                alert(`Updated balance by $${amount}`);
             }
-            
-            // Confirm action
-            if (!confirm(`Confirm adding ₦${amount.toLocaleString()} to ${email}'s balance via ${method}?`)) {
-                return;
+        }
+
+        function addFunds(event) {
+            event.preventDefault();
+            const userId = parseInt(document.getElementById('fund-user').value);
+            const amount = parseFloat(document.getElementById('fund-amount').value);
+            const note = document.getElementById('fund-note').value;
+
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const userIndex = users.findIndex(u => u.id === userId);
+            if (userIndex !== -1) {
+                users[userIndex].balance = (users[userIndex].balance || 0) + amount;
+                localStorage.setItem('users', JSON.stringify(users));
+                
+                // Log transaction
+                const transactions = JSON.parse(localStorage.getItem('transactions') || '[]');
+                transactions.push({
+                    id: Date.now(),
+                    userId,
+                    amount,
+                    note,
+                    adminId: currentUser.id,
+                    timestamp: new Date().toISOString()
+                });
+                localStorage.setItem('transactions', JSON.stringify(transactions));
+
+                loadDashboard();
+                alert(`Added $${amount} to user account. Note: ${note}`);
+                document.getElementById('fund-amount').value = '';
+                document.getElementById('fund-note').value = '';
             }
-            
-            users[userIndex].balance = (users[userIndex].balance || 0) + amount;
-            localStorage.setItem('imagine_users', JSON.stringify(users));
-            
-            // Also update if user is currently logged in
-            const currentUser = JSON.parse(localStorage.getItem('imagine_user') || '{}');
-            if (currentUser.email === email) {
-                currentUser.balance = users[userIndex].balance;
-                localStorage.setItem('imagine_user', JSON.stringify(currentUser));
+        }
+
+        function updateOrderStatus(orderId, status) {
+            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            const orderIndex = orders.findIndex(o => o.id === orderId);
+            if (orderIndex !== -1) {
+                orders[orderIndex].status = status;
+                localStorage.setItem('orders', JSON.stringify(orders));
+                loadDashboard();
+                alert(`Order marked as ${status}`);
             }
-            
-            alert(`Successfully updated ${email}'s balance by ₦${amount.toLocaleString()}`);
-            loadAdminData();
-            
-            // Reset form
-            e.target.reset();
         }
 
-        // Quick Add Balance
-        function quickAddBalance(email) {
-            document.getElementById('userEmail').value = email;
-            document.getElementById('updateAmount').focus();
-        }
-
-        // Copy to Clipboard
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                alert('Copied to clipboard!');
-            });
-        }
-
-        // Logout
         function logout() {
-            localStorage.removeItem('imagine_user');
+            localStorage.removeItem('currentUser');
             window.location.href = 'index.html';
         }
 
-        // Initialize
-        checkAdminAuth();
+        // Theme toggle
+        document.getElementById('theme-toggle')?.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+
+        checkAdmin();
     </script>
 </body>
 </html>
