@@ -1,311 +1,217 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Imagine SMM | Premium Social Media & Digital Services</title>
+    <title>Imagine - Premium SMM Marketplace | JustAnotherPanel & MoreThanPanel</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
-    <!-- Navigation -->
     <nav class="navbar">
-        <div class="nav-container">
-            <div class="logo">
-                <img src="logo.png" alt="Imagine Logo" onerror="this.style.display='none'">
-                <span>Imagine<span class="highlight">Studio</span></span>
-            </div>
-            <div class="nav-links">
-                <a href="#home">Home</a>
-                <a href="#services">Services</a>
-                <a href="#bundles">Bundles</a>
-                <a href="#ai-assistant">AI Assistant</a>
-                <a href="#web-dev">Web Dev</a>
-                <a href="#seo">SEO</a>
-                <a href="#branding">Branding</a>
-            </div>
-            <div class="nav-actions">
-                <button id="theme-toggle" class="theme-btn"><i class="fas fa-moon"></i></button>
-                <div id="auth-section">
-                    <button class="btn btn-outline" onclick="showModal('login')">Login</button>
-                    <button class="btn btn-primary" onclick="showModal('signup')">Sign Up</button>
-                </div>
-                <div id="user-section" style="display:none;">
-                    <span class="username-display" id="nav-username"></span>
-                    <button class="btn btn-outline" onclick="logout()">Logout</button>
-                    <button class="btn btn-primary" onclick="window.location.href='admin.html'" id="admin-link" style="display:none;">Admin</button>
-                </div>
-            </div>
+        <div class="logo">
+            <img src="logo.png" alt="Imagine Logo" onerror="this.style.display='none'">
+            <span>Imagine</span>
         </div>
+        <div class="nav-links">
+            <a href="#services">Services</a>
+            <a href="#bundles">Bundles</a>
+            <a href="#ai-assistant">AI Assistant</a>
+            <button id="view-toggle" class="btn btn-outline">Switch to Non-SMM Services</button>
+        </div>
+        <div class="auth-section" id="auth-section">
+            <button class="btn btn-primary" onclick="showModal('login')">Login</button>
+            <button class="btn btn-secondary" onclick="showModal('signup')">Sign Up</button>
+        </div>
+        <div class="user-section" id="user-section" style="display:none;">
+            <span id="nav-username"></span>
+            <span class="balance">₦<span id="nav-balance">0.00</span></span>
+            <a href="admin.html" id="admin-link" style="display:none;">Admin</a>
+            <button class="btn btn-outline" onclick="logout()">Logout</button>
+        </div>
+        <button id="theme-toggle" class="btn btn-icon"><i class="fas fa-moon"></i></button>
     </nav>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
+    <header class="hero">
         <div class="hero-content">
-            <h1>Premium Digital Services Marketplace</h1>
-            <p>Boost your social media, grow your business, and dominate your niche with our automated services.</p>
+            <h1>Premium Social Media Services</h1>
+            <p>Powered by JustAnotherPanel & MoreThanPanel - 150% Quality Guarantee</p>
             <div class="hero-stats">
                 <div class="stat">
-                    <h3>5000+</h3>
-                    <p>Services</p>
+                    <span class="stat-number">2</span>
+                    <span class="stat-label">Premium Providers</span>
                 </div>
                 <div class="stat">
-                    <h3>150K+</h3>
-                    <p>Orders</p>
+                    <span class="stat-number">50%</span>
+                    <span class="stat-label">Max Bundle Discount</span>
                 </div>
                 <div class="stat">
-                    <h3>99.9%</h3>
-                    <p>Uptime</p>
+                    <span class="stat-number">24/7</span>
+                    <span class="stat-label">AI Support</span>
                 </div>
             </div>
-            <button class="btn btn-large btn-primary" onclick="document.getElementById('services').scrollIntoView({behavior: 'smooth'})">Explore Services</button>
         </div>
-    </section>
+    </header>
 
-    <!-- Services Section -->
     <section id="services" class="services-section">
         <div class="container">
-            <h2 class="section-title">Our Services</h2>
-            <div class="services-filter">
-                <input type="text" id="service-search" placeholder="Search 5000+ services..." onkeyup="filterServices()">
-                <select id="category-filter" onchange="filterServices()">
+            <h2>Our Services</h2>
+            <div class="filters">
+                <input type="text" id="service-search" placeholder="Search services..." class="search-input">
+                <select id="category-filter" class="filter-select">
                     <option value="all">All Categories</option>
-                    <option value="social">Social Media</option>
-                    <option value="web">Web Development</option>
-                    <option value="seo">SEO Services</option>
-                    <option value="branding">Branding</option>
-                    <option value="marketing">Marketing</option>
+                    <option value="instagram">Instagram</option>
+                    <option value="tiktok">TikTok</option>
+                    <option value="facebook">Facebook</option>
+                    <option value="twitter">Twitter</option>
+                    <option value="youtube">YouTube</option>
+                    <option value="telegram">Telegram</option>
+                    <option value="whatsapp">WhatsApp</option>
+                    <option value="linkedin">LinkedIn</option>
+                    <option value="digital-services">Digital Services</option>
+                </select>
+                <select id="platform-filter" class="filter-select">
+                    <option value="all">All Providers</option>
                 </select>
             </div>
-            <div id="services-grid" class="services-grid">
-                <!-- Services loaded dynamically -->
-            </div>
+            <div id="services-grid" class="services-grid"></div>
         </div>
     </section>
 
-    <!-- Bundles Section -->
     <section id="bundles" class="bundles-section">
         <div class="container">
-            <h2 class="section-title">Bundle Packages</h2>
-            <p class="section-subtitle">Save up to 50% when you bundle services</p>
-            <div class="bundle-calculator">
-                <div class="bundle-builder">
-                    <h3>Custom Bundle Builder</h3>
-                    <div id="bundle-items"></div>
-                    <button class="btn btn-secondary" onclick="addToBundle()">+ Add Service to Bundle</button>
-                    <div class="bundle-total">
-                        <p>Total Services: <span id="bundle-count">0</span></p>
-                        <p>Discount: <span id="bundle-discount">0%</span></p>
-                        <p>Final Price: $<span id="bundle-final-price">0.00</span></p>
+            <h2>Bundle & Save</h2>
+            <p class="section-desc">Create custom bundles and save up to 50%! Mix services from both providers.</p>
+            
+            <div class="bundle-builder">
+                <div class="bundle-controls">
+                    <button class="btn btn-primary" onclick="addToBundle()">+ Add Service to Bundle</button>
+                    <button class="btn btn-success" id="buy-bundle-btn" onclick="purchaseBundle()" disabled>Purchase Bundle</button>
+                </div>
+                <div class="bundle-info">
+                    <div class="bundle-summary">
+                        <span>Items: <strong id="bundle-count">0</strong></span>
+                        <span>Discount: <strong id="bundle-discount">0%</strong></span>
+                        <span>Total: <strong>$<span id="bundle-final-price">0.00</span></strong></span>
                     </div>
-                    <button class="btn btn-primary" onclick="purchaseBundle()" id="buy-bundle-btn" disabled>Purchase Bundle</button>
+                    <div id="bundle-items" class="bundle-items"></div>
                 </div>
             </div>
-            <div class="premade-bundles">
-                <div class="bundle-card">
-                    <h3>Starter Pack</h3>
-                    <p>Perfect for new businesses</p>
-                    <ul>
-                        <li>1000 Instagram Followers</li>
-                        <li>500 TikTok Views</li>
-                        <li>Basic Logo Design</li>
-                    </ul>
-                    <div class="price">$29.99 <span class="old-price">$45.00</span></div>
-                    <button class="btn btn-primary" onclick="orderPreMade('starter')">Order Now</button>
-                </div>
-                <div class="bundle-card popular">
-                    <div class="popular-tag">Most Popular</div>
-                    <h3>Growth Pack</h3>
-                    <p>Accelerate your growth</p>
-                    <ul>
-                        <li>5000 Instagram Followers</li>
-                        <li>2000 TikTok Views</li>
-                        <li>SEO Audit</li>
-                        <li>Social Media Strategy</li>
-                    </ul>
-                    <div class="price">$79.99 <span class="old-price">$150.00</span></div>
-                    <button class="btn btn-primary" onclick="orderPreMade('growth')">Order Now</button>
-                </div>
-                <div class="bundle-card">
-                    <h3>Enterprise Pack</h3>
-                    <p>Complete digital dominance</p>
-                    <ul>
-                        <li>20000 Instagram Followers</li>
-                        <li>10000 TikTok Views</li>
-                        <li>Full Website Development</li>
-                        <li>Advanced SEO Package</li>
-                        <li>Complete Branding Suite</li>
-                    </ul>
-                    <div class="price">$199.99 <span class="old-price">$500.00</span></div>
-                    <button class="btn btn-primary" onclick="orderPreMade('enterprise')">Order Now</button>
+
+            <div class="premade-packages">
+                <h3>Premade Packages</h3>
+                <div class="packages-grid">
+                    <div class="package-card">
+                        <h4>Starter Pack</h4>
+                        <p class="price">$29.99</p>
+                        <ul>
+                            <li>1000 Instagram Followers</li>
+                            <li>500 TikTok Followers</li>
+                            <li>500 Facebook Likes</li>
+                        </ul>
+                        <button class="btn btn-primary" onclick="orderPreMade('starter')">Order Now</button>
+                    </div>
+                    <div class="package-card featured">
+                        <div class="badge">Popular</div>
+                        <h4>Growth Pack</h4>
+                        <p class="price">$79.99</p>
+                        <ul>
+                            <li>5000 Instagram Followers</li>
+                            <li>2000 TikTok Followers</li>
+                            <li>2000 Facebook Likes</li>
+                            <li>1000 Twitter Followers</li>
+                        </ul>
+                        <button class="btn btn-primary" onclick="orderPreMade('growth')">Order Now</button>
+                    </div>
+                    <div class="package-card">
+                        <h4>Enterprise Pack</h4>
+                        <p class="price">$199.99</p>
+                        <ul>
+                            <li>10000 Instagram Followers</li>
+                            <li>5000 TikTok Followers</li>
+                            <li>5000 Facebook Likes</li>
+                            <li>3000 Twitter Followers</li>
+                            <li>1000 YouTube Subscribers</li>
+                        </ul>
+                        <button class="btn btn-primary" onclick="orderPreMade('enterprise')">Order Now</button>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- AI Assistant Section -->
     <section id="ai-assistant" class="ai-section">
         <div class="container">
-            <h2 class="section-title">AI Marketing Assistant</h2>
+            <h2>AI Marketing Assistant</h2>
+            <p class="section-desc">Get expert advice on social media, content design, marketing strategy, and Nigerian market insights.</p>
+            
             <div class="ai-interface">
-                <div class="ai-modes">
+                <div class="mode-selector">
                     <button class="mode-btn active" data-mode="social">Social Media Expert</button>
                     <button class="mode-btn" data-mode="content">Content Design</button>
                     <button class="mode-btn" data-mode="marketing">Marketing Strategy</button>
-                    <button class="mode-btn" data-mode="nigerian">Nigerian Content Expert</button>
+                    <button class="mode-btn" data-mode="nigerian">Nigerian Market Expert</button>
                 </div>
+                
                 <div class="chat-container">
-                    <div class="chat-messages" id="chat-messages">
-                        <div class="message bot">
-                            <p>Hello! I'm your Imagine AI Assistant. How can I help you today?</p>
-                        </div>
-                    </div>
+                    <div id="chat-messages" class="chat-messages"></div>
                     <div class="chat-input-area">
-                        <input type="text" id="chat-input" placeholder="Ask me anything about social media, content, marketing...">
+                        <input type="text" id="chat-input" placeholder="Ask me anything about social media marketing...">
                         <button class="btn btn-primary" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
                     </div>
                 </div>
-                <div class="chat-history" id="chat-history">
-                    <h3>History</h3>
-                    <div id="history-list"></div>
+                
+                <div class="history-panel">
+                    <h4>Chat History</h4>
+                    <div id="history-list" class="history-list"></div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Web Development Section -->
-    <section id="web-dev" class="feature-section">
-        <div class="container">
-            <h2 class="section-title">Web Development Services</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <i class="fas fa-laptop-code"></i>
-                    <h3>Custom Websites</h3>
-                    <p>Tailored websites built from scratch to match your brand identity.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-shopping-cart"></i>
-                    <h3>E-commerce Solutions</h3>
-                    <p>Full online stores with payment integration and inventory management.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-mobile-alt"></i>
-                    <h3>Responsive Design</h3>
-                    <p>Websites that look perfect on all devices and screen sizes.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-bolt"></i>
-                    <h3>Fast Performance</h3>
-                    <p>Optimized code and hosting for lightning-fast load times.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- SEO Section -->
-    <section id="seo" class="feature-section alt-bg">
-        <div class="container">
-            <h2 class="section-title">SEO Services</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <i class="fas fa-search"></i>
-                    <h3>Keyword Research</h3>
-                    <p>Find the best keywords to drive targeted traffic to your site.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-chart-line"></i>
-                    <h3>On-Page Optimization</h3>
-                    <p>Optimize your content and structure for better rankings.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-link"></i>
-                    <h3>Link Building</h3>
-                    <p>High-quality backlinks to boost your domain authority.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-file-alt"></i>
-                    <h3>Content Strategy</h3>
-                    <p>Data-driven content plans that attract and convert visitors.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Branding Section -->
-    <section id="branding" class="feature-section">
-        <div class="container">
-            <h2 class="section-title">Branding Services</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <i class="fas fa-paint-brush"></i>
-                    <h3>Logo Design</h3>
-                    <p>Memorable logos that represent your brand's unique identity.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-palette"></i>
-                    <h3>Brand Identity</h3>
-                    <p>Complete visual systems including colors, typography, and guidelines.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-bullhorn"></i>
-                    <h3>Marketing Materials</h3>
-                    <p>Business cards, brochures, and digital assets that impress.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-hashtag"></i>
-                    <h3>Social Branding</h3>
-                    <p>Cohesive social media profiles that strengthen your brand presence.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Payment Info -->
-    <section class="payment-info">
+    <section class="payment-section">
         <div class="container">
             <h2>Add Funds</h2>
             <div class="payment-methods">
                 <div class="payment-card">
-                    <h3>OPay / PalmPay</h3>
+                    <h4><i class="fas fa-mobile-alt"></i> OPay / PalmPay</h4>
                     <p class="account-number">8081515375</p>
                     <p class="account-name">Sulaiman Sheriff-Akorede</p>
-                    <p class="instruction">Send receipt to WhatsApp: +2348081515375</p>
+                    <p class="instructions">Send receipt to WhatsApp for confirmation</p>
                 </div>
                 <div class="payment-card">
-                    <h3>First Bank Transfer</h3>
+                    <h4><i class="fas fa-university"></i> First Bank</h4>
                     <p class="account-number">3084635140</p>
                     <p class="account-name">Sulaiman Sheriff-Akorede</p>
-                    <p class="instruction">Send receipt to WhatsApp: +2348081515375</p>
+                    <p class="instructions">Send receipt to WhatsApp for confirmation</p>
                 </div>
             </div>
+            <button class="btn btn-success" onclick="contactSupport()"><i class="fab fa-whatsapp"></i> Contact Support on WhatsApp</button>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer>
+    <footer class="footer">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-brand">
-                    <h3>Imagine<span class="highlight">Studio</span></h3>
-                    <p>Premium digital services marketplace powered by AI and automation.</p>
+                    <h3>Imagine</h3>
+                    <p>Premium SMM Services powered by JustAnotherPanel & MoreThanPanel</p>
                 </div>
                 <div class="footer-links">
                     <h4>Quick Links</h4>
                     <a href="#services">Services</a>
                     <a href="#bundles">Bundles</a>
                     <a href="#ai-assistant">AI Assistant</a>
-                    <a href="#" onclick="showModal('login')">Login</a>
                 </div>
                 <div class="footer-contact">
                     <h4>Contact</h4>
-                    <p><i class="fab fa-whatsapp"></i> +2348081515375</p>
+                    <p><i class="fab fa-whatsapp"></i> +234 808 151 5375</p>
                     <p><i class="fas fa-envelope"></i> junestudioimagineai@gmail.com</p>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 Imagine Studio. All rights reserved.</p>
+                <p>&copy; 2024 Imagine by JuneStudio. All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -314,44 +220,37 @@
     <div id="auth-modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
-            <div id="login-form">
-                <h2>Login</h2>
-                <form onsubmit="handleLogin(event)">
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" id="login-email" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Password</label>
-                        <input type="password" id="login-password" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block">Login</button>
-                    <div class="divider">OR</div>
-                    <div id="google-login-btn"></div>
-                    <p class="form-footer">Forgot password? <a href="#" onclick="contactSupport()">Contact WhatsApp Support</a></p>
-                    <p class="form-footer">Don't have an account? <a href="#" onclick="showSignup()">Sign Up</a></p>
-                </form>
-            </div>
-            <div id="signup-form" style="display:none;">
-                <h2>Create Account</h2>
-                <form onsubmit="handleSignup(event)">
-                    <div class="form-group">
-                        <label>Business Name</label>
-                        <input type="text" id="signup-business" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" id="signup-email" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Password (min 8 chars, include number & special char)</label>
-                        <input type="password" id="signup-password" required pattern="(?=.*\d)(?=.*[!@#$%^&*]).{8,}" title="Must contain at least one number, one special character, and be at least 8 characters long">
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block">Create Account</button>
-                    <div class="divider">OR</div>
-                    <div id="google-signup-btn"></div>
-                    <p class="form-footer">Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
-                </form>
+            <h2 id="auth-title">Login</h2>
+            
+            <form id="login-form" onsubmit="handleLogin(event)">
+                <input type="email" id="login-email" placeholder="Email" required>
+                <input type="password" id="login-password" placeholder="Password" required>
+                <button type="submit" class="btn btn-primary btn-block">Login</button>
+                <p class="auth-switch">Don't have an account? <a href="#" onclick="showSignup()">Sign up</a></p>
+            </form>
+            
+            <form id="signup-form" style="display:none;" onsubmit="handleSignup(event)">
+                <input type="text" id="signup-business" placeholder="Business Name" required>
+                <input type="email" id="signup-email" placeholder="Email" required>
+                <input type="password" id="signup-password" placeholder="Password" required>
+                <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+                <p class="auth-switch">Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
+            </form>
+            
+            <div class="google-login">
+                <div id="g_id_onload"
+                     data-client_id="1031396840174-7kq44t5hn9nji3ssvcb0q2a5mbjie0ag.apps.googleusercontent.com"
+                     data-callback="handleGoogleLogin"
+                     data-auto_prompt="false">
+                </div>
+                <div class="g_id_signin"
+                     data-type="standard"
+                     data-size="large"
+                     data-theme="outline"
+                     data-text="sign_in_with"
+                     data-shape="rectangular"
+                     data-logo_alignment="left">
+                </div>
             </div>
         </div>
     </div>
@@ -363,56 +262,20 @@
             <h2>Place Order</h2>
             <div id="order-details"></div>
             <form onsubmit="submitOrder(event)">
-                <div class="form-group">
-                    <label>Link/Username</label>
-                    <input type="text" id="order-link" required>
-                </div>
-                <div class="form-group">
-                    <label>Quantity</label>
-                    <input type="number" id="order-quantity" min="1" required onchange="updateOrderTotal()">
-                </div>
+                <label>Unit Price: $<span id="unit-price">0.00</span></label>
+                <label>Quantity (Min: <span id="min-qty">100</span>)</label>
+                <input type="number" id="order-quantity" min="100" value="100" onchange="updateOrderTotal()" required>
+                <label>Your Link</label>
+                <input type="url" id="order-link" placeholder="https://..." required>
                 <div class="order-summary">
-                    <p>Price per unit: $<span id="unit-price">0.00</span></p>
                     <p>Total: $<span id="order-total">0.00</span></p>
-                    <p>Your Balance: $<span id="user-balance-display">0.00</span></p>
+                    <p>Your Balance: ₦<span id="user-balance-display">0.00</span></p>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block">Confirm Order</button>
+                <button type="submit" class="btn btn-primary btn-block">Place Order</button>
             </form>
         </div>
     </div>
 
     <script src="script.js"></script>
-    <script>
-        function initGoogleAuth() {
-            if (typeof google !== 'undefined') {
-                google.accounts.id.initialize({
-                    client_id: '1031396840174-7kq44t5hn9nji3ssvcb0q2a5mbjie0ag.apps.googleusercontent.com',
-                    callback: handleGoogleResponse
-                });
-                
-                google.accounts.id.renderButton(
-                    document.getElementById("google-login-btn"),
-                    { theme: "outline", size: "large", width: "100%" }
-                );
-                
-                google.accounts.id.renderButton(
-                    document.getElementById("google-signup-btn"),
-                    { theme: "outline", size: "large", width: "100%" }
-                );
-            }
-        }
-        
-        function handleGoogleResponse(response) {
-            const userInfo = JSON.parse(atob(response.credential.split('.')[1]));
-            handleGoogleLogin(userInfo);
-        }
-        
-        window.onload = function() {
-            initGoogleAuth();
-            loadServices();
-            checkAuth();
-            loadChatHistory();
-        };
-    </script>
 </body>
 </html>
