@@ -503,12 +503,14 @@ img {
     padding-top: var(--nav-height);
 }
 
-.page {
+.page-section {
     display: none;
     animation: fadeIn var(--transition-base);
+    min-height: 100vh;
+    padding-top: var(--nav-height);
 }
 
-.page.active {
+.page-section.active {
     display: block;
 }
 
