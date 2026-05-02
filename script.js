@@ -71,43 +71,57 @@ window.app = {
         }
     },
     
-    // Fetch Services from Both APIs
+    // Fetch Services from Both APIs with CORS handling
     async fetchAllServices() {
         this.isLoading = true;
         this.updateLoadingState();
         
         try {
-            // Fetch from JustAnotherPanel
-            const japResponse = await fetch(CONFIG.JAP_API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    key: CONFIG.JAP_API_KEY,
-                    action: 'services'
-                })
-            });
+            // Try to fetch with CORS proxy first, then direct, then fallback
+            const fetchWithFallback = async (url, key) => {
+                const payloads = [
+                    // Attempt 1: Direct POST
+                    () => fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ key, action: 'services' })
+                    }),
+                    // Attempt 2: Via CORS proxy (allorigins)
+                    () => fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ key, action: 'services' })
+                    })
+                ];
+                
+                for (const attempt of payloads) {
+                    try {
+                        const response = await attempt();
+                        if (response.ok) {
+                            const data = await response.json();
+                            if (Array.isArray(data) && data.length > 0) {
+                                return data;
+                            }
+                        }
+                    } catch (e) {
+                        console.log('Attempt failed, trying next...', e);
+                    }
+                }
+                return [];
+            };
             
-            // Fetch from MoreThanPanel
-            const mtpResponse = await fetch(CONFIG.MTP_API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    key: CONFIG.MTP_API_KEY,
-                    action: 'services'
-                })
-            });
+            // Fetch from both panels concurrently
+            const [japServices, mtpServices] = await Promise.all([
+                fetchWithFallback(CONFIG.JAP_API_URL, CONFIG.JAP_API_KEY),
+                fetchWithFallback(CONFIG.MTP_API_URL, CONFIG.MTP_API_KEY)
+            ]);
             
-            const japData = await japResponse.json();
-            const mtpData = await mtpResponse.json();
-            
-            // Process JAP services
-            const japServices = Array.isArray(japData) ? japData : [];
-            const mtpServices = Array.isArray(mtpData) ? mtpData : [];
+            console.log(`API Results - JAP: ${japServices.length}, MTP: ${mtpServices.length}`);
             
             // Combine and transform services
             this.services = [
                 ...japServices.map(s => ({
-                    id: s.service,
+                    id: s.service || s.id,
                     name: s.name,
                     platform: this.detectPlatform(s.name),
                     tier: 'basic',
@@ -118,7 +132,7 @@ window.app = {
                     priceNGN: Math.round((parseFloat(s.rate) || 0) * CONFIG.USD_NGN_RATE * CONFIG.MARKUP)
                 })),
                 ...mtpServices.map(s => ({
-                    id: s.service,
+                    id: s.service || s.id,
                     name: s.name,
                     platform: this.detectPlatform(s.name),
                     tier: 'max',
@@ -128,17 +142,33 @@ window.app = {
                     category: s.category || 0,
                     priceNGN: Math.round((parseFloat(s.rate) || 0) * CONFIG.USD_NGN_RATE * CONFIG.MARKUP)
                 }))
-            ].filter(s => s.rate > 0); // Filter out invalid services
+            ].filter(s => s.rate > 0 && s.name); // Filter out invalid services
             
-            console.log(`Loaded ${this.services.length} total services (${japServices.length} JAP + ${mtpServices.length} MTP)`);
+            console.log(`✅ Loaded ${this.services.length} total services (${japServices.length} JAP + ${mtpServices.length} MTP)`);
+            
+            // Cache successful fetch
+            localStorage.setItem('js_services_cache', JSON.stringify({
+                services: this.services,
+                timestamp: Date.now()
+            }));
             
         } catch (error) {
             console.error('Error fetching services:', error);
-            // Fallback to minimal sample if APIs fail
-            this.services = this.getFallbackServices();
+            // Try to load from cache
+            const cached = localStorage.getItem('js_services_cache');
+            if (cached) {
+                const { services } = JSON.parse(cached);
+                this.services = services;
+                console.log('Loaded from cache:', this.services.length);
+            } else {
+                this.services = this.getFallbackServices();
+            }
         } finally {
             this.isLoading = false;
             this.updateLoadingState();
+            this.renderServices();
+            this.populateCalculator();
+            this.generateBundles();
         }
     },
     
