@@ -1,6 +1,6 @@
 /* ========================================
-   JuneStudio Imagine - Enterprise JS
-   Complete Application Logic
+   JuneStudio Imagine - Enterprise JS v2.0
+   Complete Application Logic with Real API Integration
    ======================================== */
 
 // Configuration
@@ -12,48 +12,29 @@ const CONFIG = {
     USD_NGN_RATE: 1450,
     MARKUP: 2.5, // 150% profit
     ADMIN_EMAIL: 'junestudioimagineai@gmail.com',
-    WHATSAPP_NUMBER: '+2348081515375',
+    WHATSAPP_NUMBER: '2348081515375',
     GOOGLE_CLIENT_ID: '1031396840174-7kq44t5hn9nji3ssvcb0q2a5mbjie0ag.apps.googleusercontent.com'
 };
-
-// Sample Services Database (will be populated from APIs)
-const SAMPLE_SERVICES = [
-    // JuneStudio Basic (JAP)
-    { id: 101, name: 'Instagram Followers - High Quality', platform: 'instagram', tier: 'basic', rate: 0.80, min: 100, max: 50000 },
-    { id: 102, name: 'Instagram Likes - Instant', platform: 'instagram', tier: 'basic', rate: 0.15, min: 50, max: 20000 },
-    { id: 103, name: 'TikTok Views - Viral', platform: 'tiktok', tier: 'basic', rate: 0.08, min: 1000, max: 1000000 },
-    { id: 104, name: 'Facebook Page Likes', platform: 'facebook', tier: 'basic', rate: 4.50, min: 100, max: 10000 },
-    { id: 105, name: 'YouTube Subscribers', platform: 'youtube', tier: 'basic', rate: 8.00, min: 50, max: 5000 },
-    { id: 106, name: 'Twitter Followers', platform: 'twitter', tier: 'basic', rate: 3.20, min: 100, max: 20000 },
-    { id: 107, name: 'Telegram Members', platform: 'telegram', tier: 'basic', rate: 2.80, min: 100, max: 50000 },
-    { id: 108, name: 'WhatsApp Group Members', platform: 'whatsapp', tier: 'basic', rate: 5.00, min: 50, max: 5000 },
-    
-    // JuneStudio Max (MTP)
-    { id: 201, name: 'Instagram Followers - Premium Non-Drop', platform: 'instagram', tier: 'max', rate: 1.20, min: 100, max: 100000 },
-    { id: 202, name: 'Instagram Likes - Real Users', platform: 'instagram', tier: 'max', rate: 0.25, min: 50, max: 50000 },
-    { id: 203, name: 'TikTok Followers - Engagement', platform: 'tiktok', tier: 'max', rate: 2.50, min: 100, max: 30000 },
-    { id: 204, name: 'TikTok Likes - Viral Boost', platform: 'tiktok', tier: 'max', rate: 0.12, min: 500, max: 500000 },
-    { id: 205, name: 'Snapchat Followers', platform: 'snapchat', tier: 'max', rate: 3.80, min: 100, max: 10000 },
-    { id: 206, name: 'Pinterest Followers', platform: 'pinterest', tier: 'max', rate: 4.20, min: 50, max: 5000 },
-    { id: 207, name: 'LinkedIn Connections', platform: 'linkedin', tier: 'max', rate: 6.50, min: 50, max: 3000 },
-    { id: 208, name: 'Reddit Upvotes', platform: 'reddit', tier: 'max', rate: 2.00, min: 50, max: 10000 }
-];
 
 // Application State
 window.app = {
     currentUser: null,
     services: [],
+    bundles: [],
     orders: [],
     currentChatMode: 'social',
+    isLoading: false,
     
     // Initialize Application
-    init() {
+    async init() {
         this.loadUserData();
-        this.loadServices();
+        await this.fetchAllServices();
+        this.generateBundles();
         this.setupEventListeners();
         this.updateUI();
         this.animateStats();
         this.startLiveTicker();
+        this.renderServices();
     },
     
     // Load User Data from localStorage
@@ -65,11 +46,11 @@ window.app = {
             // Initialize admin if needed
             if (this.currentUser.email === CONFIG.ADMIN_EMAIL && !this.currentUser.isAdmin) {
                 this.currentUser.isAdmin = true;
-                this.currentUser.balance = 100000; // Admin starting balance
+                this.currentUser.balance = 100000;
                 this.saveUserData();
             }
         } else {
-            // Create default admin account
+            // Create default admin account silently
             const adminUser = {
                 email: CONFIG.ADMIN_EMAIL,
                 isAdmin: true,
@@ -90,14 +71,103 @@ window.app = {
         }
     },
     
-    // Load Services
-    async loadServices() {
-        // For now, use sample services
-        // In production, fetch from both APIs
-        this.services = SAMPLE_SERVICES.map(service => ({
-            ...service,
-            priceNGN: Math.round(service.rate * CONFIG.USD_NGN_RATE * CONFIG.MARKUP)
-        }));
+    // Fetch Services from Both APIs
+    async fetchAllServices() {
+        this.isLoading = true;
+        this.updateLoadingState();
+        
+        try {
+            // Fetch from JustAnotherPanel
+            const japResponse = await fetch(CONFIG.JAP_API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    key: CONFIG.JAP_API_KEY,
+                    action: 'services'
+                })
+            });
+            
+            // Fetch from MoreThanPanel
+            const mtpResponse = await fetch(CONFIG.MTP_API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    key: CONFIG.MTP_API_KEY,
+                    action: 'services'
+                })
+            });
+            
+            const japData = await japResponse.json();
+            const mtpData = await mtpResponse.json();
+            
+            // Process JAP services
+            const japServices = Array.isArray(japData) ? japData : [];
+            const mtpServices = Array.isArray(mtpData) ? mtpData : [];
+            
+            // Combine and transform services
+            this.services = [
+                ...japServices.map(s => ({
+                    id: s.service,
+                    name: s.name,
+                    platform: this.detectPlatform(s.name),
+                    tier: 'basic',
+                    rate: parseFloat(s.rate) || 0,
+                    min: parseInt(s.min) || 10,
+                    max: parseInt(s.max) || 10000,
+                    category: s.category || 0,
+                    priceNGN: Math.round((parseFloat(s.rate) || 0) * CONFIG.USD_NGN_RATE * CONFIG.MARKUP)
+                })),
+                ...mtpServices.map(s => ({
+                    id: s.service,
+                    name: s.name,
+                    platform: this.detectPlatform(s.name),
+                    tier: 'max',
+                    rate: parseFloat(s.rate) || 0,
+                    min: parseInt(s.min) || 10,
+                    max: parseInt(s.max) || 10000,
+                    category: s.category || 0,
+                    priceNGN: Math.round((parseFloat(s.rate) || 0) * CONFIG.USD_NGN_RATE * CONFIG.MARKUP)
+                }))
+            ].filter(s => s.rate > 0); // Filter out invalid services
+            
+            console.log(`Loaded ${this.services.length} total services (${japServices.length} JAP + ${mtpServices.length} MTP)`);
+            
+        } catch (error) {
+            console.error('Error fetching services:', error);
+            // Fallback to minimal sample if APIs fail
+            this.services = this.getFallbackServices();
+        } finally {
+            this.isLoading = false;
+            this.updateLoadingState();
+        }
+    },
+    
+    // Detect platform from service name
+    detectPlatform(name) {
+        const lower = name.toLowerCase();
+        if (lower.includes('instagram')) return 'instagram';
+        if (lower.includes('tiktok')) return 'tiktok';
+        if (lower.includes('facebook')) return 'facebook';
+        if (lower.includes('youtube')) return 'youtube';
+        if (lower.includes('twitter') || lower.includes('x')) return 'twitter';
+        if (lower.includes('telegram')) return 'telegram';
+        if (lower.includes('whatsapp')) return 'whatsapp';
+        if (lower.includes('linkedin')) return 'linkedin';
+        if (lower.includes('snapchat')) return 'snapchat';
+        if (lower.includes('pinterest')) return 'pinterest';
+        if (lower.includes('reddit')) return 'reddit';
+        return 'other';
+    },
+    
+    // Fallback services if API fails
+    getFallbackServices() {
+        return [
+            { id: 101, name: 'Instagram Followers - High Quality', platform: 'instagram', tier: 'basic', rate: 0.80, min: 100, max: 50000, priceNGN: 2900 },
+            { id: 102, name: 'Instagram Likes - Instant', platform: 'instagram', tier: 'basic', rate: 0.15, min: 50, max: 20000, priceNGN: 544 },
+            { id: 201, name: 'Instagram Followers - Premium Non-Drop', platform: 'instagram', tier: 'max', rate: 1.20, min: 100, max: 100000, priceNGN: 4350 },
+            { id: 203, name: 'TikTok Followers - Engagement', platform: 'tiktok', tier: 'max', rate: 2.50, min: 100, max: 30000, priceNGN: 9063 }
+        ];
+    },
         
         this.renderServices();
         this.populateCalculator();
